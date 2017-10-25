@@ -6,6 +6,7 @@
 package pl.polsl.smolarski.pawel.pojo.abcdtask;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import pl.polsl.smolarski.pawel.dao.abcdtask.ABCDDao;
+import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
  * ORM entity class for ABCDTask
@@ -22,7 +24,6 @@ import pl.polsl.smolarski.pawel.dao.abcdtask.ABCDDao;
  *
  * @author psmolarski
  */
-@ManagedBean
 @Entity
 @Table(name = "abcd_task")
 public class ABCDTask implements Serializable 
@@ -124,54 +125,6 @@ public class ABCDTask implements Serializable
         this.answer = answer;
     }
     
-    /**
-     *  Method which use DAO to save task
-     */
-    public void save()
-    {
-        ABCDDao taskDao=new ABCDDao();
-        taskDao.addTask(this);
-    }
-
-    /**
-     * Method which use DAO to delete task
-     */
-    public void delete()
-    {    
-        ABCDDao taskDao=new ABCDDao();
-        taskDao.deleteTask(id);
-    }
-
-    /**
-     * Method which use DAO to get specific task
-     * @return 
-     */
-    public List<ABCDTask> getbyid()
-    { 
-        ABCDDao taskDao=new ABCDDao();
-        List<ABCDTask> task=taskDao.getbyID(id);
-       
-        question = task.get(0).question;
-        case1 = task.get(0).case1;
-        case2 = task.get(0).case2;
-        case3 = task.get(0).case3;
-        case4 = task.get(0).case4;
-        answer = task.get(0).answer;
-        
-        return task;
-    }
-
-    public List<ABCDTask> getallrecords()
-    {
-        ABCDDao taskDao=new ABCDDao();
-        List<ABCDTask> tasks=taskDao.retrieveTask();
-        return tasks;
-    }
-
-    public void update()
-    {
-        ABCDDao taskDao=new ABCDDao();
-        taskDao.updateTask(this);
-    }
+    
     
 }

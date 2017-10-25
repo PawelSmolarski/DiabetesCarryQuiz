@@ -21,8 +21,7 @@ import org.hibernate.cfg.Configuration;
 public class SessionUtils {
     
      private static final SessionFactory sessionFactory;
-    
-    
+   
     static {
         try {
             Configuration configuration = new Configuration();
