@@ -94,26 +94,14 @@ public class ABCDDao
        
         List tasks=new ArrayList();
         ABCDTask task1=new ABCDTask();
-//        Transaction trans;
         Session session=SessionUtils.getSessionFactory().openSession();
         try
         {
             session.beginTransaction();
             Query query=session.createQuery("select t from ABCDTask t");
             tasks=query.list();
-            tasks.add(task1.getAnswer());
-            tasks.add(task1.getCase1());
-            tasks.add(task1.getCase2());
-            tasks.add(task1.getCase3());
-            tasks.add(task1.getCase4());
-            tasks.add(task1.getAnswer());
             session.getTransaction().commit();
-            
-//            if(tasks.isEmpty())
-//            {
-//                tasks.add(emptyObject);
-//                throw new Exception("No data for this table");
-//            }
+           
         }
         catch(Exception e)
         {

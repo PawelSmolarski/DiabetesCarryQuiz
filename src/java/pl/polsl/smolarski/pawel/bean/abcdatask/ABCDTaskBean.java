@@ -21,13 +21,13 @@ import pl.polsl.smolarski.pawel.pojo.abcdtask.ABCDTask;
 public class ABCDTaskBean implements Serializable {
     
     private ABCDTask task = new ABCDTask();
-
+    private static final ABCDDao taskDao = new ABCDDao();
+    
     /**
      *  Method which use DAO to save task
      */
     public void save(ABCDTask task)
     {
-        ABCDDao taskDao=new ABCDDao();
         taskDao.addTask(task);
     }
 
@@ -36,21 +36,18 @@ public class ABCDTaskBean implements Serializable {
      */
     public void delete(ABCDTask task)
     {    
-        ABCDDao taskDao=new ABCDDao();
         taskDao.deleteTask(task.getId());
     }
 
 
     public List<ABCDTask> getallrecords()
     {
-        ABCDDao taskDao=new ABCDDao();
         List<ABCDTask> tasks=taskDao.retrieveTask();
         return tasks;
     }
 
-    public void update(ABCDTask task)
+    public void update()
     {
-        ABCDDao taskDao=new ABCDDao();
         taskDao.updateTask(task);
     }
     
@@ -63,6 +60,4 @@ public class ABCDTaskBean implements Serializable {
         this.task = task;
     }
 
-
-    
 }

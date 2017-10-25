@@ -31,7 +31,7 @@ public class ABCDTask implements Serializable
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private int id;
+    private Integer id;
     
     @Column(name="question")
     private String question;
@@ -51,7 +51,7 @@ public class ABCDTask implements Serializable
     @Column(name="answer")
     private String answer;
 
-    public ABCDTask(int id, String question, String case1, String case2, String case3, String case4, String answer) {
+    public ABCDTask(Integer id, String question, String case1, String case2, String case3, String case4, String answer) {
         this.id = id;
         this.question = question;
         this.case1 = case1;
@@ -72,16 +72,16 @@ public class ABCDTask implements Serializable
     public ABCDTask() {
     }
 
-    public ABCDTask(int id) {
+    public ABCDTask(Integer id) {
         this.id = id;
     }
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

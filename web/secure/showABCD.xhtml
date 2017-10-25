@@ -46,20 +46,20 @@ and open the template in the editor.
             </p:column>
                     
             <p:column headerText="Update task ">
-                    <p:commandButton value="Update" id="updateABCDDialog" actionListener="#{aBCDTaskBean.setTask(task)}" oncomplete="PF('dlg').show()" type="button" />
+                    <p:commandButton value="Update" id="updateABCDDialog" actionListener="#{aBCDTaskBean.setTask(task)}" oncomplete="PF('dlg').show()" />
             </p:column>
                     
             <p:column headerText="Delete task ">
-
                 <p:commandButton value="Delete" id="deleteABCD" actionListener="#{aBCDTaskBean.delete(task)}" styleClass="ui-priority-primary" update="message showAllABCD"  />                               
             </p:column>
                     
         </p:dataTable>
                 </h:form>    
                 
-        <h:form>      
-               <p:growl id="message" showDetail="true" />
+
         <p:dialog header="Dialog" widgetVar="save_dlg" dynamic="true"  >
+            <h:form> 
+            <p:growl id="message" showDetail="true" />
             <p:panelGrid columns="2">
                 Task question: <p:inputText value="#{aBCDTaskBean.getTask().question}" maxlength="200" />
                 Task case 1: <p:inputText value="#{aBCDTaskBean.getTask().case1}" maxlength="80"/>
@@ -69,30 +69,25 @@ and open the template in the editor.
                 Task answer: <p:inputText value="#{aBCDTaskBean.getTask().answer}" maxlength="11"/>
                 <p:commandButton value="Save new task" id="saveABCD" actionListener="#{aBCDTaskBean.save(aBCDTaskBean.getTask())}" styleClass="ui-priority-primary" update="message :taskTable"  />
             </p:panelGrid>
-        </p:dialog> 
-       </h:form><br></br><br></br>
-       
-                <h:form id ="dlgForm">
-                   <p:growl id="message" showDetail="true" />
-                    <p:dialog header="Dialog" widgetVar="dlg" dynamic="true"  >
-                        <p:panelGrid columns="2" id="updateGrid">
-                                <h:panelGroup id="updateById">
-                                    <h:outputLabel value="Question "/>
-                                    <p:inputText value="#{aBCDTaskBean.getTask().question}" maxlength="200"/><br></br>
-                                            <h:outputLabel value="Case 1 "/>
-                                    <p:inputText value="#{aBCDTaskBean.getTask().case1}" maxlength="80"/><br></br>
-                                            <h:outputLabel value="Case 2 "/>
-                                    <p:inputText value="#{aBCDTaskBean.getTask().case2}" maxlength="80"/><br></br>
-                                            <h:outputLabel value="Case 3 "/>
-                                    <p:inputText value="#{aBCDTaskBean.getTask().case3}" maxlength="80"/><br></br>
-                                            <h:outputLabel value="Case 4 "/>
-                                    <p:inputText value="#{aBCDTaskBean.getTask().case4}" maxlength="80"/><br></br>
-                                            <h:outputLabel value="Answer "/>
-                                    <p:inputText value="#{aBCDTaskBean.getTask().answer}" maxlength="11"/><br></br>
-                                    <p:commandButton value="Update" id="updateABCD" actionListener="#{aBCDTask.update}" styleClass="ui-priority-primary" update="message :taskTable" />                               
-                                </h:panelGroup>                      
-                        </p:panelGrid>
-                     </p:dialog>
             </h:form>
+        </p:dialog> 
+       
+       
+                
+                    <p:dialog header="Dialog" widgetVar="dlg" dynamic="true"  >
+                        <h:form id ="dlgForm">
+                            <p:growl id="message" showDetail="true" />
+                        <p:panelGrid columns="2" id="updateGrid">
+                                    Question: <p:inputText value="#{aBCDTaskBean.getTask().question}" maxlength="200"/><br></br>
+                                    Task case 1: <p:inputText value="#{aBCDTaskBean.getTask().case1}" maxlength="80"/><br></br>
+                                    Task case 2: <p:inputText value="#{aBCDTaskBean.getTask().case2}" maxlength="80"/><br></br>
+                                    Task case 3: <p:inputText value="#{aBCDTaskBean.getTask().case3}" maxlength="80"/><br></br>
+                                    Task case 4: <p:inputText value="#{aBCDTaskBean.getTask().case4}" maxlength="80"/><br></br>
+                                    Task answer: <p:inputText value="#{aBCDTaskBean.getTask().answer}" maxlength="11"/><br></br>
+                                    <p:commandButton value="Update" id="updateABCD" actionListener="#{aBCDTaskBean.update}" styleClass="ui-priority-primary" update="message :taskTable" />                                                   
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+            
     </h:body>
 </html>
