@@ -39,7 +39,7 @@ public class Login implements Serializable
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private int id;
+    private Integer id;
     
     @Column(name="login")
     private String login;
@@ -53,7 +53,7 @@ public class Login implements Serializable
      * @param login
      * @param password 
      */
-    public Login(int id, String login, String password) {
+    public Login(Integer id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -63,11 +63,11 @@ public class Login implements Serializable
     }
     
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

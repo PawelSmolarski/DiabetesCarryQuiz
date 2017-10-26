@@ -48,5 +48,7 @@ Contributor(s):
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <mapping class="pl.polsl.smolarski.pawel.pojo.abcdtask.ABCDTask"/>
     <mapping class="pl.polsl.smolarski.pawel.pojo.login.Login"/>
+    <mapping class="pl.polsl.smolarski.pawel.pojo.player.Player"/>
+    <mapping class="pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask"/>
   </session-factory>
 </hibernate-configuration>
