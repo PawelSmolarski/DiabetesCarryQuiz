@@ -5,12 +5,14 @@
  */
 package pl.polsl.smolarski.pawel.pojo.diagramtask;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import pl.polsl.smolarski.pawel.bean.interfaces.Taskable;
 
 /**
  *
@@ -18,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "diagram_task")
-public class DiagramTask {
+public class DiagramTask implements Serializable, Taskable {
     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -147,6 +149,12 @@ public class DiagramTask {
 
     public DiagramTask() {
     }
+
+    @Override
+    public void getView() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
     
 

@@ -5,6 +5,7 @@
  */
 package pl.polsl.smolarski.pawel.bean.player;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -17,7 +18,7 @@ import pl.polsl.smolarski.pawel.pojo.player.Player;
  */
 @ManagedBean
 @ViewScoped
-public class PlayerBean {
+public class PlayerBean implements Serializable {
     
         private static final PlayerDao playerDao = new PlayerDao();
 
@@ -27,7 +28,7 @@ public class PlayerBean {
         playerDao.addPlayer(player);
     }
      
-      public List<Player> getallrecords()
+      public List<Player> getAllRecords()
     {
         List<Player> tasks=playerDao.retrievePlayer();
         return tasks;

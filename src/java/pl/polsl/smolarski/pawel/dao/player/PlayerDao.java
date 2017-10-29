@@ -46,7 +46,7 @@ public class PlayerDao {
             try
             {
                 session.beginTransaction();
-                Query query=session.createQuery("select p from Player p");
+                Query query=session.createQuery("select p from Player p ORDER BY p.points desc").setMaxResults(10);
                 players=query.list();
                 session.getTransaction().commit();
 

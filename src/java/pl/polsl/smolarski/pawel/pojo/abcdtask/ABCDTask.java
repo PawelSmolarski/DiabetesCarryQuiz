@@ -5,16 +5,24 @@
  */
 package pl.polsl.smolarski.pawel.pojo.abcdtask;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import pl.polsl.smolarski.pawel.bean.abcdatask.ABCDTaskBean;
+import pl.polsl.smolarski.pawel.bean.interfaces.Taskable;
 import pl.polsl.smolarski.pawel.dao.abcdtask.ABCDDao;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
@@ -26,7 +34,7 @@ import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
  */
 @Entity
 @Table(name = "abcd_task")
-public class ABCDTask implements Serializable 
+public class ABCDTask implements Serializable, Taskable 
 {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +57,9 @@ public class ABCDTask implements Serializable
     private String case4;
                 
     @Column(name="answer")
-    private String answer;
+    private Integer answer;
 
-    public ABCDTask(Integer id, String question, String case1, String case2, String case3, String case4, String answer) {
+    public ABCDTask(Integer id, String question, String case1, String case2, String case3, String case4, Integer answer) {
         this.id = id;
         this.question = question;
         this.case1 = case1;
@@ -117,14 +125,28 @@ public class ABCDTask implements Serializable
         this.case4 = case4;
     }
 
-    public String getAnswer() {
+    public Integer getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(Integer answer) {
         this.answer = answer;
     }
-    
+
+    @Override
+    public void getView() {
+        
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        ABCDTaskBean bean 
+            = (ABCDTaskBean) FacesContext.getCurrentInstance().getApplication()
+            .getELResolver().getValue(elContext, null, "aBCDTaskBean");
+        bean.setTask(this);
+        
+        
+        FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/game/abcd.xhtml");
+        
+    }
+
     
     
 }

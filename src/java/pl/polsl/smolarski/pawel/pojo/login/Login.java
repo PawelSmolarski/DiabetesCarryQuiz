@@ -29,8 +29,6 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
  * 
  * @author psmolarski
  */
-@ManagedBean
-@SessionScoped
 @Entity
 @Table(name = "users")
 public class Login implements Serializable
@@ -90,23 +88,6 @@ public class Login implements Serializable
         /**
          *  Method validates if given data are in database
          */
-    public void validateUsernamePassword() {
-        boolean loggedIn = LoginDao.validate(login, password);
-       if (loggedIn) {
-               HttpSession session = SessionUtils.getSession();
-               session.setAttribute("username", login);
-               ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
-           try
-           {
-               context.redirect("admin_page.xhtml");
-               
-           } catch (IOException ex) 
-           {
-               Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-           }
-           
-       } 
-    }
 
 }

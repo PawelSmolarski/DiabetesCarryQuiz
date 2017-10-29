@@ -44,15 +44,24 @@ public class Authorization implements Filter {
 			HttpServletResponse resp = (HttpServletResponse) response;
 			HttpSession ses = reqt.getSession(false);
 
+                        // TODO przenoszeie do gy jeżeli juz trwa rozgrywka, a ktos wlazł do index 
 			String reqURI = reqt.getRequestURI();
 			if (reqURI.contains("/login.xhtml")
 					|| (ses != null && ses.getAttribute("username") != null)
 					|| reqURI.contains("/public/")
 					|| reqURI.contains("javax.faces.resource")
-                            || reqURI.contentEquals("/"))
+                            || reqURI.contentEquals("/") || reqURI.contains("/game/"))
+                        {
 				chain.doFilter(request, response);
+                        }
+                        else if(reqURI.contains("/game/") && (ses == null || ses.getAttribute("player") == null))
+                        {
+                            resp.sendRedirect(reqt.getContextPath() + "/public/index.xhtml");
+                        }
 			else
-				resp.sendRedirect(reqt.getContextPath() + "/secure/login.xhtml");
+                        {
+                            resp.sendRedirect(reqt.getContextPath() + "/secure/login.xhtml");
+                        }
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

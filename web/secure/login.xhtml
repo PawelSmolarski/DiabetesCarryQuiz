@@ -10,16 +10,16 @@
 	<h:form>
                 <p:growl id="message" showDetail="true" />
 		<h:outputText value="Username  " />
-                <h:inputText id="username" value="#{login.login}"></h:inputText>
+                <h:inputText id="username" value="#{loginBean.login}"></h:inputText>
 		<h:message for="username"></h:message>
 		<br></br><br></br>
 		
 		<h:outputText value="Password  " />
-                <h:inputSecret id="password" value="#{login.password}"></h:inputSecret>
+                <h:inputSecret id="password" value="#{loginBean.password}"></h:inputSecret>
 		<h:message for="password"></h:message>
 		<br></br><br></br>
 		
-                <p:commandButton value="Login" id="login" actionListener="#{login.validateUsernamePassword}" styleClass="ui-priority-primary" update="message" />
+                <p:commandButton value="Login" id="login" actionListener="#{loginBean.validateUsernamePassword}" styleClass="ui-priority-primary" update="message" />
 	</h:form>
 </h:body>
 </html>

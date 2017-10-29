@@ -8,7 +8,9 @@ package pl.polsl.smolarski.pawel.bean.diagramtask;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import pl.polsl.smolarski.pawel.bean.interfaces.Taskable;
 import pl.polsl.smolarski.pawel.dao.diagramtask.DiagramTaskDao;
 import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
 
@@ -17,7 +19,7 @@ import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
  * @author g50-70
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class DiagramTaskBean implements Serializable{
     
     private DiagramTask task = new DiagramTask();
@@ -40,7 +42,7 @@ public class DiagramTaskBean implements Serializable{
     }
 
 
-    public List<DiagramTask> getallrecords()
+    public static List<DiagramTask> getallrecords()
     {
         List<DiagramTask> tasks=taskDao.retrieveTask();
         return tasks;
@@ -60,5 +62,10 @@ public class DiagramTaskBean implements Serializable{
         this.task = task;
     }
 
+    public void clearTask()
+    {
+        this.task = new DiagramTask();
+    }
+    
     
 }
