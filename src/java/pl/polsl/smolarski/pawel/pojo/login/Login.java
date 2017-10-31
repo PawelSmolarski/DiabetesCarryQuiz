@@ -5,51 +5,39 @@
  */
 package pl.polsl.smolarski.pawel.pojo.login;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.servlet.http.HttpSession;
-import pl.polsl.smolarski.pawel.dao.login.LoginDao;
-import pl.polsl.smolarski.pawel.utils.SessionUtils;
 
 /**
- * ORM entity class for Login
- * Provides validation checking methods
- * 
+ * ORM entity class for Login Provides validation checking methods
+ *
  * @author psmolarski
  */
 @Entity
 @Table(name = "users")
-public class Login implements Serializable
-{
-    
-    @Id 
+public class Login implements Serializable {
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Integer id;
-    
-    @Column(name="login")
+
+    @Column(name = "login")
     private String login;
-    
-    @Column(name="password")
+
+    @Column(name = "password")
     private String password;
 
     /**
-     * 
+     *
      * @param id
      * @param login
-     * @param password 
+     * @param password
      */
     public Login(Integer id, String login, String password) {
         this.id = id;
@@ -59,7 +47,6 @@ public class Login implements Serializable
 
     public Login() {
     }
-    
 
     public Integer getId() {
         return id;
@@ -84,10 +71,5 @@ public class Login implements Serializable
     public void setPassword(String password) {
         this.password = password;
     }
-    
-        /**
-         *  Method validates if given data are in database
-         */
-
 
 }

@@ -13,56 +13,62 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 /**
- * Utility class.
- * Provides all methods connected with working on session.
- * 
+ * Utility class. Provides all methods connected with working on session.
+ *
  * @author psmolarski
  */
-public class SessionUtils {
-    
-     private static final SessionFactory sessionFactory;
-   
-    static {
-        try {
+public class SessionUtils
+{
+
+    private static final SessionFactory sessionFactory;
+
+    static
+    {
+        try
+        {
             Configuration configuration = new Configuration();
             configuration.configure("hibernate.cfg.xml");
             StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
             sessionFactory = configuration.buildSessionFactory(ssrb.build());
 
-        } catch (Throwable ex) {
+        }
+        catch (Throwable ex)
+        {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
-    
+
     /**
      * Getter for SessionFactory component
+     *
      * @return SessionFactory
      */
-    public static SessionFactory getSessionFactory() {
+    public static SessionFactory getSessionFactory()
+    {
         return sessionFactory;
     }
-    
+
     /**
      * Add FacesMessage to current instance
-     * 
+     *
      * @param summary Header of message
      * @param detail Details of message
      */
-     public static void addMessage(String summary, String detail) 
+    public static void addMessage(String summary, String detail)
     {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-     
-     /**
-      * 
-      * @return HttpSession of current session
-      */
+
+    /**
+     *
+     * @return HttpSession of current session
+     */
     public static HttpSession getSession()
     {
         return (HttpSession) FacesContext.getCurrentInstance()
-				.getExternalContext().getSession(false);
+                .getExternalContext().getSession(false);
     }
 
 }

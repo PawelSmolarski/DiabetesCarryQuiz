@@ -24,43 +24,56 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
  */
 @ManagedBean
 @SessionScoped
-public class LoginBean implements Serializable {
-    
+public class LoginBean implements Serializable
+{
+
     private String login;
     private String password;
 
-    public String getLogin() {
+    public String getLogin()
+    {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(String login)
+    {
         this.login = login;
     }
 
-    public String getPassword() {
+    public String getPassword()
+    {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password)
+    {
         this.password = password;
     }
-    
-        public void validateUsernamePassword() {
-        boolean loggedIn = LoginDao.validate(login, password);
-       if (loggedIn) {
-               HttpSession session = SessionUtils.getSession();
-               session.setAttribute("username", login);
-               ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
-           try
-           {
-               context.redirect("admin_page.xhtml");
-               
-           } catch (IOException ex) 
-           {
-               Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-           }
-           
-       } 
+    public void validateUsernamePassword()
+    {
+        boolean loggedIn = LoginDao.validate(login, password);
+        if (loggedIn)
+        {
+            ExternalContext context = createSession();
+            try
+            {
+                context.redirect("admin_page.xhtml");
+
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    private ExternalContext createSession()
+    {
+        HttpSession session = SessionUtils.getSession();
+        session.setAttribute("username", login);
+        return FacesContext.getCurrentInstance().getExternalContext();
+
     }
 }

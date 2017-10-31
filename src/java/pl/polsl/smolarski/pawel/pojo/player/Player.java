@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author g50-70
+ * @author psmolarski
  */
 @Entity
 @Table(name = "player")

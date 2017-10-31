@@ -18,19 +18,19 @@ import pl.polsl.smolarski.pawel.pojo.player.Player;
  */
 @ManagedBean
 @ViewScoped
-public class PlayerBean implements Serializable {
-    
-        private static final PlayerDao playerDao = new PlayerDao();
+public class PlayerBean implements Serializable
+{
 
-    
-     public void save(Player player)
+    private static final PlayerDao playerDao = new PlayerDao();
+
+    public void save(Player player)
     {
         playerDao.addPlayer(player);
     }
-     
-      public List<Player> getAllRecords()
+
+    public List<Player> getAllRecords()
     {
-        List<Player> tasks=playerDao.retrievePlayer();
+        List<Player> tasks = playerDao.retrievePlayer();
         return tasks;
     }
 }
