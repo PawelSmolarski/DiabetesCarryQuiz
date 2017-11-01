@@ -8,6 +8,7 @@ package pl.polsl.smolarski.pawel.pojo.login;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.player.PlayerDao;
+import pl.polsl.smolarski.pawel.utils.TaskType;
+import pl.polsl.smolarski.pawel.utils.Taskable;
 
 /**
  * Class which provides secure filtering
@@ -60,7 +63,10 @@ public class Authorization implements Filter
 //            if ((ses != null && ses.getAttribute("player") != null) && reqURI.contentEquals("/"))
 //            {
 //                // TODO przenoszeie do gy jeżeli juz trwa rozgrywka, a ktos wlazł do index 
+//                Taskable task = QuizBean.getPresentTask();
+//                TaskType type = task.getType();
 //                QuizBean.getView(QuizBean.getPresentTask().getType());
+//
 //            }
 //            else 
                 if (reqURI.contains("/login.xhtml")

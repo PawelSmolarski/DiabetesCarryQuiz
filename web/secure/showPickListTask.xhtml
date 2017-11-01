@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Display All PickList</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="taskTable">
+            <p:commandButton value="Add new task" actionListener="#{pickListTaskBean.clearTask()}" oncomplete="PF('save_dlg').show();" update=":save_dialog" /><br />
+            <p:dataTable var="task" value="#{pickListTaskBean.getallrecords()}" id="showAllPick" >
+                <p:growl id="message" showDetail="true" />
+                <p:column headerText="Id">
+                    <h:outputText value="#{task.id}" />
+                </p:column>
+                <p:column headerText="Question">
+                    <h:outputText value="#{task.question}" />
+                </p:column>
+                <p:column headerText="Case 1">
+                    <h:outputText value="#{task.case1}" />
+                </p:column>
+                <p:column headerText="Case 2">
+                    <h:outputText value="#{task.case2}" />
+                </p:column>
+                <p:column headerText="Case 3">
+                    <h:outputText value="#{task.case3}" />
+                </p:column>
+                <p:column headerText="Case 4">
+                    <h:outputText value="#{task.case4}" />
+                </p:column>
+                <p:column headerText="Answer ">
+                    <h:outputText value="#{task.answer}" />
+                </p:column>
+                <p:column headerText="Update task ">
+                    <p:commandButton value="Update" id="updatePickDialog" actionListener="#{pickListTaskBean.setTask(task)}" oncomplete="PF('dlg').show()" update=":update_dialog" />
+                </p:column>
+                <p:column headerText="Delete task ">
+                    <p:commandButton value="Delete" id="deletePick" actionListener="#{pickListTaskBean.delete(task)}" styleClass="ui-priority-primary" update="message showAllPick"  />                               
+                </p:column>
+            </p:dataTable>
+        </h:form> 
+
+        <p:dialog header="Dialog" widgetVar="save_dlg" dynamic="true" id="save_dialog" >
+            <h:form> 
+                <p:growl id="message" showDetail="true" />
+                <p:panelGrid columns="2">
+                    Task question: <p:inputText value="#{pickListTaskBean.getTask().question}" maxlength="200" />
+                    Task case 1: <p:inputText value="#{pickListTaskBean.getTask().case1}" maxlength="80"/>
+                    Task case 2: <p:inputText value="#{pickListTaskBean.getTask().case2}" maxlength="80"/>
+                    Task case 3: <p:inputText value="#{pickListTaskBean.getTask().case3}" maxlength="80"/>
+                    Task case 4: <p:inputText value="#{pickListTaskBean.getTask().case4}" maxlength="80"/>
+                    Task answer: <p:inputText value="#{pickListTaskBean.getTask().answer}" maxlength="30"/>
+                    <p:commandButton value="Save new task" id="savePick" actionListener="#{pickListTaskBean.save(pickListTaskBean.getTask())}" styleClass="ui-priority-primary" update="message :taskTable " oncomplete="PF('save_dlg').hide();" />
+                </p:panelGrid>
+            </h:form>
+        </p:dialog> 
+
+        <p:dialog header="Dialog" widgetVar="dlg" dynamic="true" id="update_dialog" >
+            <h:form id ="dlgForm">
+                <p:growl id="message" showDetail="true" />
+                <p:panelGrid columns="2" id="updateGrid">
+                    Question: <p:inputText value="#{pickListTaskBean.getTask().question}" maxlength="200"/><br></br>
+                    Task case 1: <p:inputText value="#{pickListTaskBean.getTask().case1}" maxlength="80"/><br></br>
+                    Task case 2: <p:inputText value="#{pickListTaskBean.getTask().case2}" maxlength="80"/><br></br>
+                    Task case 3: <p:inputText value="#{pickListTaskBean.getTask().case3}" maxlength="80"/><br></br>
+                    Task case 4: <p:inputText value="#{pickListTaskBean.getTask().case4}" maxlength="80"/><br></br>
+                    Task answer: <p:inputText value="#{pickListTaskBean.getTask().answer}" maxlength="30"/><br></br>
+                    <p:commandButton value="Update" id="updatePick" actionListener="#{pickListTaskBean.update}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('dlg').hide()" />                                                   
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </h:body>
+</html>

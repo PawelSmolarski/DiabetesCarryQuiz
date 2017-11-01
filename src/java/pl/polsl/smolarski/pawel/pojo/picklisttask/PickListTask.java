@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.polsl.smolarski.pawel.pojo.diagramtask;
+package pl.polsl.smolarski.pawel.pojo.picklisttask;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -17,17 +17,19 @@ import pl.polsl.smolarski.pawel.utils.Taskable;
 
 /**
  *
- * @author g50-70
+ * @author psmolarski
  */
 @Entity
-@Table(name = "diagram_task")
-public class DiagramTask implements Serializable, Taskable
+@Table(name = "picklist_task")
+public class PickListTask implements Serializable, Taskable
 {
-
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
+    @Column(name = "question")
+    private String question;
 
     @Column(name = "case_1")
     private String case1;
@@ -41,33 +43,37 @@ public class DiagramTask implements Serializable, Taskable
     @Column(name = "case_4")
     private String case4;
 
-    @Column(name = "case_5")
-    private String case5;
+    @Column(name = "answer")
+    private String answer;
 
-    @Column(name = "case_6")
-    private String case6;
-
-    @Column(name = "case_7")
-    private String case7;
-
-    @Column(name = "case_8")
-    private String case8;
-
-    @Column(name = "answer_relations")
-    private String answerRelations;
-
-    public DiagramTask(Integer id, String case1, String case2, String case3, String case4, String case5, String case6, String case7, String case8, String answerRelations)
+    public PickListTask(Integer id, String question, String case1, String case2, String case3, String case4, String answer)
     {
         this.id = id;
+        this.question = question;
         this.case1 = case1;
         this.case2 = case2;
         this.case3 = case3;
         this.case4 = case4;
-        this.case5 = case5;
-        this.case6 = case6;
-        this.case7 = case7;
-        this.case8 = case8;
-        this.answerRelations = answerRelations;
+        this.answer = answer;
+    }
+
+    public String getQuestion()
+    {
+        return question;
+    }
+
+    public void setQuestion(String question)
+    {
+        this.question = question;
+    }
+
+    public PickListTask()
+    {
+    }
+
+    public PickListTask(Integer id)
+    {
+        this.id = id;
     }
 
     public Integer getId()
@@ -120,64 +126,20 @@ public class DiagramTask implements Serializable, Taskable
         this.case4 = case4;
     }
 
-    public String getCase5()
+    public String getAnswer()
     {
-        return case5;
+        return answer;
     }
 
-    public void setCase5(String case5)
+    public void setAnswer(String answer)
     {
-        this.case5 = case5;
-    }
-
-    public String getCase6()
-    {
-        return case6;
-    }
-
-    public void setCase6(String case6)
-    {
-        this.case6 = case6;
-    }
-
-    public String getCase7()
-    {
-        return case7;
-    }
-
-    public void setCase7(String case7)
-    {
-        this.case7 = case7;
-    }
-
-    public String getCase8()
-    {
-        return case8;
-    }
-
-    public void setCase8(String case8)
-    {
-        this.case8 = case8;
-    }
-
-    public String getAnswerRelations()
-    {
-        return answerRelations;
-    }
-
-    public void setAnswerRelations(String answerRelations)
-    {
-        this.answerRelations = answerRelations;
-    }
-
-    public DiagramTask()
-    {
+        this.answer = answer;
     }
 
     @Override
     public TaskType getType()
     {
-        return TaskType.DIAGRAM;
+        return TaskType.PICK_LIST;
     }
 
 }

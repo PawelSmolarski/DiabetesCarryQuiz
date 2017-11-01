@@ -50,5 +50,6 @@ Contributor(s):
     <mapping class="pl.polsl.smolarski.pawel.pojo.login.Login"/>
     <mapping class="pl.polsl.smolarski.pawel.pojo.player.Player"/>
     <mapping class="pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask"/>
+    <mapping class="pl.polsl.smolarski.pawel.pojo.picklisttask.PickListTask"/>
   </session-factory>
 </hibernate-configuration>

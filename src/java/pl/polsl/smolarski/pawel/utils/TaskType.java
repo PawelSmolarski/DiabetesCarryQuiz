@@ -12,8 +12,10 @@ package pl.polsl.smolarski.pawel.utils;
 public enum TaskType
 {
 
-    ABCD("/game/abcd.xhtml");
-
+    ABCD("/game/abcd.xhtml"),
+    DIAGRAM("/game/diagram.xhtml"),
+    PICK_LIST("/game/picklist.xhtml");
+    
     private final String URL;
 
     TaskType(String URL)
