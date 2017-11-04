@@ -10,16 +10,22 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Display All Diagram</title>
+        <title>Display All PickList</title>
     </h:head>
     <h:body>
-
+                    
         <h:form id="taskForm">
-            <p:growl id="message" showDetail="true" escape="false" />
+            <p:growl id="message" showDetail="true" />
 
-            <h3 style="margin-top: 0">Put true on right side</h3>
-            <p:pickList id="pickList" value="#{pickListTaskBean.tasks}" var="tasks" itemLabel="#{tasks}" itemValue="#{tasks}" />
+            <p:outputLabel value="#{pickListTaskBean.task.question}"/>
+            <p:pickList id="pickList" value="#{pickListTaskBean.tasks}" var="tasks" itemLabel="#{tasks}" itemValue="#{tasks}" >
+                <p:ajax event="transfer" listener="#{pickListTaskBean.onTransfer}" update="message" />
+                <p:ajax event="select" listener="#{pickListTaskBean.onSelect}" update="message" />
+                <p:ajax event="reorder" listener="#{pickListTaskBean.onReorder}" update="message" />
+                <p:ajax event="unselect" listener="#{pickListTaskBean.onUnselect}" update="message" />
+            </p:pickList>
         </h:form>
+        
         <h:form>
             <p:growl id="message" showDetail="true" />
             <p:commandButton value="Submit" action="#{pickListTaskBean.validate}" update="message :taskForm"/>

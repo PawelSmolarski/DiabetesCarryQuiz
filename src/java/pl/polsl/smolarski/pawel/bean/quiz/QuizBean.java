@@ -6,12 +6,18 @@
 package pl.polsl.smolarski.pawel.bean.quiz;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import pl.polsl.smolarski.pawel.bean.abcdatask.ABCDTaskBean;
+import pl.polsl.smolarski.pawel.bean.diagramtask.DiagramTaskBean;
+import pl.polsl.smolarski.pawel.bean.picklist.PickListTaskBean;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 import pl.polsl.smolarski.pawel.dao.player.PlayerDao;
 import pl.polsl.smolarski.pawel.pojo.player.Player;
@@ -20,7 +26,7 @@ import pl.polsl.smolarski.pawel.utils.TaskType;
 
 /**
  *
- * @author g50-70
+ * @author psmolarski
  */
 @ManagedBean
 @SessionScoped
@@ -75,16 +81,23 @@ public class QuizBean implements Serializable
 
     public void start()
     {
-        if (isStarted == false)
+        if (username == null || username.isEmpty())
         {
-            playerSessionCreate();
+            SessionUtils.addMessage("Error!", "Choose your name");
         }
-        if (tasks == null)
+        else
         {
-            tasks = receiveTasks();
-        }
+            if (isStarted == false)
+            {
+                playerSessionCreate();
+            }
+            if (tasks == null)
+            {
+                tasks = receiveTasks();
+            }
 
-        game();
+            game();
+        }
     }
 
     private void playerSessionCreate()
@@ -97,7 +110,7 @@ public class QuizBean implements Serializable
     public static void game()
     {
         // TODO end of game
-        if (tasks.isEmpty())
+        if (tasks == null || tasks.isEmpty())
         {
             redirectEndOfGame();
         }
@@ -109,16 +122,20 @@ public class QuizBean implements Serializable
 
     private static void redirectEndOfGame()
     {
+//        tasks = null;
         Player player = new Player();
         player.setName(username);
         player.setPoints(points);
         new PlayerDao().addPlayer(player);
+        HttpSession session = SessionUtils.getSession();
+        session.removeAttribute("player");
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, "/game/hall_of_fame.xhtml");
 
     }
 
     private static void redirectNextTask()
     {
+
         System.out.println("Gra trwa " + points);
         presentTask = tasks.get(0);
         tasks.remove(0);
@@ -137,14 +154,46 @@ public class QuizBean implements Serializable
 
     private static List<? extends Taskable> receiveTasks()
     {
-        List<? extends Taskable> tasks;
-        tasks = ABCDTaskBean.getallrecords();
+        List<Taskable> tasks = new ArrayList<>();
+//        tasks = ABCDTaskBean.getallrecords();
+
+
+//        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
+
+//        Collections.shuffle(tasks, new Random(System.currentTimeMillis()));
         return tasks;
     }
 
     public static void getView(TaskType type)
     {
+//        if(type == TaskType.DIAGRAM)
+//        {
+//            FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("diagramTaskBean");
+//
+//        }       
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, type.getURL());
     }
 
+    private static List<? extends Taskable> getRandomTasks(List<? extends Taskable> tasks)
+    {
+        List<Taskable> randomTasks = new ArrayList<>();
+        Random rand = new Random(System.currentTimeMillis());
+        if (tasks.size() <= 3)
+        {
+            randomTasks.addAll(tasks);
+            return randomTasks;
+        }
+        else
+        {
+            for (int i = 0; i < 3; ++i)
+            {
+                int randomIndex = rand.nextInt(tasks.size());
+                randomTasks.add(tasks.get(randomIndex));
+                tasks.remove(randomIndex);
+            }
+            return randomTasks;
+        }
+    }
 }

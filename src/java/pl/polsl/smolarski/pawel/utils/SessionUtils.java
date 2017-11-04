@@ -5,6 +5,9 @@
  */
 package pl.polsl.smolarski.pawel.utils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -69,6 +72,22 @@ public class SessionUtils
     {
         return (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
+    }
+
+    public static boolean areEqualLists(List<String> one, List<String> two)
+    {
+
+        if ( one.size() != two.size())
+        {
+            return false;
+        }
+
+        one = new ArrayList<String>(one);
+        two = new ArrayList<String>(two);
+
+        Collections.sort(one);
+        Collections.sort(two);
+        return one.equals(two);
     }
 
 }

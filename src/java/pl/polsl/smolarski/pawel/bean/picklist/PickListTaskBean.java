@@ -7,10 +7,15 @@ package pl.polsl.smolarski.pawel.bean.picklist;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.picklist.PickListDao;
@@ -18,6 +23,7 @@ import pl.polsl.smolarski.pawel.pojo.picklisttask.PickListTask;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
+import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
@@ -33,63 +39,63 @@ public class PickListTaskBean implements Serializable
     private static final PickListDao taskDao = new PickListDao();
 
     private DualListModel<String> tasks;
+    private List<String> tasksSource;
+    private List<String> tasksTarget;
+    private Map<String, String> questionCases;
 
     @PostConstruct
     public void init()
     {
-//        task = (PickListTask) QuizBean.getPresentTask();
 
-        List<String> tasksSource = new ArrayList<>();
-        List<String> tasksTarget = new ArrayList<>();
+        task = (PickListTask) QuizBean.getPresentTask();
 
-        tasksSource.add("San Francisco");
-        tasksSource.add("London");
-        tasksSource.add("Paris");
-        tasksSource.add("Istanbul");
-        tasksSource.add("Berlin");
-        tasksSource.add("Barcelona");
-        tasksSource.add("Rome");
+        if (task != null)
+        {
+            tasksSource = new ArrayList<>();
+            tasksTarget = new ArrayList<>();
 
-        tasks = new DualListModel<String>(tasksSource, tasksTarget);
+            questionCases = new HashMap<>();
+            questionCases.put("1", task.getCase1());
+            questionCases.put("2", task.getCase2());
+            questionCases.put("3", task.getCase3());
+            questionCases.put("4", task.getCase4());
+
+            for (String key : questionCases.keySet())
+            {
+                tasksSource.add(questionCases.get(key));
+            }
+
+//            tasksSource.add("San Francisco");
+//            tasksSource.add("London");
+//            tasksSource.add("Paris");
+//            tasksSource.add("Istanbul");
+//            tasksSource.add("Berlin");
+//            tasksSource.add("Barcelona");
+//            tasksSource.add("Rome");
+            tasks = new DualListModel<String>(tasksSource, tasksTarget);
+        }
     }
 
     public void onTransfer(TransferEvent event)
     {
-//        StringBuilder builder = new StringBuilder();
-//        for (Object item : event.getItems())
-//        {
-//            builder.append(((Theme) item).getName()).append("<br />");
-//        }
-//
-//        FacesMessage msg = new FacesMessage();
-//        msg.setSeverity(FacesMessage.SEVERITY_INFO);
-//        msg.setSummary("Items Transferred");
-//        msg.setDetail(builder.toString());
-//
-//        FacesContext.getCurrentInstance().addMessage(null, msg);
-        addMessage("ss", "lel");
+
+        addMessage("ss", "on transfer");
 
     }
 
     public void onSelect(SelectEvent event)
     {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().toString()));
-        addMessage("ss", "lel");
+        addMessage("ss", "on select");
     }
 
     public void onUnselect(UnselectEvent event)
     {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().toString()));
-        addMessage("ss", "lel");
+        addMessage("ss", "on unselect");
     }
 
     public void onReorder()
     {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
-        addMessage("ss", "lel");
+        addMessage("ss", "on reorder");
     }
 
     public DualListModel<String> getTasks()
@@ -146,6 +152,31 @@ public class PickListTaskBean implements Serializable
 
     public void validate()
     {
-        //todo
+        if (tasks.getTarget().isEmpty())
+        {
+            addMessage("Error!", "Choose at least one");
+        }
+        else
+        {
+            List<String> tasksTarget = tasks.getTarget();
+            List<String> answersKeys = new ArrayList<>();
+            answersKeys = Arrays.asList(task.getAnswer().split(";"));
+
+            List<String> answers = new ArrayList<>();
+            
+            for(String s : answersKeys)
+            {
+                answers.add(questionCases.get(s));
+            }
+
+            if (SessionUtils.areEqualLists(answers, tasksTarget))
+            {
+                QuizBean.setPoints(QuizBean.getPoints() + 1);
+                System.out.println("player get points pick list");
+            }
+
+            QuizBean.game();
+
+        }
     }
 }

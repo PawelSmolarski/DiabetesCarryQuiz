@@ -6,6 +6,8 @@
 package pl.polsl.smolarski.pawel.bean.diagramtask;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -13,7 +15,6 @@ import javax.faces.bean.ViewScoped;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.diagramtask.DiagramTaskDao;
 import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
@@ -26,7 +27,8 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.ArrowOverlay;
-import javax.faces.application.FacesMessage;
+import org.primefaces.model.diagram.Connection;
+import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
@@ -49,83 +51,86 @@ public class DiagramTaskBean implements Serializable
     public void init()
     {
         //TODO sczytanie do listy
-//        task = (DiagramTask) QuizBean.getPresentTask();
+        task = (DiagramTask) QuizBean.getPresentTask();
 
-        model = new DefaultDiagramModel();
-        model.setMaxConnections(1);
+        if (task != null)
+        {
+            
+            model = new DefaultDiagramModel();
+            model.setMaxConnections(-1);
 
-        model.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
-        StraightConnector connector = new StraightConnector();
-        connector.setPaintStyle("{strokeStyle:'#98AFC7', lineWidth:3}");
-        connector.setHoverPaintStyle("{strokeStyle:'#5C738B'}");
-        model.setDefaultConnector(connector);
-        
-        
-        Element computerA = new Element("Computer A", "10em", "6em");
-        EndPoint endPointCA = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        computerA.setDraggable(false);
-        endPointCA.setSource(true);
-//        endPointCA.setMaxConnections(1);
-        computerA.addEndPoint(endPointCA);
-        
-        
-        Element computerB = new Element("Computer B", "25em", "6em");
-        EndPoint endPointCB = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointCB.setSource(true);
-        computerB.setDraggable(false);
-//        endPointCB.setMaxConnections(1);
-        computerB.addEndPoint(endPointCB);
+            model.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
+            StraightConnector connector = new StraightConnector();
+            connector.setPaintStyle("{strokeStyle:'#98AFC7', lineWidth:3}");
+            connector.setHoverPaintStyle("{strokeStyle:'#5C738B'}");
+            model.setDefaultConnector(connector);
 
-        Element computerC = new Element("Computer C", "40em", "6em");
-        EndPoint endPointCC = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointCC.setSource(true);
-        computerC.setDraggable(false);
-//        endPointCC.setMaxConnections(1);
-        computerC.addEndPoint(endPointCC);
+            Element case_1 = new Element(task.getCase1(), "10em", "6em");
+            EndPoint endPoint_1 = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+            case_1.setDraggable(false);
+            endPoint_1.setSource(true);
+            endPoint_1.setId("1");
+            case_1.addEndPoint(endPoint_1);
 
-        Element computerCE = new Element("Computer CE", "55em", "6em");
-        EndPoint endPointCE = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointCE.setSource(true);
-        computerCE.setDraggable(false);
-//        endPointCE.setMaxConnections(1);
-        computerCE.addEndPoint(endPointCE);
+            Element case_3 = new Element(task.getCase3(), "25em", "6em");
+            EndPoint endPoint_3 = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+            endPoint_3.setSource(true);
+            endPoint_3.setId("3");
+            case_3.setDraggable(false);
+            case_3.addEndPoint(endPoint_3);
 
-        Element serverA = new Element("Computer D", "10em", "24em");
-        EndPoint endPointSA = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
-        serverA.setDraggable(false);
-        endPointSA.setTarget(true);
-//        endPointSA.setMaxConnections(1);
-        serverA.addEndPoint(endPointSA);
-        
-        Element serverB = new Element("Computer E", "25em", "24em");
-        EndPoint endPointSB = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
-        serverB.setDraggable(false);
-        endPointSB.setTarget(true);
-//        endPointSB.setMaxConnections(1);
-        serverB.addEndPoint(endPointSB);
+            Element case_5 = new Element(task.getCase5(), "40em", "6em");
+            EndPoint endPoint_5 = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+            endPoint_5.setSource(true);
+            endPoint_5.setId("5");
+            case_5.setDraggable(false);
+            case_5.addEndPoint(endPoint_5);
 
-        Element serverC = new Element("Computer F", "40em", "24em");
-        EndPoint endPointSC = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
-        serverC.setDraggable(false);
-        endPointSC.setTarget(true);
-//        endPointSC.setMaxConnections(1);
-        serverC.addEndPoint(endPointSC);
+            Element case_7 = new Element(task.getCase7(), "55em", "6em");
+            EndPoint endPoint_7 = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+            endPoint_7.setSource(true);
+            endPoint_7.setId("7");
+            case_7.setDraggable(false);
+            case_7.addEndPoint(endPoint_7);
 
-        Element serverD = new Element("Computer G", "55em", "24em");
-        EndPoint endPointSD = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
-        serverD.setDraggable(false);
-        endPointSD.setTarget(true);
-//        endPointSD.setMaxConnections(1);
-        serverD.addEndPoint(endPointSD);
+            Element case_2 = new Element(task.getCase2(), "10em", "24em");
+            EndPoint endPoint_2 = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
+            case_2.setDraggable(false);
+            endPoint_2.setTarget(true);
+            endPoint_2.setId("2");
+            case_2.addEndPoint(endPoint_2);
 
-        model.addElement(computerA);
-        model.addElement(computerB);
-        model.addElement(computerC);
-        model.addElement(computerCE);
-        model.addElement(serverC);
-        model.addElement(serverD);
-        model.addElement(serverA);
-        model.addElement(serverB);
+            Element case_4 = new Element(task.getCase4(), "25em", "24em");
+            EndPoint endPoint_4 = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
+            case_4.setDraggable(false);
+            endPoint_4.setTarget(true);
+            endPoint_4.setId("4");
+            case_4.addEndPoint(endPoint_4);
+
+            Element case_6 = new Element(task.getCase6(), "40em", "24em");
+            EndPoint endPoint_6 = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
+            case_6.setDraggable(false);
+            endPoint_6.setTarget(true);
+            endPoint_6.setId("6");
+            case_6.addEndPoint(endPoint_6);
+
+            Element case_8 = new Element(task.getCase8(), "55em", "24em");
+            EndPoint endPoint_8 = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
+            case_8.setDraggable(false);
+            endPoint_8.setTarget(true);
+            endPoint_8.setId("8");
+            case_8.addEndPoint(endPoint_8);
+
+            model.addElement(case_1);
+            model.addElement(case_2);
+            model.addElement(case_3);
+            model.addElement(case_4);
+            model.addElement(case_5);
+            model.addElement(case_6);
+            model.addElement(case_7);
+            model.addElement(case_8);
+
+        }
     }
 
     public DiagramModel getModel()
@@ -137,17 +142,8 @@ public class DiagramTaskBean implements Serializable
     {
         if (!suspendEvent)
         {
-            EndPoint source = event.getSourceEndPoint();
-            EndPoint target = event.getTargetEndPoint();
+            addMessage("ss", "on connect");
 
-//            if(event.getSourceElement().getEndPoints().isEmpty() || event.getSourceEndPoint().)
-            
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Connected",
-                    "From " + event.getSourceElement().getData() + " To " + event.getTargetElement().getData());
-
-            addMessage("ss", msg.toString());
-
-//            RequestContext.getCurrentInstance().update("form:msgs");
         }
         else
         {
@@ -157,25 +153,16 @@ public class DiagramTaskBean implements Serializable
 
     public void onDisconnect(DisconnectEvent event)
     {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Disconnected",
-                "From " + event.getSourceElement().getData() + " To " + event.getTargetElement().getData());
 
-        addMessage("ss", msg.toString());
+        addMessage("ss", "on disconnect");
 
-//        RequestContext.getCurrentInstance().update("form:msgs");
     }
 
     public void onConnectionChange(ConnectionChangeEvent event)
     {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Connection Changed",
-                "Original Source:" + event.getOriginalSourceElement().getData()
-                + ", New Source: " + event.getNewSourceElement().getData()
-                + ", Original Target: " + event.getOriginalTargetElement().getData()
-                + ", New Target: " + event.getNewTargetElement().getData());
 
-        addMessage("ss", msg.toString());
+        addMessage("ss", "on connection change");
 
-//        RequestContext.getCurrentInstance().update("form:msgs");
         suspendEvent = true;
     }
 
@@ -244,6 +231,50 @@ public class DiagramTaskBean implements Serializable
 
     public void validate()
     {
+        List<Connection> connections = model.getConnections();
+        List<String> connectionsRelation = new ArrayList<>();
+        if (connections.isEmpty())
+        {
+            addMessage("Error!", "Make at least one connection");
+        }
+        else
+        {
+            System.out.println("on validate diagram:");
+            for (Connection c : connections)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.append(c.getSource().getId());
+                sb.append("-");
+                sb.append(c.getTarget().getId());
+                connectionsRelation.add(sb.toString());
+            }
+
+            List<String> answerRelations = Arrays.asList(task.getAnswerRelations().split(";"));
+
+            if (SessionUtils.areEqualLists(connectionsRelation, answerRelations))
+            {
+                System.out.println("Diagram get points");
+                QuizBean.setPoints(QuizBean.getPoints() + 1);
+
+            }
+
+//            boolean isValid = true;
+//            for (String s : connectionsRelation)
+//            {
+//                if (!task.getAnswerRelations().contains(s))
+//                {
+//                    System.out.println("some mistake of player");
+//                    isValid = false;
+//                    break;
+//                }
+//            }
+//            if (isValid == true)
+//            {
+//                System.out.println("player get points diaaaaagram");
+//                QuizBean.setPoints(QuizBean.getPoints() + 1);
+//            }
+            QuizBean.game();
+        }
 
     }
 

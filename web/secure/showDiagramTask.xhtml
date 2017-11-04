@@ -81,7 +81,7 @@ and open the template in the editor.
                     Task case 6: <p:inputText value="#{diagramTaskBean.getTask().case6}" maxlength="200"/>
                     Task case 7: <p:inputText value="#{diagramTaskBean.getTask().case7}" maxlength="200"/>
                     Task case 8: <p:inputText value="#{diagramTaskBean.getTask().case8}" maxlength="200"/>
-                    Answer relations: <p:inputText value="#{diagramTaskBean.getTask().answerRelations}" maxlength="45"/>
+                    Answer relations: <p:inputText value="#{diagramTaskBean.getTask().answerRelations}" maxlength="80"/>
                     <p:commandButton value="Save new task" id="saveDiagram" actionListener="#{diagramTaskBean.save(diagramTaskBean.getTask())}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('save_dlg').hide();"  />
                 </p:panelGrid>
             </h:form>
@@ -101,7 +101,7 @@ and open the template in the editor.
                     Task case 6: <p:inputText value="#{diagramTaskBean.getTask().case6}" maxlength="200"/>
                     Task case 7: <p:inputText value="#{diagramTaskBean.getTask().case7}" maxlength="200"/>
                     Task case 8: <p:inputText value="#{diagramTaskBean.getTask().case8}" maxlength="200"/>
-                    Answer relations: <p:inputText value="#{diagramTaskBean.getTask().answerRelations}" maxlength="45"/>
+                    Answer relations: <p:inputText value="#{diagramTaskBean.getTask().answerRelations}" maxlength="80"/>
                     <p:commandButton value="Update" id="updateDiagram" actionListener="#{diagramTaskBean.update}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('dlg').hide()" />                                                   
                 </p:panelGrid>
             </h:form>

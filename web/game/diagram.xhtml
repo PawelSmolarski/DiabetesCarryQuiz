@@ -9,9 +9,9 @@
     </h:head>
     <h:body>
 
-        <h:form id="taskForm">
+        <h:form id="taskForm" >
             <p:growl id="message" showDetail="true" />
-            <p:diagram value="#{diagramTaskBean.model}" style="height:600px" styleClass="ui-widget-content" var="el">
+            <p:diagram value="#{diagramTaskBean.model}" style="height:600px" styleClass="ui-widget-content" var="el" widgetVar="diagramVar">
                 <p:ajax event="connect" listener="#{diagramTaskBean.onConnect}" update="message" />
                 <p:ajax event="disconnect" listener="#{diagramTaskBean.onDisconnect}" update="message" />
                 <p:ajax event="connectionChange" listener="#{diagramTaskBean.onConnectionChange}" update="message" />
