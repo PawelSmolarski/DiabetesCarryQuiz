@@ -14,7 +14,8 @@ public enum TaskType
 
     ABCD("/game/abcd.xhtml"),
     DIAGRAM("/game/diagram.xhtml"),
-    PICK_LIST("/game/picklist.xhtml");
+    PICK_LIST("/game/picklist.xhtml"),
+    DRAG_DROP("/game/dragdrop.xhtml");
     
     private final String URL;
 

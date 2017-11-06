@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Display All DragDrop</title>
+    </h:head>
+    <h:body>
+        <h:form id="taskTable">
+            <p:commandButton value="Add new task" actionListener="#{dragDropTaskBean.clearTask()}" oncomplete="PF('save_dlg').show();" update=":save_drag"  /><br />
+
+            <p:dataTable var="task" value="#{dragDropTaskBean.getallrecords()}" id="showAllDrag" >
+                <p:growl id="message" showDetail="true" />
+                <p:column headerText="Id">
+                    <h:outputText value="#{task.id}" />
+                </p:column>
+
+                <p:column headerText="Case 1">
+                    <h:outputText value="#{task.case1}" />
+                </p:column>
+
+                <p:column headerText="Case 2">
+                    <h:outputText value="#{task.case2}" />
+                </p:column>
+
+                <p:column headerText="Case 3">
+                    <h:outputText value="#{task.case3}" />
+                </p:column>
+
+                <p:column headerText="Case 4">
+                    <h:outputText value="#{task.case4}" />
+                </p:column>
+
+                <p:column headerText="Case 5">
+                    <h:outputText value="#{task.case5}" />
+                </p:column>
+
+                <p:column headerText="Answer a ">
+                    <h:outputText value="#{task.answerA}" />
+                </p:column>
+
+                <p:column headerText="Answer b ">
+                    <h:outputText value="#{task.answerB}" />
+                </p:column>
+
+                <p:column headerText="Answer relations ">
+                    <h:outputText value="#{task.answerRelations}" />
+                </p:column>
+
+                <p:column headerText="Update task ">
+                    <p:commandButton value="Update" id="updateDrag" actionListener="#{dragDropTaskBean.setTask(task)}" oncomplete="PF('dlg').show()" update=":update_drag" />
+                </p:column>
+
+                <p:column headerText="Delete task ">
+                    <p:commandButton value="Delete" id="deleteDrag" actionListener="#{dragDropTaskBean.delete(task)}" styleClass="ui-priority-primary" update="message showAllDrag"  />                               
+                </p:column>
+
+            </p:dataTable>
+        </h:form>    
+
+
+        <p:dialog header="DragDrop" widgetVar="save_dlg" dynamic="true" id="save_drag" >
+            <h:form> 
+                <p:growl id="message" showDetail="true" />
+                <p:panelGrid columns="2">
+                    Task case 1: <p:inputText value="#{dragDropTaskBean.getTask().case1}" maxlength="200"/>
+                    Task case 2: <p:inputText value="#{dragDropTaskBean.getTask().case2}" maxlength="200"/>
+                    Task case 3: <p:inputText value="#{dragDropTaskBean.getTask().case3}" maxlength="200"/>
+                    Task case 4: <p:inputText value="#{dragDropTaskBean.getTask().case4}" maxlength="200"/>
+                    Task case 5: <p:inputText value="#{dragDropTaskBean.getTask().case5}" maxlength="200"/>
+                    Task case 5: <p:inputText value="#{dragDropTaskBean.getTask().answerA}" maxlength="200"/>
+                    Task case 5: <p:inputText value="#{dragDropTaskBean.getTask().answerB}" maxlength="200"/>
+                    Answer relations: <p:inputText value="#{dragDropTaskBean.getTask().answerRelations}" maxlength="80"/>
+                    <p:commandButton value="Save new task" id="saveDrag" actionListener="#{dragDropTaskBean.save(dragDropTaskBean.getTask())}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('save_dlg').hide();"  />
+                </p:panelGrid>
+            </h:form>
+        </p:dialog> 
+
+
+
+        <p:dialog header="Dialog" widgetVar="dlg" dynamic="true" id="update_drag"  >
+            <h:form id ="dlgForm">
+                <p:growl id="message" showDetail="true" />
+                <p:panelGrid columns="2" id="updateGrid">
+                    Task case 1: <p:inputText value="#{dragDropTaskBean.getTask().case1}" maxlength="200"/>
+                    Task case 2: <p:inputText value="#{dragDropTaskBean.getTask().case2}" maxlength="200"/>
+                    Task case 3: <p:inputText value="#{dragDropTaskBean.getTask().case3}" maxlength="200"/>
+                    Task case 4: <p:inputText value="#{dragDropTaskBean.getTask().case4}" maxlength="200"/>
+                    Task case 5: <p:inputText value="#{dragDropTaskBean.getTask().case5}" maxlength="200"/>
+                    Task case 5: <p:inputText value="#{dragDropTaskBean.getTask().answerA}" maxlength="200"/>
+                    Task case 5: <p:inputText value="#{dragDropTaskBean.getTask().answerB}" maxlength="200"/>
+                    Answer relations: <p:inputText value="#{dragDropTaskBean.getTask().answerRelations}" maxlength="80"/>
+                    <p:commandButton value="Update" id="updateDiagram" actionListener="#{dragDropTaskBean.update}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('dlg').hide()" />                                                   
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </h:body>
+</html>

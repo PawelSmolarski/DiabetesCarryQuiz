@@ -51,5 +51,6 @@ Contributor(s):
     <mapping class="pl.polsl.smolarski.pawel.pojo.player.Player"/>
     <mapping class="pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask"/>
     <mapping class="pl.polsl.smolarski.pawel.pojo.picklisttask.PickListTask"/>
+    <mapping class="pl.polsl.smolarski.pawel.pojo.dragdroptask.DragDropTask"/>
   </session-factory>
 </hibernate-configuration>

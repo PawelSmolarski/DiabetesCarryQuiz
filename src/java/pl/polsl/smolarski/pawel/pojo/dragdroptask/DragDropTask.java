@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.polsl.smolarski.pawel.pojo.diagramtask;
+package pl.polsl.smolarski.pawel.pojo.dragdroptask;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -15,13 +15,9 @@ import javax.persistence.Table;
 import pl.polsl.smolarski.pawel.utils.TaskType;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 
-/**
- *
- * @author psmolarski
- */
 @Entity
-@Table(name = "diagram_task")
-public class DiagramTask implements Serializable, Taskable
+@Table(name = "dragdrop_task")
+public class DragDropTask implements Serializable, Taskable
 {
 
     @Id
@@ -44,31 +40,14 @@ public class DiagramTask implements Serializable, Taskable
     @Column(name = "case_5")
     private String case5;
 
-    @Column(name = "case_6")
-    private String case6;
+    @Column(name = "answer_a")
+    private String answerA;
 
-    @Column(name = "case_7")
-    private String case7;
-
-    @Column(name = "case_8")
-    private String case8;
+    @Column(name = "answer_b")
+    private String answerB;
 
     @Column(name = "answer_relations")
     private String answerRelations;
-
-    public DiagramTask(Integer id, String case1, String case2, String case3, String case4, String case5, String case6, String case7, String case8, String answerRelations)
-    {
-        this.id = id;
-        this.case1 = case1;
-        this.case2 = case2;
-        this.case3 = case3;
-        this.case4 = case4;
-        this.case5 = case5;
-        this.case6 = case6;
-        this.case7 = case7;
-        this.case8 = case8;
-        this.answerRelations = answerRelations;
-    }
 
     public Integer getId()
     {
@@ -130,34 +109,24 @@ public class DiagramTask implements Serializable, Taskable
         this.case5 = case5;
     }
 
-    public String getCase6()
+    public String getAnswerA()
     {
-        return case6;
+        return answerA;
     }
 
-    public void setCase6(String case6)
+    public void setAnswerA(String answerA)
     {
-        this.case6 = case6;
+        this.answerA = answerA;
     }
 
-    public String getCase7()
+    public String getAnswerB()
     {
-        return case7;
+        return answerB;
     }
 
-    public void setCase7(String case7)
+    public void setAnswerB(String answerB)
     {
-        this.case7 = case7;
-    }
-
-    public String getCase8()
-    {
-        return case8;
-    }
-
-    public void setCase8(String case8)
-    {
-        this.case8 = case8;
+        this.answerB = answerB;
     }
 
     public String getAnswerRelations()
@@ -170,14 +139,27 @@ public class DiagramTask implements Serializable, Taskable
         this.answerRelations = answerRelations;
     }
 
-    public DiagramTask()
+    public DragDropTask()
     {
+    }
+
+    public DragDropTask(Integer id, String case1, String case2, String case3, String case4, String case5, String answerA, String answerB, String answerRelations)
+    {
+        this.id = id;
+        this.case1 = case1;
+        this.case2 = case2;
+        this.case3 = case3;
+        this.case4 = case4;
+        this.case5 = case5;
+        this.answerA = answerA;
+        this.answerB = answerB;
+        this.answerRelations = answerRelations;
     }
 
     @Override
     public TaskType getType()
     {
-        return TaskType.DIAGRAM;
+        return TaskType.DRAG_DROP;
     }
 
 }
