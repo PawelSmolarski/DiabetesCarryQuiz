@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import pl.polsl.smolarski.pawel.bean.abcdatask.ABCDTaskBean;
 import pl.polsl.smolarski.pawel.bean.diagramtask.DiagramTaskBean;
+import pl.polsl.smolarski.pawel.bean.dragdroptask.DragDropTaskBean;
 import pl.polsl.smolarski.pawel.bean.picklist.PickListTaskBean;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 import pl.polsl.smolarski.pawel.dao.player.PlayerDao;
@@ -161,6 +162,7 @@ public class QuizBean implements Serializable
 //        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
         tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
         tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
+//      tasks.addAll(getRandomTasks(DragDropTaskBean.getallrecords()));
 
 //        Collections.shuffle(tasks, new Random(System.currentTimeMillis()));
         return tasks;
