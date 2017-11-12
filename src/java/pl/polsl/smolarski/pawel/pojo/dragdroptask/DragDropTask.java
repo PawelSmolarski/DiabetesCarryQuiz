@@ -25,6 +25,9 @@ public class DragDropTask implements Serializable, Taskable
     @Column(name = "id")
     private Integer id;
 
+     @Column(name = "question")
+    private String question;
+    
     @Column(name = "case_1")
     private String case1;
 
@@ -139,13 +142,20 @@ public class DragDropTask implements Serializable, Taskable
         this.answerRelations = answerRelations;
     }
 
-    public DragDropTask()
+    public String getQuestion()
     {
+        return question;
     }
 
-    public DragDropTask(Integer id, String case1, String case2, String case3, String case4, String case5, String answerA, String answerB, String answerRelations)
+    public void setQuestion(String question)
+    {
+        this.question = question;
+    }
+
+    public DragDropTask(Integer id, String question, String case1, String case2, String case3, String case4, String case5, String answerA, String answerB, String answerRelations)
     {
         this.id = id;
+        this.question = question;
         this.case1 = case1;
         this.case2 = case2;
         this.case3 = case3;
@@ -155,6 +165,11 @@ public class DragDropTask implements Serializable, Taskable
         this.answerB = answerB;
         this.answerRelations = answerRelations;
     }
+
+    public DragDropTask()
+    {
+    }
+
 
     @Override
     public TaskType getType()

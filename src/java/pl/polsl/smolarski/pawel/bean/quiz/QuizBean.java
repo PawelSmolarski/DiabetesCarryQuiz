@@ -123,7 +123,7 @@ public class QuizBean implements Serializable
 
     private static void redirectEndOfGame()
     {
-//        tasks = null;
+        tasks = null;
         Player player = new Player();
         player.setName(username);
         player.setPoints(points);
@@ -156,13 +156,12 @@ public class QuizBean implements Serializable
     private static List<? extends Taskable> receiveTasks()
     {
         List<Taskable> tasks = new ArrayList<>();
-//        tasks = ABCDTaskBean.getallrecords();
 
 
-//        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
         tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
-        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
-//      tasks.addAll(getRandomTasks(DragDropTaskBean.getallrecords()));
+//        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
+//        tasks.addAll(getRandomTasks(DragDropTaskBean.getallrecords()));
 
 //        Collections.shuffle(tasks, new Random(System.currentTimeMillis()));
         return tasks;

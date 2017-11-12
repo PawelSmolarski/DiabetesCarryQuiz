@@ -18,11 +18,13 @@
         </script>
 
         <h:form id="taskForm">
-            <p:fieldset id="availableTaskField" legend="AvailableTasks">
+            <p:growl id="message" showDetail="true" />
+
+            <p:fieldset id="availableTaskField" legend="#{dragDropTaskBean.task.question}">
                 <p:dataGrid id="availableTasks" var="task" value="#{dragDropTaskBean.tasksToDrop}" columns="3">
-                    <p:panel id="pnl" header="Case" style="text-align:center">
+                    <p:panel id="pnl" header="" style="text-align:center">
                         <h:panelGrid columns="1" style="width:100%">
-                            <h:outputText value="#{task}" />
+                            <h:outputText value="#{task.caseValue}" />
                         </h:panelGrid>
                     </p:panel>
 
@@ -30,38 +32,52 @@
                 </p:dataGrid>
             </p:fieldset>
 
-            <p:fieldset id="selectedTasks" legend="Selected Tasks" style="margin-top:20px">
+            <p:fieldset id="selectedTasks" legend="#{dragDropTaskBean.task.answerA}" style="margin-top:20px">
                 <p:outputPanel id="dropArea">
                     <h:outputText value="!!!Drop here AA!!!" rendered="#{empty dragDropTaskBean.droppedAnswerA}" style="font-size:24px;" />
                     <p:dataTable id="selectedTasksTable" var="task" value="#{dragDropTaskBean.droppedAnswerA}" rendered="#{not empty dragDropTaskBean.droppedAnswerA}">
                         <p:column headerText="Answer">
-                            <h:outputText value="#{task}" />
+                            <h:outputText value="#{task.caseValue}" />
+                        </p:column>
+
+                        <p:column style="width:100px">
+                            <p:growl id="message" showDetail="true" />
+                            <p:commandButton value="Return" id="returnAnswer" actionListener="#{dragDropTaskBean.returnAnswerA(task)}" styleClass="ui-priority-primary" update="message :taskForm" />                                                   
                         </p:column>
                     </p:dataTable>
                 </p:outputPanel>
             </p:fieldset>
 
-            <p:droppable for="selectedTasks" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableTasks" onDrop="handleDrop">
+            <p:droppable for="selectedTasks" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableTasks" onDrop="handleDrop" id="dropA" >
                 <p:ajax listener="#{dragDropTaskBean.onTaskDropAnswerA}" update="dropArea availableTasks" />
             </p:droppable>
 
-            
-            <p:fieldset id="selectedTasksB" legend="Selected TasksB" style="margin-top:20px">
+
+            <p:fieldset id="selectedTasksB" legend="#{dragDropTaskBean.task.answerB}" style="margin-top:20px">
                 <p:outputPanel id="dropAreaB">
                     <h:outputText value="!!!Drop here BB!!!" rendered="#{empty dragDropTaskBean.droppedAnswerB}" style="font-size:24px;" />
                     <p:dataTable id="selectedTasksTableB" var="task" value="#{dragDropTaskBean.droppedAnswerB}" rendered="#{not empty dragDropTaskBean.droppedAnswerB}">
                         <p:column headerText="Answer">
-                            <h:outputText value="#{task}" />
+                            <h:outputText value="#{task.caseValue}" />
                         </p:column>
 
+                        <p:column style="width:100px" >
+                            <p:growl id="message" showDetail="true" />
+                            <p:commandButton value="Return" id="returnAnswerB" actionListener="#{dragDropTaskBean.returnAnswerB(task)}" styleClass="ui-priority-primary" update="message :taskForm" />                                                   
+                        </p:column>
+                        
                     </p:dataTable>
                 </p:outputPanel>
             </p:fieldset>
 
-            <p:droppable for="selectedTasksB" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableTasks" onDrop="handleDrop">
+            <p:droppable for="selectedTasksB" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableTasks" onDrop="handleDrop" id="dropB">
                 <p:ajax listener="#{dragDropTaskBean.onTaskDropAnswerB}" update="dropAreaB availableTasks" />
             </p:droppable>
 
+        </h:form>
+        <h:form>
+            <p:growl id="message" showDetail="true" />
+            <p:commandButton value="Submit" action="#{dragDropTaskBean.validate}" update="message :taskForm"/>
         </h:form>
 
     </h:body>

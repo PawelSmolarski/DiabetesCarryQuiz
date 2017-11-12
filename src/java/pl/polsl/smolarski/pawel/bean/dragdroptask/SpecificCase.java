@@ -9,8 +9,9 @@ package pl.polsl.smolarski.pawel.bean.dragdroptask;
  *
  * @author psmolarski
  */
-class SpecificCase
+public class SpecificCase
 {
+
     private String caseValue;
     private String whichAnswer;
 
@@ -39,6 +40,5 @@ class SpecificCase
     {
         this.whichAnswer = whichAnswer;
     }
-
-
+    
 }
