@@ -16,19 +16,34 @@ import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
- *
+ * Bean class for ABCD task.
  *
  * @author psmolarski
+ * @version 1.0
  */
 @ManagedBean
 @ViewScoped
 public class ABCDTaskBean implements Serializable
 {
 
+    /**
+     * Local task variable
+     */
     private ABCDTask task = new ABCDTask();
-    private static final ABCDDao taskDao = new ABCDDao();
+    
+    /**
+     * Static final variable to use dao
+     */
+    private static final ABCDDao TASK_DAO = new ABCDDao();
+    
+    /**
+     * Variable of user choose
+     */
     private int answer;
 
+    /**
+     * Init method
+     */
     @PostConstruct
     public void init()
     {
@@ -47,29 +62,39 @@ public class ABCDTaskBean implements Serializable
 
     /**
      * Method which use DAO to save task
+     * @param task to save
      */
     public void save(ABCDTask task)
     {
-        taskDao.addTask(task);
+        TASK_DAO.addTask(task);
     }
 
     /**
      * Method which use DAO to delete task
+     * @param task to delete
      */
     public void delete(ABCDTask task)
     {
-        taskDao.deleteTask(task.getId());
+        TASK_DAO.deleteTask(task.getId());
     }
 
+    /**
+     * Method to receive all tasks
+     * 
+     * @return List of get tasks
+     */
     public static List<ABCDTask> getallrecords()
     {
-        List<ABCDTask> tasks = taskDao.retrieveTask();
+        List<ABCDTask> tasks = TASK_DAO.retrieveTask();
         return tasks;
     }
 
+    /**
+     * Method to update present task
+     */
     public void update()
     {
-        taskDao.updateTask(task);
+        TASK_DAO.updateTask(task);
     }
 
     public ABCDTask getTask()
@@ -82,11 +107,17 @@ public class ABCDTaskBean implements Serializable
         this.task = task;
     }
 
+    /**
+     * Clearing local task
+     */
     public void clearTask()
     {
         this.task = new ABCDTask();
     }
 
+    /**
+     * Method validation of user choose
+     */
     public void validate()
     {
         if (answer == 0)

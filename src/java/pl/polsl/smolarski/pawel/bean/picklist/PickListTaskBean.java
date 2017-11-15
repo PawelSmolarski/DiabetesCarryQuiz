@@ -8,14 +8,12 @@ package pl.polsl.smolarski.pawel.bean.picklist;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.picklist.PickListDao;
@@ -27,8 +25,10 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
+ * Class bean for PickList task
  *
  * @author psmolarski
+ * @version 1.0
  */
 @ManagedBean
 @ViewScoped
@@ -36,7 +36,7 @@ public class PickListTaskBean implements Serializable
 {
 
     private PickListTask task = new PickListTask();
-    private static final PickListDao taskDao = new PickListDao();
+    private static final PickListDao TASK_DAO = new PickListDao();
 
     private DualListModel<String> tasks;
     private List<String> tasksSource;
@@ -65,17 +65,15 @@ public class PickListTaskBean implements Serializable
                 tasksSource.add(questionCases.get(key));
             }
 
-//            tasksSource.add("San Francisco");
-//            tasksSource.add("London");
-//            tasksSource.add("Paris");
-//            tasksSource.add("Istanbul");
-//            tasksSource.add("Berlin");
-//            tasksSource.add("Barcelona");
-//            tasksSource.add("Rome");
             tasks = new DualListModel<String>(tasksSource, tasksTarget);
         }
     }
 
+    /**
+     * Method on tranfer of answer
+     *
+     * @param event of transfer
+     */
     public void onTransfer(TransferEvent event)
     {
 
@@ -83,16 +81,30 @@ public class PickListTaskBean implements Serializable
 
     }
 
+    /**
+     * Method on select of answer
+     *
+     * @param event of transfer
+     */
     public void onSelect(SelectEvent event)
     {
         addMessage("ss", "on select");
     }
 
+    /**
+     * Method on unselect of answer
+     *
+     * @param event of transfer
+     */
     public void onUnselect(UnselectEvent event)
     {
         addMessage("ss", "on unselect");
     }
 
+    /**
+     * Method on reorder of answer
+     *
+     */
     public void onReorder()
     {
         addMessage("ss", "on reorder");
@@ -110,29 +122,41 @@ public class PickListTaskBean implements Serializable
 
     /**
      * Method which use DAO to save task
+     *
+     * @param task to save
      */
     public void save(PickListTask task)
     {
-        taskDao.addTask(task);
+        TASK_DAO.addTask(task);
     }
 
     /**
      * Method which use DAO to delete task
+     *
+     * @param task to delete
      */
     public void delete(PickListTask task)
     {
-        taskDao.deleteTask(task.getId());
+        TASK_DAO.deleteTask(task.getId());
     }
 
+    /**
+     * Method to get all tasks
+     *
+     * @return List of tasks
+     */
     public static List<PickListTask> getallrecords()
     {
-        List<PickListTask> tasks = taskDao.retrieveTask();
+        List<PickListTask> tasks = TASK_DAO.retrieveTask();
         return tasks;
     }
 
+    /**
+     * Method to update task
+     */
     public void update()
     {
-        taskDao.updateTask(task);
+        TASK_DAO.updateTask(task);
     }
 
     public PickListTask getTask()
@@ -145,11 +169,17 @@ public class PickListTaskBean implements Serializable
         this.task = task;
     }
 
+    /**
+     * Method to clear task
+     */
     public void clearTask()
     {
         this.task = new PickListTask();
     }
 
+    /**
+     * Method to validate user answer
+     */
     public void validate()
     {
         if (tasks.getTarget().isEmpty())
@@ -163,8 +193,8 @@ public class PickListTaskBean implements Serializable
             answersKeys = Arrays.asList(task.getAnswer().split(";"));
 
             List<String> answers = new ArrayList<>();
-            
-            for(String s : answersKeys)
+
+            for (String s : answersKeys)
             {
                 answers.add(questionCases.get(s));
             }

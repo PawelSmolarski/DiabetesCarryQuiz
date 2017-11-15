@@ -33,12 +33,7 @@ public class Login implements Serializable {
     @Column(name = "password")
     private String password;
 
-    /**
-     *
-     * @param id
-     * @param login
-     * @param password
-     */
+
     public Login(Integer id, String login, String password) {
         this.id = id;
         this.login = login;

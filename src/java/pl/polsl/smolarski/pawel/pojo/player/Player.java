@@ -14,8 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
+ * ORM entity class for Player 
+ * 
  * @author psmolarski
+ * @version 1.0
  */
 @Entity
 @Table(name = "player")

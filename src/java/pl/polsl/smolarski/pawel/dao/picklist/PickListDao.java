@@ -17,12 +17,19 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
+ * Class which provides CRUD methods for Pick List task
  *
- * @author g50-70
+ * @author psmolarski
+ * @version 1.0
  */
 public class PickListDao
 {
-    
+
+    /**
+     * Method to add task to table
+     *
+     * @param task to add
+     */
     public void addTask(PickListTask task)
     {
 
@@ -42,13 +49,18 @@ public class PickListDao
     private void addTaskTransaction(PickListTask task)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
         addMessage("Success!", "Task added correctly.");
     }
 
+    /**
+     * Method to delete task to table
+     *
+     * @param id to delete
+     */
     public void deleteTask(int id)
     {
 
@@ -67,7 +79,7 @@ public class PickListDao
     private void deleteTransaction(int id)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         PickListTask task = (PickListTask) session.load(PickListTask.class, id);
         session.delete(task);
@@ -75,6 +87,11 @@ public class PickListDao
         addMessage("Success!", "Task deleted correctly.");
     }
 
+    /**
+     * Method to get tasks from table
+     *
+     * @return List of get tasks
+     */
     public List<PickListTask> retrieveTask()
     {
 
@@ -94,7 +111,7 @@ public class PickListDao
 
     private List<PickListTask> retrieveTaskTransaction()
     {
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         session.beginTransaction();
         Query query = session.createQuery("select t from PickListTask t");
         List tasks = query.list();
@@ -102,6 +119,11 @@ public class PickListDao
         return tasks;
     }
 
+    /**
+     * Method to update task
+     *
+     * @param task to update
+     */
     public void updateTask(PickListTask task)
     {
 
@@ -120,7 +142,7 @@ public class PickListDao
     private void updateTaskTransaction(PickListTask task)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();

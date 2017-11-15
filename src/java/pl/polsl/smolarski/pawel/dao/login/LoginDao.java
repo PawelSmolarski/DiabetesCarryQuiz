@@ -24,13 +24,19 @@ import pl.polsl.smolarski.pawel.pojo.login.Login;
 public class LoginDao
 {
 
+    /**
+     * Method to check if given values are in user table
+     * @param login 
+     * @param password
+     * @return are login and password correct
+     */
     public static boolean validate(String login, String password)
     {
 
         List<Login> users = new ArrayList();
 
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         try
         {
             trans = session.beginTransaction();

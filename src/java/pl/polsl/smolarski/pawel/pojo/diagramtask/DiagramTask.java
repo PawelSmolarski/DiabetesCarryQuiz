@@ -16,8 +16,10 @@ import pl.polsl.smolarski.pawel.utils.TaskType;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 
 /**
+ * ORM entity class for DiagramTask 
  *
  * @author psmolarski
+ * @version 1.0
  */
 @Entity
 @Table(name = "diagram_task")
@@ -174,6 +176,11 @@ public class DiagramTask implements Serializable, Taskable
     {
     }
 
+    /**
+     * Method to get own type of task
+     *
+     * @return type of specific task
+     */
     @Override
     public TaskType getType()
     {

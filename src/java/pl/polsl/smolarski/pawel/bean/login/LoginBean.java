@@ -19,15 +19,23 @@ import pl.polsl.smolarski.pawel.pojo.login.Login;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
 
 /**
- *
- * @author g50-70
+ * Class bean for logining
+ * 
+ * @author psmolarski
+ * @version 1.0
  */
 @ManagedBean
 @SessionScoped
 public class LoginBean implements Serializable
 {
-
+    /**
+     * Login of user
+     */
     private String login;
+    
+    /**
+     * Password of user
+     */
     private String password;
 
     public String getLogin()
@@ -50,6 +58,9 @@ public class LoginBean implements Serializable
         this.password = password;
     }
 
+    /**
+     * Method which validates if provided login data are correct
+     */
     public void validateUsernamePassword()
     {
         boolean loggedIn = LoginDao.validate(login, password);
@@ -69,6 +80,10 @@ public class LoginBean implements Serializable
         }
     }
 
+    /**
+     * Create session for user
+     * @return context of session
+     */
     private ExternalContext createSession()
     {
         HttpSession session = SessionUtils.getSession();

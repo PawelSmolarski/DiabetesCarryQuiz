@@ -16,14 +16,17 @@ import pl.polsl.smolarski.pawel.utils.TaskType;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 
 /**
+ * ORM entity class for PickListTask 
  *
  * @author psmolarski
+ * @version 1.0
  */
 @Entity
 @Table(name = "picklist_task")
 public class PickListTask implements Serializable, Taskable
 {
-     @Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
@@ -136,6 +139,11 @@ public class PickListTask implements Serializable, Taskable
         this.answer = answer;
     }
 
+    /**
+     * Method to get own type of task
+     *
+     * @return type of specific task
+     */
     @Override
     public TaskType getType()
     {

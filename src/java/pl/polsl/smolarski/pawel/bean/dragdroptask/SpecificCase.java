@@ -12,7 +12,14 @@ package pl.polsl.smolarski.pawel.bean.dragdroptask;
 public class SpecificCase
 {
 
+    /**
+     * Variable contains value of specific case
+     */
     private String caseValue;
+
+    /**
+     * Variable contains value of answer for specific case
+     */
     private String whichAnswer;
 
     public SpecificCase(String caseValue, String whichAnswer)
@@ -40,5 +47,5 @@ public class SpecificCase
     {
         this.whichAnswer = whichAnswer;
     }
-    
+
 }

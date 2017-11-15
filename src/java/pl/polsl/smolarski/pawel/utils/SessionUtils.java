@@ -23,7 +23,10 @@ import org.hibernate.cfg.Configuration;
 public class SessionUtils
 {
 
-    private static final SessionFactory sessionFactory;
+    /**
+     * Variable for creating session
+     */
+    private static final SessionFactory SESSION_FACTORY;
 
     static
     {
@@ -32,7 +35,7 @@ public class SessionUtils
             Configuration configuration = new Configuration();
             configuration.configure("hibernate.cfg.xml");
             StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-            sessionFactory = configuration.buildSessionFactory(ssrb.build());
+            SESSION_FACTORY = configuration.buildSessionFactory(ssrb.build());
 
         }
         catch (Throwable ex)
@@ -47,9 +50,9 @@ public class SessionUtils
      *
      * @return SessionFactory
      */
-    public static SessionFactory getSessionFactory()
+    public static SessionFactory getSESSION_FACTORY()
     {
-        return sessionFactory;
+        return SESSION_FACTORY;
     }
 
     /**
@@ -74,6 +77,13 @@ public class SessionUtils
                 .getExternalContext().getSession(false);
     }
 
+    /**
+     * Static method for checking if two list are equal
+     * 
+     * @param one
+     * @param two
+     * @return 
+     */
     public static boolean areEqualLists(List<String> one, List<String> two)
     {
 

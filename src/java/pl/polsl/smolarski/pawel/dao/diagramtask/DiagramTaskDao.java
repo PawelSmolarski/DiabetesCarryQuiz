@@ -17,12 +17,19 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
+ * Class which provides CRUD methods for DiagramTask
  *
- * @author g50-70
+ * @author psmolarski
+ * @version 1.0
  */
 public class DiagramTaskDao
 {
 
+    /**
+     * Method to add task to table
+     *
+     * @param task to add
+     */
     public void addTask(DiagramTask task)
     {
 
@@ -41,13 +48,18 @@ public class DiagramTaskDao
     private void addTaskTransaction(DiagramTask task)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
         addMessage("Success!", "Task added correctly.");
     }
 
+    /**
+     * Method to delete task to table
+     *
+     * @param id to delete
+     */
     public void deleteTask(int id)
     {
 
@@ -66,7 +78,7 @@ public class DiagramTaskDao
     private void deleteTransaction(int id)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         DiagramTask task = (DiagramTask) session.load(DiagramTask.class, id);
         session.delete(task);
@@ -74,6 +86,11 @@ public class DiagramTaskDao
         addMessage("Success!", "Task deleted correctly.");
     }
 
+    /**
+     * Method to get tasks from table
+     *
+     * @return List of get tasks
+     */
     public List<DiagramTask> retrieveTask()
     {
 
@@ -93,14 +110,19 @@ public class DiagramTaskDao
 
     private List<DiagramTask> retrieveTaskTransaction()
     {
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         session.beginTransaction();
         Query query = session.createQuery("select t from DiagramTask t");
         List tasks = query.list();
         session.getTransaction().commit();
         return tasks;
     }
-
+    
+    /**
+     * Method to update task
+     * 
+     * @param task to update
+     */
     public void updateTask(DiagramTask task)
     {
 
@@ -119,7 +141,7 @@ public class DiagramTaskDao
     private void updateTaskTransaction(DiagramTask task)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();

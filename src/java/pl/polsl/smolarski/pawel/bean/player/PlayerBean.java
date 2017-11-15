@@ -13,24 +13,38 @@ import pl.polsl.smolarski.pawel.dao.player.PlayerDao;
 import pl.polsl.smolarski.pawel.pojo.player.Player;
 
 /**
- *
- * @author g50-70
+ * Class bean for player
+ * 
+ * @author psmolarski
+ * @version 1.0
  */
 @ManagedBean
 @ViewScoped
 public class PlayerBean implements Serializable
 {
+    /**
+     * Variable for player dao
+     */
+    private static final PlayerDao PLAYER_DAO = new PlayerDao();
 
-    private static final PlayerDao playerDao = new PlayerDao();
-
+    /**
+     * Method to save player in table
+     * 
+     * @param player to save
+     */
     public void save(Player player)
     {
-        playerDao.addPlayer(player);
+        PLAYER_DAO.addPlayer(player);
     }
-
+    
+    /**
+     * Method to get all players
+     * 
+     * @return List of all players
+     */
     public List<Player> getAllRecords()
     {
-        List<Player> tasks = playerDao.retrievePlayer();
+        List<Player> tasks = PLAYER_DAO.retrievePlayer();
         return tasks;
     }
 }

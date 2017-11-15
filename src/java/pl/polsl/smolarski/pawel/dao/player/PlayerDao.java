@@ -12,18 +12,24 @@ import java.util.logging.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import pl.polsl.smolarski.pawel.dao.diagramtask.DiagramTaskDao;
 import pl.polsl.smolarski.pawel.pojo.player.Player;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
+ * Class which provides CRUD methods for ABCDTask
  *
- * @author g50-70
+ * @author psmolarski
+ * @version 1.0
  */
 public class PlayerDao
 {
 
+    /**
+     * Method to add player to table
+     *
+     * @param player to add
+     */
     public void addPlayer(Player player)
     {
 
@@ -41,13 +47,18 @@ public class PlayerDao
     private void addPlayerTransaction(Player player)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.save(player);
         trans.commit();
         addMessage("Success!", "Task added correctly.");
     }
 
+    /**
+     * Method to get players from table
+     *
+     * @return List of get players
+     */
     public List<Player> retrievePlayer()
     {
 
@@ -67,7 +78,7 @@ public class PlayerDao
 
     private List<Player> retrievePlayerTransaction()
     {
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         session.beginTransaction();
         Query query = session.createQuery("select p from Player p ORDER BY p.points desc").setMaxResults(10);
         List players = query.list();

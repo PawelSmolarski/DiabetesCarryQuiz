@@ -8,7 +8,6 @@ package pl.polsl.smolarski.pawel.pojo.login;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -26,6 +25,7 @@ import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
  * Class which provides secure filtering
  *
  * @author psmolarski
+ * @version 1.0
  */
 @WebFilter(filterName = "AuthFilter", urlPatterns =
 {
@@ -82,7 +82,6 @@ public class Authorization implements Filter
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             Logger.getLogger(Authorization.class.getName()).log(Level.SEVERE, null, e);
         }
     }

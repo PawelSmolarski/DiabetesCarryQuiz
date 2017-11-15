@@ -7,7 +7,6 @@ package pl.polsl.smolarski.pawel.bean.quiz;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -34,10 +33,29 @@ import pl.polsl.smolarski.pawel.utils.TaskType;
 public class QuizBean implements Serializable
 {
 
+    /**
+     * Variable which contains user name
+     */
     private static String username;
+
+    /**
+     * Variable which contains boolean of duration of game
+     */
     private static boolean isStarted;
+
+    /**
+     * Variable which contains list of all tasks
+     */
     private static List<? extends Taskable> tasks;
+
+    /**
+     * Variable which contains user points
+     */
     private static int points;
+
+    /**
+     * Variable which contains present task of game
+     */
     private static Taskable presentTask;
 
     public static List<? extends Taskable> getTasks()
@@ -80,6 +98,9 @@ public class QuizBean implements Serializable
         this.username = username;
     }
 
+    /**
+     * Method that invokes start of game
+     */
     public void start()
     {
         if (username == null || username.isEmpty())
@@ -101,6 +122,9 @@ public class QuizBean implements Serializable
         }
     }
 
+    /**
+     * Method which creates player session
+     */
     private void playerSessionCreate()
     {
         isStarted = true;
@@ -108,9 +132,11 @@ public class QuizBean implements Serializable
         session.setAttribute("player", username);
     }
 
+    /**
+     * Method in which game last 
+     */
     public static void game()
     {
-        // TODO end of game
         if (tasks == null || tasks.isEmpty())
         {
             redirectEndOfGame();
@@ -121,9 +147,13 @@ public class QuizBean implements Serializable
         }
     }
 
+    /**
+     *  Method in which game is ending
+     */
     private static void redirectEndOfGame()
     {
         tasks = null;
+        QuizBean.setPoints(0);
         Player player = new Player();
         player.setName(username);
         player.setPoints(points);
@@ -134,6 +164,9 @@ public class QuizBean implements Serializable
 
     }
 
+    /**
+     * Method to invoke next task
+     */
     private static void redirectNextTask()
     {
 
@@ -143,6 +176,7 @@ public class QuizBean implements Serializable
         getView(presentTask.getType());
     }
 
+    
     public static Taskable getPresentTask()
     {
         return presentTask;
@@ -153,30 +187,40 @@ public class QuizBean implements Serializable
         QuizBean.presentTask = presentTask;
     }
 
+    /**
+     * Method to create all tasks for present game
+     * 
+     * @return List of received tasks
+     */
     private static List<? extends Taskable> receiveTasks()
     {
         List<Taskable> tasks = new ArrayList<>();
 
-
         tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
         tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
-//        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
-//        tasks.addAll(getRandomTasks(DragDropTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(DragDropTaskBean.getallrecords()));
 
-//        Collections.shuffle(tasks, new Random(System.currentTimeMillis()));
+        Collections.shuffle(tasks, new Random(System.currentTimeMillis()));
         return tasks;
     }
 
+    /**
+     * Method which redirect to corresponding view of task
+     * 
+     * @param type of Task
+     */
     public static void getView(TaskType type)
     {
-//        if(type == TaskType.DIAGRAM)
-//        {
-//            FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("diagramTaskBean");
-//
-//        }       
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation(FacesContext.getCurrentInstance(), null, type.getURL());
     }
 
+    /**
+     * Method which get 3 random tasks from given List of all tasks
+     * 
+     * @param tasks to randomly get
+     * @return List of 3 randomed specific tasks
+     */
     private static List<? extends Taskable> getRandomTasks(List<? extends Taskable> tasks)
     {
         List<Taskable> randomTasks = new ArrayList<>();

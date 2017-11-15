@@ -15,6 +15,12 @@ import javax.persistence.Table;
 import pl.polsl.smolarski.pawel.utils.TaskType;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 
+/**
+ * ORM entity class for Drag Drop Task 
+ *
+ * @author psmolarski
+ * @version 1.0
+ */
 @Entity
 @Table(name = "dragdrop_task")
 public class DragDropTask implements Serializable, Taskable
@@ -25,9 +31,9 @@ public class DragDropTask implements Serializable, Taskable
     @Column(name = "id")
     private Integer id;
 
-     @Column(name = "question")
+    @Column(name = "question")
     private String question;
-    
+
     @Column(name = "case_1")
     private String case1;
 
@@ -170,7 +176,11 @@ public class DragDropTask implements Serializable, Taskable
     {
     }
 
-
+    /**
+     * Method to get own type of task
+     *
+     * @return type of specific task
+     */
     @Override
     public TaskType getType()
     {

@@ -20,17 +20,22 @@ import java.util.logging.Logger;
  * Class which provides CRUD methods for ABCDTask
  *
  * @author psmolarski
+ * @version 1.0
  */
 public class ABCDDao
 {
 
+    /**
+     * Method to add task to table
+     * 
+     * @param task to add
+     */
     public void addTask(ABCDTask task)
     {
 
         try
         {
             addTaskTransaction(task);
-
         }
         catch (Exception e)
         {
@@ -40,16 +45,22 @@ public class ABCDDao
         }
     }
 
+    
     private void addTaskTransaction(ABCDTask task)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
         addMessage("Success!", "Task added correctly.");
     }
 
+    /**
+     * Method to delete task to table
+     * 
+     * @param id to delete
+     */    
     public void deleteTask(int id)
     {
 
@@ -68,7 +79,7 @@ public class ABCDDao
     private void deleteTransaction(int id)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         ABCDTask task = (ABCDTask) session.load(ABCDTask.class, id);
         session.delete(task);
@@ -76,6 +87,11 @@ public class ABCDDao
         addMessage("Success!", "Task deleted correctly.");
     }
 
+    /**
+     * Method to get tasks from table
+     * 
+     * @return List of get tasks 
+     */
     public List<ABCDTask> retrieveTask()
     {
 
@@ -95,7 +111,7 @@ public class ABCDDao
 
     private List<ABCDTask> retrieveTaskTransaction()
     {
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         session.beginTransaction();
         Query query = session.createQuery("select t from ABCDTask t");
         List tasks = query.list();
@@ -103,6 +119,11 @@ public class ABCDDao
         return tasks;
     }
 
+    /**
+     * Method to update task
+     * 
+     * @param task to update
+     */
     public void updateTask(ABCDTask task)
     {
 
@@ -121,7 +142,7 @@ public class ABCDDao
     private void updateTaskTransaction(ABCDTask task)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();

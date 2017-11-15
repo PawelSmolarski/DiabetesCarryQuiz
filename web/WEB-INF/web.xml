@@ -12,18 +12,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     
-        <!-- JSF URL mapping -->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-    
-  
-    
-<!--    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
-    </servlet-mapping>-->
     
     <session-config>
         <session-timeout>
@@ -35,15 +27,4 @@
         <welcome-file>public/index.xhtml</welcome-file>
     </welcome-file-list>
     
-    <!-- Login filter -->
-<!--    <filter>
-        <filter-name>Authorization</filter-name>
-        <filter-class>pl.polsl.smolarski.pawel.pojo.login.Authorization</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>Authorization</filter-name>
-        <url-pattern>/secure/*</url-pattern>
-    </filter-mapping>
-    -->
 </web-app>

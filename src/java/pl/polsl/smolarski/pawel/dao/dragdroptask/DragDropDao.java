@@ -17,12 +17,18 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
+ * Class which provides CRUD methods for DragDrop task
  *
  * @author psmolarski
+ * @version 1.0
  */
 public class DragDropDao
 {
-
+    /**
+     * Method to add task to table
+     * 
+     * @param task to add
+     */
     public void addTask(DragDropTask task)
     {
 
@@ -41,13 +47,18 @@ public class DragDropDao
     private void addTaskTransaction(DragDropTask task)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
         addMessage("Success!", "Task added correctly.");
     }
 
+        /**
+     * Method to delete task to table
+     * 
+     * @param id to delete
+     */  
     public void deleteTask(int id)
     {
 
@@ -66,7 +77,7 @@ public class DragDropDao
     private void deleteTransaction(int id)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         DragDropTask task = (DragDropTask) session.load(DragDropTask.class, id);
         session.delete(task);
@@ -74,6 +85,11 @@ public class DragDropDao
         addMessage("Success!", "Task deleted correctly.");
     }
 
+        /**
+     * Method to get tasks from table
+     * 
+     * @return List of get tasks 
+     */
     public List<DragDropTask> retrieveTask()
     {
 
@@ -93,7 +109,7 @@ public class DragDropDao
 
     private List<DragDropTask> retrieveTaskTransaction()
     {
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         session.beginTransaction();
         Query query = session.createQuery("select t from DragDropTask t");
         List tasks = query.list();
@@ -101,6 +117,12 @@ public class DragDropDao
         return tasks;
     }
 
+    
+    /**
+     * Method to update task
+     * 
+     * @param task to update
+     */
     public void updateTask(DragDropTask task)
     {
 
@@ -119,7 +141,7 @@ public class DragDropDao
     private void updateTaskTransaction(DragDropTask task)
     {
         Transaction trans;
-        Session session = SessionUtils.getSessionFactory().openSession();
+        Session session = SessionUtils.getSESSION_FACTORY().openSession();
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();

@@ -16,9 +16,10 @@ import pl.polsl.smolarski.pawel.utils.Taskable;
 import pl.polsl.smolarski.pawel.utils.TaskType;
 
 /**
- * ORM entity class for ABCDTask Provides CRUD using methods
+ * ORM entity class for ABCDTask 
  *
  * @author psmolarski
+ * @version 1.0
  */
 @Entity
 @Table(name = "abcd_task")
@@ -138,6 +139,11 @@ public class ABCDTask implements Serializable, Taskable
         this.answer = answer;
     }
 
+    /**
+     * Method to get own type of task
+     * 
+     * @return type of specific task 
+     */
     @Override
     public TaskType getType()
     {
