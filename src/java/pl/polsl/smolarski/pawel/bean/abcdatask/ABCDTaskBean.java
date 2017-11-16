@@ -6,10 +6,14 @@
 package pl.polsl.smolarski.pawel.bean.abcdatask;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.HibernateException;
 import pl.polsl.smolarski.pawel.dao.abcdtask.ABCDDao;
 import pl.polsl.smolarski.pawel.pojo.abcdtask.ABCDTask;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
@@ -30,12 +34,12 @@ public class ABCDTaskBean implements Serializable
      * Local task variable
      */
     private ABCDTask task = new ABCDTask();
-    
+
     /**
      * Static final variable to use dao
      */
     private static final ABCDDao TASK_DAO = new ABCDDao();
-    
+
     /**
      * Variable of user choose
      */
@@ -62,30 +66,63 @@ public class ABCDTaskBean implements Serializable
 
     /**
      * Method which use DAO to save task
+     *
      * @param task to save
      */
     public void save(ABCDTask task)
     {
-        TASK_DAO.addTask(task);
+        try
+        {
+            TASK_DAO.addTask(task);
+            addMessage("Success!", "Task added correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(ABCDTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
     }
 
     /**
      * Method which use DAO to delete task
+     *
      * @param task to delete
      */
     public void delete(ABCDTask task)
     {
-        TASK_DAO.deleteTask(task.getId());
+        try
+        {
+            TASK_DAO.deleteTask(task.getId());
+                    addMessage("Success!", "Task deleted correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(ABCDTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
     }
 
     /**
      * Method to receive all tasks
-     * 
+     *
      * @return List of get tasks
      */
     public static List<ABCDTask> getallrecords()
     {
-        List<ABCDTask> tasks = TASK_DAO.retrieveTask();
+        List<ABCDTask> tasks = new ArrayList();
+        try
+        {
+            tasks = TASK_DAO.retrieveTask();
+        }
+        catch (Exception e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(ABCDDao.class.getName()).log(Level.SEVERE, null, e);
+        }
         return tasks;
     }
 
@@ -94,7 +131,17 @@ public class ABCDTaskBean implements Serializable
      */
     public void update()
     {
-        TASK_DAO.updateTask(task);
+        try
+        {
+            TASK_DAO.updateTask(task);
+                    addMessage("Success!", "Task updated correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(ABCDTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     public ABCDTask getTask()

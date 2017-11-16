@@ -9,9 +9,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.HibernateException;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.diagramtask.DiagramTaskDao;
 import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
@@ -239,30 +242,64 @@ public class DiagramTaskBean implements Serializable
 
     /**
      * Method which use DAO to save task
+     *
      * @param task to save
      */
     public void save(DiagramTask task)
     {
-        TASK_DAO.addTask(task);
+        try
+        {
+            TASK_DAO.addTask(task);
+            addMessage("Success!", "Task added correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
     }
 
     /**
      * Method which use DAO to delete task
+     *
      * @param task to delete
      */
     public void delete(DiagramTask task)
     {
-        TASK_DAO.deleteTask(task.getId());
+        try
+        {
+            TASK_DAO.deleteTask(task.getId());
+            addMessage("Success!", "Task deleted correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
      * To get all tasks
-     * 
-     * @return List of tasks 
+     *
+     * @return List of tasks
      */
     public static List<DiagramTask> getallrecords()
     {
-        List<DiagramTask> tasks = TASK_DAO.retrieveTask();
+        List<DiagramTask> tasks = new ArrayList();
+
+        try
+        {
+            tasks = TASK_DAO.retrieveTask();
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
         return tasks;
     }
 
@@ -271,7 +308,17 @@ public class DiagramTaskBean implements Serializable
      */
     public void update()
     {
-        TASK_DAO.updateTask(task);
+        try
+        {
+            TASK_DAO.updateTask(task);
+            addMessage("Success!", "Task updated correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     public DiagramTask getTask()

@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.HibernateException;
 import org.primefaces.event.DragDropEvent;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.dragdroptask.DragDropDao;
@@ -69,15 +72,10 @@ public class DragDropTaskBean implements Serializable
     public void init()
     {
         task = (DragDropTask) QuizBean.getPresentTask();
-        tasksToDrop = new ArrayList<>();
-        droppedAnswerA = new ArrayList<>();
-        droppedAnswerB = new ArrayList<>();
-        createAnswerMap();
-        tasksToDrop.add(new SpecificCase(task.getCase1(), answerRelations.get("1")));
-        tasksToDrop.add(new SpecificCase(task.getCase2(), answerRelations.get("2")));
-        tasksToDrop.add(new SpecificCase(task.getCase3(), answerRelations.get("3")));
-        tasksToDrop.add(new SpecificCase(task.getCase4(), answerRelations.get("4")));
-        tasksToDrop.add(new SpecificCase(task.getCase5(), answerRelations.get("5")));
+        if (task != null)
+        {
+            presentTask();
+        }
 
     }
 
@@ -105,6 +103,19 @@ public class DragDropTaskBean implements Serializable
         tasksToDrop.add(task);
         droppedAnswerB.remove(task);
 
+    }
+
+    private void presentTask()
+    {
+        tasksToDrop = new ArrayList<>();
+        droppedAnswerA = new ArrayList<>();
+        droppedAnswerB = new ArrayList<>();
+        createAnswerMap();
+        tasksToDrop.add(new SpecificCase(task.getCase1(), answerRelations.get("1")));
+        tasksToDrop.add(new SpecificCase(task.getCase2(), answerRelations.get("2")));
+        tasksToDrop.add(new SpecificCase(task.getCase3(), answerRelations.get("3")));
+        tasksToDrop.add(new SpecificCase(task.getCase4(), answerRelations.get("4")));
+        tasksToDrop.add(new SpecificCase(task.getCase5(), answerRelations.get("5")));
     }
 
     /**
@@ -148,30 +159,62 @@ public class DragDropTaskBean implements Serializable
 
     /**
      * Method which use DAO to save task
+     *
      * @param task to save
      */
     public void save(DragDropTask task)
     {
-        TASK_DAO.addTask(task);
+        try
+        {
+            TASK_DAO.addTask(task);
+            addMessage("Success!", "Task added correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
     }
 
     /**
      * Method which use DAO to delete task
+     *
      * @param task to delete
      */
     public void delete(DragDropTask task)
     {
-        TASK_DAO.deleteTask(task.getId());
+        try
+        {
+            TASK_DAO.deleteTask(task.getId());
+            addMessage("Success!", "Task deleted correctly.");
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
     }
 
     /**
      * Method to get all tasks
-     * 
+     *
      * @return List of tasks
      */
     public static List<DragDropTask> getallrecords()
     {
-        List<DragDropTask> tasks = TASK_DAO.retrieveTask();
+        List<DragDropTask> tasks = new ArrayList();
+        try
+        {
+            tasks = TASK_DAO.retrieveTask();
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
         return tasks;
     }
 
@@ -180,7 +223,17 @@ public class DragDropTaskBean implements Serializable
      */
     public void update()
     {
-        TASK_DAO.updateTask(task);
+        try
+        {
+            TASK_DAO.updateTask(task);
+            addMessage("Success!", "Task updated correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     public DragDropTask getTask()
@@ -257,7 +310,7 @@ public class DragDropTaskBean implements Serializable
 
     /**
      * Method to check if particular answers is correct
-     * 
+     *
      * @return are answers correct
      */
     private boolean isCorrect()

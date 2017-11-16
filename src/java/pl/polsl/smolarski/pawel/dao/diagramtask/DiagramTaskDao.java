@@ -7,14 +7,11 @@ package pl.polsl.smolarski.pawel.dao.diagramtask;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
  * Class which provides CRUD methods for DiagramTask
@@ -33,16 +30,11 @@ public class DiagramTaskDao
     public void addTask(DiagramTask task)
     {
 
-        try
-        {
+        
 
             addTaskTransaction(task);
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(DiagramTaskDao.class.getName()).log(Level.SEVERE, null, e);
-        }
+        
+
     }
 
     private void addTaskTransaction(DiagramTask task)
@@ -52,7 +44,6 @@ public class DiagramTaskDao
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
-        addMessage("Success!", "Task added correctly.");
     }
 
     /**
@@ -63,16 +54,10 @@ public class DiagramTaskDao
     public void deleteTask(int id)
     {
 
-        try
-        {
+
             deleteTransaction(id);
 
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(DiagramTaskDao.class.getName()).log(Level.SEVERE, null, e);
-        }
+
     }
 
     private void deleteTransaction(int id)
@@ -83,7 +68,6 @@ public class DiagramTaskDao
         DiagramTask task = (DiagramTask) session.load(DiagramTask.class, id);
         session.delete(task);
         trans.commit();
-        addMessage("Success!", "Task deleted correctly.");
     }
 
     /**
@@ -95,16 +79,11 @@ public class DiagramTaskDao
     {
 
         List tasks = new ArrayList();
-        try
-        {
+    
 
             tasks = retrieveTaskTransaction();
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(DiagramTaskDao.class.getName()).log(Level.SEVERE, null, e);
-        }
+        
+
         return tasks;
     }
 
@@ -113,7 +92,8 @@ public class DiagramTaskDao
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
         session.beginTransaction();
         Query query = session.createQuery("select t from DiagramTask t");
-        List tasks = query.list();
+        List tasks = new ArrayList();
+        tasks = query.list();
         session.getTransaction().commit();
         return tasks;
     }
@@ -126,16 +106,8 @@ public class DiagramTaskDao
     public void updateTask(DiagramTask task)
     {
 
-        try
-        {
             updateTaskTransaction(task);
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(DiagramTaskDao.class.getName()).log(Level.SEVERE, null, e);
-        }
-
+      
     }
 
     private void updateTaskTransaction(DiagramTask task)
@@ -145,7 +117,6 @@ public class DiagramTaskDao
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();
-        addMessage("Success!", "Task updated correctly.");
     }
 
 }

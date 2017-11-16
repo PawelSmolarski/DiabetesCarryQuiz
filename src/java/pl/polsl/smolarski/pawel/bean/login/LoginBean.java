@@ -14,13 +14,15 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.hibernate.HibernateException;
 import pl.polsl.smolarski.pawel.dao.login.LoginDao;
 import pl.polsl.smolarski.pawel.pojo.login.Login;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
+import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
  * Class bean for logining
- * 
+ *
  * @author psmolarski
  * @version 1.0
  */
@@ -28,11 +30,12 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
 @SessionScoped
 public class LoginBean implements Serializable
 {
+
     /**
      * Login of user
      */
     private String login;
-    
+
     /**
      * Password of user
      */
@@ -63,7 +66,16 @@ public class LoginBean implements Serializable
      */
     public void validateUsernamePassword()
     {
-        boolean loggedIn = LoginDao.validate(login, password);
+        boolean loggedIn = false;
+        try
+        {
+            loggedIn = LoginDao.validate(login, password);
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, e);
+        }
         if (loggedIn)
         {
             ExternalContext context = createSession();
@@ -82,6 +94,7 @@ public class LoginBean implements Serializable
 
     /**
      * Create session for user
+     *
      * @return context of session
      */
     private ExternalContext createSession()

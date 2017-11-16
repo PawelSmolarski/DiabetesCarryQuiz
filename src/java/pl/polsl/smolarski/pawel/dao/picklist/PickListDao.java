@@ -32,18 +32,7 @@ public class PickListDao
      */
     public void addTask(PickListTask task)
     {
-
-        try
-        {
-            addTaskTransaction(task);
-
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(PickListDao.class.getName()).log(Level.SEVERE, null, e);
-
-        }
+        addTaskTransaction(task);
     }
 
     private void addTaskTransaction(PickListTask task)
@@ -53,7 +42,6 @@ public class PickListDao
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
-        addMessage("Success!", "Task added correctly.");
     }
 
     /**
@@ -63,17 +51,7 @@ public class PickListDao
      */
     public void deleteTask(int id)
     {
-
-        try
-        {
-
-            deleteTransaction(id);
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(PickListDao.class.getName()).log(Level.SEVERE, null, e);
-        }
+        deleteTransaction(id);
     }
 
     private void deleteTransaction(int id)
@@ -84,7 +62,6 @@ public class PickListDao
         PickListTask task = (PickListTask) session.load(PickListTask.class, id);
         session.delete(task);
         trans.commit();
-        addMessage("Success!", "Task deleted correctly.");
     }
 
     /**
@@ -96,16 +73,8 @@ public class PickListDao
     {
 
         List tasks = new ArrayList();
-        try
-        {
-            tasks = retrieveTaskTransaction();
+        tasks = retrieveTaskTransaction();
 
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(PickListDao.class.getName()).log(Level.SEVERE, null, e);
-        }
         return tasks;
     }
 
@@ -114,7 +83,8 @@ public class PickListDao
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
         session.beginTransaction();
         Query query = session.createQuery("select t from PickListTask t");
-        List tasks = query.list();
+        List tasks = new ArrayList();
+        tasks = query.list();
         session.getTransaction().commit();
         return tasks;
     }
@@ -126,17 +96,7 @@ public class PickListDao
      */
     public void updateTask(PickListTask task)
     {
-
-        try
-        {
-            updateTaskTransaction(task);
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(PickListDao.class.getName()).log(Level.SEVERE, null, e);
-        }
-
+        updateTaskTransaction(task);
     }
 
     private void updateTaskTransaction(PickListTask task)
@@ -146,7 +106,6 @@ public class PickListDao
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();
-        addMessage("Success!", "Task updated correctly.");
     }
 
 }

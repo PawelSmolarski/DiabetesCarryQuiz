@@ -12,6 +12,8 @@ and open the template in the editor.
         <title>Display All DragDrop</title>
     </h:head>
     <h:body>
+        <p:button outcome="admin_page" value="Back to admin menu" icon="ui-icon-star"></p:button><br/>
+
         <h:form id="taskTable">
             <p:commandButton value="Add new task" actionListener="#{dragDropTaskBean.clearTask()}" oncomplete="PF('save_dlg').show();" update=":save_drag"  /><br />
 

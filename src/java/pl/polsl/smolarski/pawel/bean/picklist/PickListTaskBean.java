@@ -11,9 +11,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.picklist.PickListDao;
@@ -127,7 +130,17 @@ public class PickListTaskBean implements Serializable
      */
     public void save(PickListTask task)
     {
-        TASK_DAO.addTask(task);
+        try
+        {
+            TASK_DAO.addTask(task);
+            addMessage("Success!", "Task added correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(PickListTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
@@ -137,7 +150,16 @@ public class PickListTaskBean implements Serializable
      */
     public void delete(PickListTask task)
     {
-        TASK_DAO.deleteTask(task.getId());
+        try
+        {
+            TASK_DAO.deleteTask(task.getId());
+            addMessage("Success!", "Task deleted correctly.");
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(PickListTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     /**
@@ -147,7 +169,17 @@ public class PickListTaskBean implements Serializable
      */
     public static List<PickListTask> getallrecords()
     {
-        List<PickListTask> tasks = TASK_DAO.retrieveTask();
+        List<PickListTask> tasks = new ArrayList();
+
+        try
+        {
+            tasks = TASK_DAO.retrieveTask();
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(PickListTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
         return tasks;
     }
 
@@ -156,7 +188,17 @@ public class PickListTaskBean implements Serializable
      */
     public void update()
     {
-        TASK_DAO.updateTask(task);
+        try
+        {
+            TASK_DAO.updateTask(task);
+            addMessage("Success!", "Task updated correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(PickListTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     public PickListTask getTask()

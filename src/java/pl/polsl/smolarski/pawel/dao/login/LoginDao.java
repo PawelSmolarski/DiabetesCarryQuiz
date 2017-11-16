@@ -26,7 +26,8 @@ public class LoginDao
 
     /**
      * Method to check if given values are in user table
-     * @param login 
+     *
+     * @param login
      * @param password
      * @return are login and password correct
      */
@@ -37,27 +38,15 @@ public class LoginDao
 
         Transaction trans;
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
-        try
-        {
-            trans = session.beginTransaction();
-            Query query = session.createQuery("select u from Login u where login= :login and password= :password");
-            query.setString("login", login);
-            query.setString("password", password);
 
-            users = query.list();
-            trans.commit();
-            if (users.isEmpty())
-            {
-                throw new Exception("No data for this id");
-            }
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(LoginDao.class.getName()).log(Level.SEVERE, null, e);
-            return false;
-        }
-        return true;
+        trans = session.beginTransaction();
+        Query query = session.createQuery("select u from Login u where login= :login and password= :password");
+        query.setString("login", login);
+        query.setString("password", password);
+
+        users = query.list();
+        trans.commit();
+        return !users.isEmpty();
 
     }
 
