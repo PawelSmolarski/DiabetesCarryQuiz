@@ -7,7 +7,9 @@
         <title>login</title>
     </h:head>
     <h:body>
-        <h:form  style="align-content: center" >
+        
+        <p:separator />
+        <h:form id="loginForm" style="display:block; text-align:center" >
             <p:growl id="message" showDetail="true" />
             <h:outputText value="Username  " />
             <h:inputText id="username" value="#{loginBean.login}"></h:inputText>

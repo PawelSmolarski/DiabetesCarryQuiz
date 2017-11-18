@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -29,19 +30,13 @@ public class PlayerDao
      * Method to add player to table
      *
      * @param player to add
+     *
+     * @throws HibernateException
      */
-    public void addPlayer(Player player)
+    public void addPlayer(Player player) throws HibernateException
     {
+        addPlayerTransaction(player);
 
-        try
-        {
-            addPlayerTransaction(player);
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(PlayerDao.class.getName()).log(Level.SEVERE, null, e);
-        }
     }
 
     private void addPlayerTransaction(Player player)
@@ -51,28 +46,22 @@ public class PlayerDao
         trans = session.beginTransaction();
         session.save(player);
         trans.commit();
-        addMessage("Success!", "Task added correctly.");
     }
 
     /**
      * Method to get players from table
      *
      * @return List of get players
+     *
+     * @throws HibernateException
      */
-    public List<Player> retrievePlayer()
+    public List<Player> retrievePlayer() throws HibernateException
     {
 
         List players = new ArrayList();
 
-        try
-        {
-            players = retrievePlayerTransaction();
-        }
-        catch (Exception e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(PlayerDao.class.getName()).log(Level.SEVERE, null, e);
-        }
+        players = retrievePlayerTransaction();
+
         return players;
     }
 
@@ -81,7 +70,8 @@ public class PlayerDao
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
         session.beginTransaction();
         Query query = session.createQuery("select p from Player p ORDER BY p.points desc").setMaxResults(10);
-        List players = query.list();
+        List players = new ArrayList();
+        players = query.list();
         session.getTransaction().commit();
         return players;
     }

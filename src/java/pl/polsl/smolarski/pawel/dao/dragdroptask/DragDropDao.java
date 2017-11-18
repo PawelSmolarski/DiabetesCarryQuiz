@@ -7,6 +7,7 @@ package pl.polsl.smolarski.pawel.dao.dragdroptask;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -26,8 +27,10 @@ public class DragDropDao
      * Method to add task to table
      *
      * @param task to add
+     *
+     * @throws HibernateException
      */
-    public void addTask(DragDropTask task)
+    public void addTask(DragDropTask task) throws HibernateException
     {
 
         addTaskTransaction(task);
@@ -47,8 +50,10 @@ public class DragDropDao
      * Method to delete task to table
      *
      * @param id to delete
+     *
+     * @throws HibernateException
      */
-    public void deleteTask(int id)
+    public void deleteTask(int id) throws HibernateException
     {
 
         deleteTransaction(id);
@@ -69,8 +74,10 @@ public class DragDropDao
      * Method to get tasks from table
      *
      * @return List of get tasks
+     *
+     * @throws HibernateException
      */
-    public List<DragDropTask> retrieveTask()
+    public List<DragDropTask> retrieveTask() throws HibernateException
     {
 
         List tasks = new ArrayList();
@@ -94,8 +101,10 @@ public class DragDropDao
      * Method to update task
      *
      * @param task to update
+     *
+     * @throws HibernateException
      */
-    public void updateTask(DragDropTask task)
+    public void updateTask(DragDropTask task) throws HibernateException
     {
         updateTaskTransaction(task);
     }

@@ -165,49 +165,6 @@ public class DiagramTaskBean implements Serializable
     }
 
     /**
-     * Method which react on connection in diagram
-     *
-     * @param event of connection
-     */
-    public void onConnect(ConnectEvent event)
-    {
-        if (!suspendEvent)
-        {
-            addMessage("ss", "on connect");
-
-        }
-        else
-        {
-            suspendEvent = false;
-        }
-    }
-
-    /**
-     * Method which react on disconnection in diagram
-     *
-     * @param event of connection
-     */
-    public void onDisconnect(DisconnectEvent event)
-    {
-
-        addMessage("ss", "on disconnect");
-
-    }
-
-    /**
-     * Method which react on connection change in diagram
-     *
-     * @param event of connection
-     */
-    public void onConnectionChange(ConnectionChangeEvent event)
-    {
-
-        addMessage("ss", "on connection change");
-
-        suspendEvent = true;
-    }
-
-    /**
      * Method for creating dot end poind
      *
      * @param anchor specification

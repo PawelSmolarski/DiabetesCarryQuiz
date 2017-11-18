@@ -86,7 +86,6 @@ public class DragDropTaskBean implements Serializable
      */
     public void returnAnswerA(SpecificCase task)
     {
-        addMessage("Returned", "Success");
         tasksToDrop.add(task);
         droppedAnswerA.remove(task);
 
@@ -139,10 +138,10 @@ public class DragDropTaskBean implements Serializable
      */
     public void onTaskDropAnswerA(DragDropEvent ddEvent)
     {
-        SpecificCase task = ((SpecificCase) ddEvent.getData());
+        SpecificCase taskDrop = ((SpecificCase) ddEvent.getData());
 
-        droppedAnswerA.add(task);
-        tasksToDrop.remove(task);
+        droppedAnswerA.add(taskDrop);
+        tasksToDrop.remove(taskDrop);
     }
 
     /**
@@ -152,9 +151,10 @@ public class DragDropTaskBean implements Serializable
      */
     public void onTaskDropAnswerB(DragDropEvent ddEvent)
     {
-        SpecificCase task = ((SpecificCase) ddEvent.getData());
-        droppedAnswerB.add(task);
-        tasksToDrop.remove(task);
+        SpecificCase taskDrop = ((SpecificCase) ddEvent.getData());
+        droppedAnswerB.add(taskDrop);
+        tasksToDrop.remove(taskDrop);
+
     }
 
     /**
@@ -324,7 +324,7 @@ public class DragDropTaskBean implements Serializable
         }
         for (SpecificCase c : droppedAnswerB)
         {
-            if (!c.getWhichAnswer().equals("2"));
+            if (!c.getWhichAnswer().equals("2"))
             {
                 return false;
             }

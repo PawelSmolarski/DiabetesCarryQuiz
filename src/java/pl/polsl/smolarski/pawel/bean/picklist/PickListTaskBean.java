@@ -68,7 +68,7 @@ public class PickListTaskBean implements Serializable
                 tasksSource.add(questionCases.get(key));
             }
 
-            tasks = new DualListModel<String>(tasksSource, tasksTarget);
+            tasks = new DualListModel<>(tasksSource, tasksTarget);
         }
     }
 
@@ -80,8 +80,6 @@ public class PickListTaskBean implements Serializable
     public void onTransfer(TransferEvent event)
     {
 
-        addMessage("ss", "on transfer");
-
     }
 
     /**
@@ -91,8 +89,9 @@ public class PickListTaskBean implements Serializable
      */
     public void onSelect(SelectEvent event)
     {
-        addMessage("ss", "on select");
+        
     }
+    
 
     /**
      * Method on unselect of answer
@@ -101,7 +100,6 @@ public class PickListTaskBean implements Serializable
      */
     public void onUnselect(UnselectEvent event)
     {
-        addMessage("ss", "on unselect");
     }
 
     /**
@@ -110,7 +108,6 @@ public class PickListTaskBean implements Serializable
      */
     public void onReorder()
     {
-        addMessage("ss", "on reorder");
     }
 
     public DualListModel<String> getTasks()

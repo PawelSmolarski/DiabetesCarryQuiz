@@ -27,6 +27,7 @@ import pl.polsl.smolarski.pawel.utils.TaskType;
 /**
  *
  * @author psmolarski
+ * @version 1.0
  */
 @ManagedBean
 @SessionScoped

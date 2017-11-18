@@ -39,7 +39,7 @@ made subject to such option by the copyright holder.
 
 Contributor(s):
 -->
-<hibernate-reverse-engineering>
+<!--<hibernate-reverse-engineering>
   <schema-selection match-catalog="diabetes_carrier"/>
   <table-filter match-name="abcd_task"/>
-</hibernate-reverse-engineering>
+</hibernate-reverse-engineering>-->

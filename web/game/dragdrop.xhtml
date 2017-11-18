@@ -34,7 +34,7 @@
 
             <p:fieldset id="selectedTasks" legend="#{dragDropTaskBean.task.answerA}" style="margin-top:20px">
                 <p:outputPanel id="dropArea">
-                    <h:outputText value="!!!Drop here AA!!!" rendered="#{empty dragDropTaskBean.droppedAnswerA}" style="font-size:24px;" />
+                    <h:outputText value="" rendered="#{empty dragDropTaskBean.droppedAnswerA}" style="font-size:24px;" />
                     <p:dataTable id="selectedTasksTable" var="task" value="#{dragDropTaskBean.droppedAnswerA}" rendered="#{not empty dragDropTaskBean.droppedAnswerA}">
                         <p:column headerText="Answer">
                             <h:outputText value="#{task.caseValue}" />
@@ -55,7 +55,7 @@
 
             <p:fieldset id="selectedTasksB" legend="#{dragDropTaskBean.task.answerB}" style="margin-top:20px">
                 <p:outputPanel id="dropAreaB">
-                    <h:outputText value="!!!Drop here BB!!!" rendered="#{empty dragDropTaskBean.droppedAnswerB}" style="font-size:24px;" />
+                    <h:outputText value="" rendered="#{empty dragDropTaskBean.droppedAnswerB}" style="font-size:24px;" />
                     <p:dataTable id="selectedTasksTableB" var="task" value="#{dragDropTaskBean.droppedAnswerB}" rendered="#{not empty dragDropTaskBean.droppedAnswerB}">
                         <p:column headerText="Answer">
                             <h:outputText value="#{task.caseValue}" />

@@ -95,7 +95,7 @@ public class ABCDTaskBean implements Serializable
         try
         {
             TASK_DAO.deleteTask(task.getId());
-                    addMessage("Success!", "Task deleted correctly.");
+            addMessage("Success!", "Task deleted correctly.");
 
         }
         catch (HibernateException e)
@@ -134,7 +134,7 @@ public class ABCDTaskBean implements Serializable
         try
         {
             TASK_DAO.updateTask(task);
-                    addMessage("Success!", "Task updated correctly.");
+            addMessage("Success!", "Task updated correctly.");
 
         }
         catch (HibernateException e)
