@@ -73,6 +73,11 @@ public class QuizBean implements Serializable
     {
         return points;
     }
+    
+    public int getNonStaticPoints()
+    {
+        return points;
+    }
 
     public static void setPoints(int points)
     {
@@ -129,12 +134,13 @@ public class QuizBean implements Serializable
     private void playerSessionCreate()
     {
         isStarted = true;
+        points = 0;
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("player", username);
     }
 
     /**
-     * Method in which game last 
+     * Method in which game last
      */
     public static void game()
     {
@@ -149,12 +155,12 @@ public class QuizBean implements Serializable
     }
 
     /**
-     *  Method in which game is ending
+     * Method in which game is ending
      */
     private static void redirectEndOfGame()
     {
         tasks = null;
-        QuizBean.setPoints(0);
+        isStarted = false;
         Player player = new Player();
         player.setName(username);
         player.setPoints(points);
@@ -177,7 +183,6 @@ public class QuizBean implements Serializable
         getView(presentTask.getType());
     }
 
-    
     public static Taskable getPresentTask()
     {
         return presentTask;
@@ -190,16 +195,16 @@ public class QuizBean implements Serializable
 
     /**
      * Method to create all tasks for present game
-     * 
+     *
      * @return List of received tasks
      */
     private static List<? extends Taskable> receiveTasks()
     {
         List<Taskable> tasks = new ArrayList<>();
 
-        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
-        tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
-        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
+//        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
+//        tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
+//        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
         tasks.addAll(getRandomTasks(DragDropTaskBean.getallrecords()));
 
         Collections.shuffle(tasks, new Random(System.currentTimeMillis()));
@@ -208,7 +213,7 @@ public class QuizBean implements Serializable
 
     /**
      * Method which redirect to corresponding view of task
-     * 
+     *
      * @param type of Task
      */
     public static void getView(TaskType type)
@@ -218,7 +223,7 @@ public class QuizBean implements Serializable
 
     /**
      * Method which get 3 random tasks from given List of all tasks
-     * 
+     *
      * @param tasks to randomly get
      * @return List of 3 randomed specific tasks
      */

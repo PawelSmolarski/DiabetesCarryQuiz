@@ -124,7 +124,6 @@ public class DragDropTaskBean implements Serializable
     {
         answerRelations = new HashMap<>();
         String answers = this.task.getAnswerRelations();
-
         answerRelations = Pattern.compile("\\s*;\\s*")
                 .splitAsStream(answers.trim())
                 .map(s -> s.split("-", 2))
@@ -329,6 +328,14 @@ public class DragDropTaskBean implements Serializable
                 return false;
             }
         }
+        for(SpecificCase c: tasksToDrop)
+        {
+            if(!c.getWhichAnswer().equals(""))
+            {
+                return false;
+            }
+        }
+        
         return true;
     }
 }

@@ -13,22 +13,23 @@ and open the template in the editor.
         <title>Hall of fame</title>
     </h:head>
     <h:body>
-        <h:form id="playersTable">
+        <h:form>
+            <h3><h:outputText value="Your points are #{quizBean.nonStaticPoints}" /></h3>
 
-            <p:dataTable var="player" value="#{playerBean.getAllRecords()}" id="showAllPlayers" >
-                <f:facet name="header">
-                    List of 10 best players
-                </f:facet>
+        <p:dataTable var="player" value="#{playerBean.getAllRecords()}" id="showAllPlayers" >
+            <f:facet name="header">
+                List of 10 best players
+            </f:facet>
 
-                <p:column headerText="Name">
-                    <h:outputText value="#{player.name}" />
-                </p:column>
+            <p:column headerText="Name">
+                <h:outputText value="#{player.name}" />
+            </p:column>
 
-                <p:column headerText="Number of points">
-                    <h:outputText value="#{player.points}" />
-                </p:column>
+            <p:column headerText="Number of points">
+                <h:outputText value="#{player.points}" />
+            </p:column>
 
-            </p:dataTable>
+        </p:dataTable>
         </h:form>    
 
         <h:form>
