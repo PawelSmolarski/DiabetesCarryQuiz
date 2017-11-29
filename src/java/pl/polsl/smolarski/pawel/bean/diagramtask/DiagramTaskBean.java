@@ -303,13 +303,7 @@ public class DiagramTaskBean implements Serializable
     {
         List<Connection> connections = model.getConnections();
         List<String> connectionsRelation = new ArrayList<>();
-        if (connections.isEmpty())
-        {
-            addMessage("Error!", "Make at least one connection");
-        }
-        else
-        {
-            System.out.println("on validate diagram:");
+
             for (Connection c : connections)
             {
                 StringBuilder sb = new StringBuilder();
@@ -321,6 +315,11 @@ public class DiagramTaskBean implements Serializable
 
             List<String> answerRelations = Arrays.asList(task.getAnswerRelations().split(";"));
 
+            if(connectionsRelation.isEmpty())
+            {
+                connectionsRelation.add("");
+            }
+            
             if (SessionUtils.areEqualLists(connectionsRelation, answerRelations))
             {
                 System.out.println("Diagram get points");
@@ -328,7 +327,6 @@ public class DiagramTaskBean implements Serializable
             }
 
             QuizBean.game();
-        }
 
     }
 

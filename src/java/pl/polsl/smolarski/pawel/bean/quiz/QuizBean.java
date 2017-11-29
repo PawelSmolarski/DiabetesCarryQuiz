@@ -202,9 +202,9 @@ public class QuizBean implements Serializable
     {
         List<Taskable> tasks = new ArrayList<>();
 
-//        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
-//        tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
-//        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
         tasks.addAll(getRandomTasks(DragDropTaskBean.getallrecords()));
 
         Collections.shuffle(tasks, new Random(System.currentTimeMillis()));

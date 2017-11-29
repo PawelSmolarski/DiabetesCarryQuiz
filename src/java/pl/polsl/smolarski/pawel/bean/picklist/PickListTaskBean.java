@@ -62,6 +62,7 @@ public class PickListTaskBean implements Serializable
             questionCases.put("2", task.getCase2());
             questionCases.put("3", task.getCase3());
             questionCases.put("4", task.getCase4());
+            questionCases.put("", "");
 
             for (String key : questionCases.keySet())
             {
@@ -221,16 +222,16 @@ public class PickListTaskBean implements Serializable
      */
     public void validate()
     {
-        if (tasks.getTarget().isEmpty())
-        {
-            addMessage("Error!", "Choose at least one");
-        }
-        else
-        {
+
             List<String> tasksTarget = tasks.getTarget();
+            if(tasksTarget.isEmpty())
+            {
+                tasksTarget.add("");
+            }
             List<String> answersKeys = new ArrayList<>();
             answersKeys = Arrays.asList(task.getAnswer().split(";"));
-
+            
+            
             List<String> answers = new ArrayList<>();
 
             for (String s : answersKeys)
@@ -246,6 +247,6 @@ public class PickListTaskBean implements Serializable
 
             QuizBean.game();
 
-        }
+
     }
 }
