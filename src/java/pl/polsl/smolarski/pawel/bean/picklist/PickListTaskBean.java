@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
@@ -24,8 +25,9 @@ import pl.polsl.smolarski.pawel.pojo.picklisttask.PickListTask;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
-import pl.polsl.smolarski.pawel.utils.SessionUtils;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
+import pl.polsl.smolarski.pawel.bean.BeanTaskable;
+import pl.polsl.smolarski.pawel.utils.ModelUtils;
+import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
 /**
  * Class bean for PickList task
@@ -35,22 +37,60 @@ import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
  */
 @ManagedBean
 @ViewScoped
-public class PickListTaskBean implements Serializable
+public class PickListTaskBean implements Serializable, BeanTaskable<PickListTask>
 {
 
+    /**
+     * Variable of session bean to control game
+     */
+    @ManagedProperty("#{quizBean}")
+    private QuizBean quizBean;
+
+    public QuizBean getQuizBean()
+    {
+        return quizBean;
+    }
+
+    public void setQuizBean(QuizBean quizBean)
+    {
+        this.quizBean = quizBean;
+    }
+
+    /**
+     * Present task
+     */
     private PickListTask task = new PickListTask();
+    
+    /**
+     * Variable to use DAO
+     */
     private static final PickListDao TASK_DAO = new PickListDao();
 
+    /**
+     * List for keeping left and right side questions
+     */
     private DualListModel<String> tasks;
+    
+    /**
+     * List for keeping left side tasks
+     */
     private List<String> tasksSource;
+    
+    /**
+     * List for keeping right side tasks
+     */
     private List<String> tasksTarget;
+    
+    /**
+     * Map with question and answers combination
+     */
     private Map<String, String> questionCases;
 
     @PostConstruct
     public void init()
     {
 
-        task = (PickListTask) QuizBean.getPresentTask();
+        task = (PickListTask) quizBean.getPresentTask();
 
         if (task != null)
         {
@@ -90,9 +130,8 @@ public class PickListTaskBean implements Serializable
      */
     public void onSelect(SelectEvent event)
     {
-        
+
     }
-    
 
     /**
      * Method on unselect of answer
@@ -126,6 +165,7 @@ public class PickListTaskBean implements Serializable
      *
      * @param task to save
      */
+    @Override
     public void save(PickListTask task)
     {
         try
@@ -146,6 +186,7 @@ public class PickListTaskBean implements Serializable
      *
      * @param task to delete
      */
+    @Override
     public void delete(PickListTask task)
     {
         try
@@ -165,7 +206,7 @@ public class PickListTaskBean implements Serializable
      *
      * @return List of tasks
      */
-    public static List<PickListTask> getallrecords()
+    public static List<PickListTask> getAllrecords()
     {
         List<PickListTask> tasks = new ArrayList();
 
@@ -184,6 +225,7 @@ public class PickListTaskBean implements Serializable
     /**
      * Method to update task
      */
+    @Override
     public void update()
     {
         try
@@ -212,6 +254,7 @@ public class PickListTaskBean implements Serializable
     /**
      * Method to clear task
      */
+    @Override
     public void clearTask()
     {
         this.task = new PickListTask();
@@ -220,33 +263,31 @@ public class PickListTaskBean implements Serializable
     /**
      * Method to validate user answer
      */
+    @Override
     public void validate()
     {
 
-            List<String> tasksTarget = tasks.getTarget();
-            if(tasksTarget.isEmpty())
-            {
-                tasksTarget.add("");
-            }
-            List<String> answersKeys = new ArrayList<>();
-            answersKeys = Arrays.asList(task.getAnswer().split(";"));
-            
-            
-            List<String> answers = new ArrayList<>();
+        List<String> tasksTarget = tasks.getTarget();
+        if (tasksTarget.isEmpty())
+        {
+            tasksTarget.add("");
+        }
+        List<String> answersKeys = new ArrayList<>();
+        answersKeys = Arrays.asList(task.getAnswer().split(";"));
 
-            for (String s : answersKeys)
-            {
-                answers.add(questionCases.get(s));
-            }
+        List<String> answers = new ArrayList<>();
 
-            if (SessionUtils.areEqualLists(answers, tasksTarget))
-            {
-                QuizBean.setPoints(QuizBean.getPoints() + 1);
-                System.out.println("player get points pick list");
-            }
+        for (String s : answersKeys)
+        {
+            answers.add(questionCases.get(s));
+        }
 
-            QuizBean.game();
+        if (ModelUtils.areEqualLists(answers, tasksTarget))
+        {
+            quizBean.setPoints(quizBean.getPoints() + 1);
+            System.out.println("player get points pick list");
+        }
 
-
+        quizBean.game();
     }
 }

@@ -7,11 +7,14 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form style="display:block; text-align:center">
             <p:growl id="message" showDetail="true" />
-            Set your nick: <p:inputText value="#{quizBean.username}" maxlength="45"/>
+            <h1>Set your nick:</h1>
+            <p:inputText value="#{quizBean.username}" maxlength="45"/>
             <p:commandButton value="Start game" id="startGame" actionListener="#{quizBean.start}" styleClass="ui-priority-primary" update="message"  />
         </h:form>
     </h:body>
+
 </html>
+
 

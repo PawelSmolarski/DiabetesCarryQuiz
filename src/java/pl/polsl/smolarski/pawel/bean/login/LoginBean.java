@@ -18,7 +18,7 @@ import org.hibernate.HibernateException;
 import pl.polsl.smolarski.pawel.dao.login.LoginDao;
 import pl.polsl.smolarski.pawel.pojo.login.Login;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
+import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
 /**
  * Class bean for logining

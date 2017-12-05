@@ -8,12 +8,13 @@
         <title>Task</title>
     </h:head>
     <h:body>
-        <p:outputLabel value="Connect appropriate" />
-
+        <h:form style="display:block; text-align:center"> 
+            <h1>Connect appropriate</h1>
+        </h:form>
         <h:form id="taskForm" >
             <p:growl id="message" showDetail="true" />
             <p:diagram value="#{diagramTaskBean.model}" style="height:600px" styleClass="ui-widget-content" var="el" widgetVar="diagramVar">
-               
+
             </p:diagram>
         </h:form>
         <h:form>

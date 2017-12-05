@@ -7,15 +7,13 @@ package pl.polsl.smolarski.pawel.dao.picklist;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import pl.polsl.smolarski.pawel.dao.TaskRepository;
 import pl.polsl.smolarski.pawel.pojo.picklisttask.PickListTask;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 
 /**
  * Class which provides CRUD methods for Pick List task
@@ -23,7 +21,7 @@ import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
  * @author psmolarski
  * @version 1.0
  */
-public class PickListDao
+public class PickListDao implements TaskRepository<PickListTask>
 {
 
     /**
@@ -33,6 +31,7 @@ public class PickListDao
      *
      * @throws HibernateException
      */
+    @Override
     public void addTask(PickListTask task) throws HibernateException
     {
         addTaskTransaction(task);
@@ -45,6 +44,7 @@ public class PickListDao
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
+        session.close();
     }
 
     /**
@@ -54,6 +54,7 @@ public class PickListDao
      *
      * @throws HibernateException
      */
+    @Override
     public void deleteTask(int id) throws HibernateException
     {
         deleteTransaction(id);
@@ -67,6 +68,7 @@ public class PickListDao
         PickListTask task = (PickListTask) session.load(PickListTask.class, id);
         session.delete(task);
         trans.commit();
+        session.close();
     }
 
     /**
@@ -76,23 +78,21 @@ public class PickListDao
      *
      * @throws HibernateException
      */
+    @Override
     public List<PickListTask> retrieveTask() throws HibernateException
     {
-
         List tasks = new ArrayList();
         tasks = retrieveTaskTransaction();
-
         return tasks;
     }
 
     private List<PickListTask> retrieveTaskTransaction()
     {
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("select t from PickListTask t");
+        Query query = session.getNamedQuery("FIND_ALL_PICK_LIST");
         List tasks = new ArrayList();
         tasks = query.list();
-        session.getTransaction().commit();
+        session.close();
         return tasks;
     }
 
@@ -103,6 +103,7 @@ public class PickListDao
      *
      * @throws HibernateException
      */
+    @Override
     public void updateTask(PickListTask task) throws HibernateException
     {
         updateTaskTransaction(task);
@@ -115,6 +116,7 @@ public class PickListDao
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();
+        session.close();
     }
 
 }

@@ -16,13 +16,15 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.HibernateException;
 import org.primefaces.event.DragDropEvent;
+import pl.polsl.smolarski.pawel.bean.BeanTaskable;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.dragdroptask.DragDropDao;
 import pl.polsl.smolarski.pawel.pojo.dragdroptask.DragDropTask;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
+import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
 /**
  * Bean class for DragDrop task.
@@ -32,8 +34,24 @@ import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
  */
 @ManagedBean
 @ViewScoped
-public class DragDropTaskBean implements Serializable
+public class DragDropTaskBean implements Serializable, BeanTaskable<DragDropTask>
 {
+
+    /**
+     * Variable of session bean to control game
+     */
+    @ManagedProperty("#{quizBean}")
+    private QuizBean quizBean;
+
+    public QuizBean getQuizBean()
+    {
+        return quizBean;
+    }
+
+    public void setQuizBean(QuizBean quizBean)
+    {
+        this.quizBean = quizBean;
+    }
 
     /**
      * Local task variable
@@ -71,7 +89,7 @@ public class DragDropTaskBean implements Serializable
     @PostConstruct
     public void init()
     {
-        task = (DragDropTask) QuizBean.getPresentTask();
+        task = (DragDropTask) quizBean.getPresentTask();
         if (task != null)
         {
             presentTask();
@@ -161,6 +179,7 @@ public class DragDropTaskBean implements Serializable
      *
      * @param task to save
      */
+    @Override
     public void save(DragDropTask task)
     {
         try
@@ -182,6 +201,7 @@ public class DragDropTaskBean implements Serializable
      *
      * @param task to delete
      */
+    @Override
     public void delete(DragDropTask task)
     {
         try
@@ -202,7 +222,7 @@ public class DragDropTaskBean implements Serializable
      *
      * @return List of tasks
      */
-    public static List<DragDropTask> getallrecords()
+    public static List<DragDropTask> getAllrecords()
     {
         List<DragDropTask> tasks = new ArrayList();
         try
@@ -220,6 +240,7 @@ public class DragDropTaskBean implements Serializable
     /**
      * Update task
      */
+    @Override
     public void update()
     {
         try
@@ -248,6 +269,7 @@ public class DragDropTaskBean implements Serializable
     /**
      * To clear local task
      */
+    @Override
     public void clearTask()
     {
         this.task = new DragDropTask();
@@ -296,14 +318,15 @@ public class DragDropTaskBean implements Serializable
     /**
      * Validation method of user answer.
      */
+    @Override
     public void validate()
     {
         if (isCorrect() == true)
         {
             System.out.println("points from drag drop");
-            QuizBean.setPoints(QuizBean.getPoints() + 1);
+            quizBean.setPoints(quizBean.getPoints() + 1);
         }
-        QuizBean.game();
+        quizBean.game();
 
     }
 
@@ -328,14 +351,14 @@ public class DragDropTaskBean implements Serializable
                 return false;
             }
         }
-        for(SpecificCase c: tasksToDrop)
+        for (SpecificCase c : tasksToDrop)
         {
-            if(!c.getWhichAnswer().equals(""))
+            if (!c.getWhichAnswer().equals(""))
             {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

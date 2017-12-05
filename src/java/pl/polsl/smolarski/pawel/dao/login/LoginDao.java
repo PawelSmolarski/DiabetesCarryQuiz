@@ -7,14 +7,11 @@ package pl.polsl.smolarski.pawel.dao.login;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
 import pl.polsl.smolarski.pawel.pojo.login.Login;
 
 /**
@@ -39,16 +36,14 @@ public class LoginDao
 
         List<Login> users = new ArrayList();
 
-        Transaction trans;
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
 
-        trans = session.beginTransaction();
         Query query = session.createQuery("select u from Login u where login= :login and password= :password");
         query.setString("login", login);
         query.setString("password", password);
 
         users = query.list();
-        trans.commit();
+        session.close();
         return !users.isEmpty();
 
     }

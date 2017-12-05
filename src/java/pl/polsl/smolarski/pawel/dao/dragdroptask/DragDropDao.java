@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import pl.polsl.smolarski.pawel.dao.TaskRepository;
 import pl.polsl.smolarski.pawel.pojo.dragdroptask.DragDropTask;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
 
@@ -20,7 +21,7 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
  * @author psmolarski
  * @version 1.0
  */
-public class DragDropDao
+public class DragDropDao implements TaskRepository<DragDropTask>
 {
 
     /**
@@ -30,6 +31,7 @@ public class DragDropDao
      *
      * @throws HibernateException
      */
+    @Override
     public void addTask(DragDropTask task) throws HibernateException
     {
 
@@ -44,6 +46,7 @@ public class DragDropDao
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
+        session.close();
     }
 
     /**
@@ -53,6 +56,7 @@ public class DragDropDao
      *
      * @throws HibernateException
      */
+    @Override
     public void deleteTask(int id) throws HibernateException
     {
 
@@ -68,6 +72,7 @@ public class DragDropDao
         DragDropTask task = (DragDropTask) session.load(DragDropTask.class, id);
         session.delete(task);
         trans.commit();
+        session.close();
     }
 
     /**
@@ -77,23 +82,21 @@ public class DragDropDao
      *
      * @throws HibernateException
      */
+    @Override
     public List<DragDropTask> retrieveTask() throws HibernateException
     {
-
         List tasks = new ArrayList();
         tasks = retrieveTaskTransaction();
-
         return tasks;
     }
 
     private List<DragDropTask> retrieveTaskTransaction()
     {
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("select t from DragDropTask t");
+        Query query = session.getNamedQuery("FIND_ALL_DRAG_DROP");
         List tasks = new ArrayList();
         tasks = query.list();
-        session.getTransaction().commit();
+        session.close();
         return tasks;
     }
 
@@ -104,6 +107,7 @@ public class DragDropDao
      *
      * @throws HibernateException
      */
+    @Override
     public void updateTask(DragDropTask task) throws HibernateException
     {
         updateTaskTransaction(task);
@@ -116,5 +120,6 @@ public class DragDropDao
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();
+        session.close();
     }
 }

@@ -12,12 +12,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.HibernateException;
+import pl.polsl.smolarski.pawel.bean.BeanTaskable;
 import pl.polsl.smolarski.pawel.dao.abcdtask.ABCDDao;
 import pl.polsl.smolarski.pawel.pojo.abcdtask.ABCDTask;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
+import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
 /**
  * Bean class for ABCD task.
@@ -27,8 +29,23 @@ import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
  */
 @ManagedBean
 @ViewScoped
-public class ABCDTaskBean implements Serializable
+public class ABCDTaskBean implements Serializable, BeanTaskable<ABCDTask>
 {
+    /**
+     * Variable of session bean to control game
+     */
+    @ManagedProperty("#{quizBean}")
+    private QuizBean quizBean;
+
+    public QuizBean getQuizBean()
+    {
+        return quizBean;
+    }
+
+    public void setQuizBean(QuizBean quizBean)
+    {
+        this.quizBean = quizBean;
+    }
 
     /**
      * Local task variable
@@ -51,7 +68,7 @@ public class ABCDTaskBean implements Serializable
     @PostConstruct
     public void init()
     {
-        task = (ABCDTask) QuizBean.getPresentTask();
+        task = (ABCDTask) quizBean.getPresentTask();
     }
 
     public int getAnswer()
@@ -69,6 +86,7 @@ public class ABCDTaskBean implements Serializable
      *
      * @param task to save
      */
+    @Override
     public void save(ABCDTask task)
     {
         try
@@ -90,6 +108,7 @@ public class ABCDTaskBean implements Serializable
      *
      * @param task to delete
      */
+    @Override
     public void delete(ABCDTask task)
     {
         try
@@ -111,14 +130,14 @@ public class ABCDTaskBean implements Serializable
      *
      * @return List of get tasks
      */
-    public static List<ABCDTask> getallrecords()
+    public static List<ABCDTask> getAllrecords()
     {
         List<ABCDTask> tasks = new ArrayList();
         try
         {
             tasks = TASK_DAO.retrieveTask();
         }
-        catch (Exception e)
+        catch (HibernateException e)
         {
             addMessage("Error!", "Please try again.");
             Logger.getLogger(ABCDDao.class.getName()).log(Level.SEVERE, null, e);
@@ -129,6 +148,7 @@ public class ABCDTaskBean implements Serializable
     /**
      * Method to update present task
      */
+    @Override
     public void update()
     {
         try
@@ -157,6 +177,7 @@ public class ABCDTaskBean implements Serializable
     /**
      * Clearing local task
      */
+    @Override
     public void clearTask()
     {
         this.task = new ABCDTask();
@@ -165,6 +186,7 @@ public class ABCDTaskBean implements Serializable
     /**
      * Method validation of user choose
      */
+    @Override
     public void validate()
     {
         if (answer == 0)
@@ -175,10 +197,10 @@ public class ABCDTaskBean implements Serializable
         {
             if (task.getAnswer() == this.answer)
             {
-                QuizBean.setPoints(QuizBean.getPoints() + 1);
+                quizBean.setPoints(quizBean.getPoints() + 1);
             }
 
-            QuizBean.game();
+            quizBean.game();
 
         }
     }

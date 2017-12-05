@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import pl.polsl.smolarski.pawel.dao.TaskRepository;
 import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
 
@@ -20,7 +21,7 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
  * @author psmolarski
  * @version 1.0
  */
-public class DiagramTaskDao
+public class DiagramTaskDao implements TaskRepository<DiagramTask>
 {
 
     /**
@@ -30,6 +31,7 @@ public class DiagramTaskDao
      *
      * @throws HibernateException
      */
+    @Override
     public void addTask(DiagramTask task) throws HibernateException
     {
         addTaskTransaction(task);
@@ -42,6 +44,7 @@ public class DiagramTaskDao
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
+        session.close();
     }
 
     /**
@@ -51,6 +54,7 @@ public class DiagramTaskDao
      *
      * @throws HibernateException
      */
+    @Override
     public void deleteTask(int id) throws HibernateException
     {
 
@@ -66,6 +70,7 @@ public class DiagramTaskDao
         DiagramTask task = (DiagramTask) session.load(DiagramTask.class, id);
         session.delete(task);
         trans.commit();
+        session.close();
     }
 
     /**
@@ -75,24 +80,21 @@ public class DiagramTaskDao
      *
      * @throws HibernateException
      */
+    @Override
     public List<DiagramTask> retrieveTask() throws HibernateException
     {
-
         List tasks = new ArrayList();
-
         tasks = retrieveTaskTransaction();
-
         return tasks;
     }
 
     private List<DiagramTask> retrieveTaskTransaction()
     {
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("select t from DiagramTask t");
+        Query query = session.getNamedQuery("FIND_ALL_DIAGRAM");
         List tasks = new ArrayList();
         tasks = query.list();
-        session.getTransaction().commit();
+        session.close();
         return tasks;
     }
 
@@ -103,6 +105,7 @@ public class DiagramTaskDao
      *
      * @throws HibernateException
      */
+    @Override
     public void updateTask(DiagramTask task) throws HibernateException
     {
 
@@ -117,6 +120,7 @@ public class DiagramTaskDao
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();
+        session.close();
     }
 
 }

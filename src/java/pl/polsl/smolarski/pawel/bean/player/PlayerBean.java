@@ -15,7 +15,7 @@ import javax.faces.bean.ViewScoped;
 import org.hibernate.HibernateException;
 import pl.polsl.smolarski.pawel.dao.player.PlayerDao;
 import pl.polsl.smolarski.pawel.pojo.player.Player;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
+import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
 /**
  * Class bean for player

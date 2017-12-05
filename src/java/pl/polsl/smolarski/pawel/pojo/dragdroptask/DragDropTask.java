@@ -6,11 +6,13 @@
 package pl.polsl.smolarski.pawel.pojo.dragdroptask;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import pl.polsl.smolarski.pawel.utils.TaskType;
 import pl.polsl.smolarski.pawel.utils.Taskable;
@@ -22,6 +24,7 @@ import pl.polsl.smolarski.pawel.utils.Taskable;
  * @version 1.0
  */
 @Entity
+@NamedQuery(name="FIND_ALL_DRAG_DROP", query="select t from DragDropTask t") 
 @Table(name = "dragdrop_task")
 public class DragDropTask implements Serializable, Taskable
 {
@@ -58,6 +61,39 @@ public class DragDropTask implements Serializable, Taskable
     @Column(name = "answer_relations")
     private String answerRelations;
 
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final DragDropTask other = (DragDropTask) obj;
+        if (!Objects.equals(this.id, other.id))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
     public Integer getId()
     {
         return id;

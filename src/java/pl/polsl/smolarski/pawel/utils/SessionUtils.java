@@ -56,18 +56,6 @@ public class SessionUtils
     }
 
     /**
-     * Add FacesMessage to current instance
-     *
-     * @param summary Header of message
-     * @param detail Details of message
-     */
-    public static void addMessage(String summary, String detail)
-    {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    /**
      *
      * @return HttpSession of current session
      */
@@ -75,29 +63,6 @@ public class SessionUtils
     {
         return (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
-    }
-
-    /**
-     * Static method for checking if two list are equal
-     * 
-     * @param one
-     * @param two
-     * @return 
-     */
-    public static boolean areEqualLists(List<String> one, List<String> two)
-    {
-
-        if ( one.size() != two.size())
-        {
-            return false;
-        }
-
-        one = new ArrayList<String>(one);
-        two = new ArrayList<String>(two);
-
-        Collections.sort(one);
-        Collections.sort(two);
-        return one.equals(two);
     }
 
 }

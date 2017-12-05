@@ -13,11 +13,11 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <p:button outcome="admin_page" value="Back to admin menu" icon="ui-icon-star"></p:button><br/>
-
+        <br/>
         <h:form id="taskTable">
-            <p:commandButton value="Add new task" actionListener="#{aBCDTaskBean.clearTask()}" oncomplete="PF('save_dlg').show();" update=":save_dialog" /><br />
+            <p:commandButton value="Add new task" actionListener="#{aBCDTaskBean.clearTask()}" oncomplete="PF('dlg').show();" update=":dialog" /><br />
 
-            <p:dataTable var="task" value="#{aBCDTaskBean.getallrecords()}" id="showAllABCD" >
+            <p:dataTable var="task" value="#{aBCDTaskBean.getAllrecords()}" id="showAllABCD" >
                 <p:growl id="message" showDetail="true" />
                 <p:column headerText="Id">
                     <h:outputText value="#{task.id}" />
@@ -41,7 +41,7 @@ and open the template in the editor.
                     <h:outputText value="#{task.answer}" />
                 </p:column>
                 <p:column headerText="Update task ">
-                    <p:commandButton value="Update" id="updateABCDDialog" actionListener="#{aBCDTaskBean.setTask(task)}" oncomplete="PF('dlg').show()" update=":update_dialog" />
+                    <p:commandButton value="Update" id="updateABCDDialog" actionListener="#{aBCDTaskBean.setTask(task)}" oncomplete="PF('dlg').show()" update=":dialog" />
                 </p:column>
                 <p:column headerText="Delete task ">
                     <p:commandButton value="Delete" id="deleteABCD" actionListener="#{aBCDTaskBean.delete(task)}" styleClass="ui-priority-primary" update="message showAllABCD"  />                               
@@ -49,7 +49,7 @@ and open the template in the editor.
             </p:dataTable>
         </h:form> 
 
-        <p:dialog header="Dialog" widgetVar="save_dlg" dynamic="true" id="save_dialog" >
+        <p:dialog header="Dialog" widgetVar="dlg" dynamic="true" id="dialog" >
             <h:form> 
                 <p:growl id="message" showDetail="true" />
                 <p:panelGrid columns="2">
@@ -59,25 +59,11 @@ and open the template in the editor.
                     Task case 3: <p:inputText value="#{aBCDTaskBean.getTask().case3}" maxlength="80"/>
                     Task case 4: <p:inputText value="#{aBCDTaskBean.getTask().case4}" maxlength="80"/>
                     Task answer: <p:inputText value="#{aBCDTaskBean.getTask().answer}" maxlength="11"/>
-                    <p:commandButton value="Save new task" id="saveABCD" actionListener="#{aBCDTaskBean.save(aBCDTaskBean.getTask())}" styleClass="ui-priority-primary" update="message :taskTable " oncomplete="PF('save_dlg').hide();" />
+                    <p:commandButton rendered="#{aBCDTaskBean.getTask().id == null}" value="Save new task" id="saveABCD" actionListener="#{aBCDTaskBean.save(aBCDTaskBean.getTask())}" styleClass="ui-priority-primary" update="message :taskTable " oncomplete="PF('dlg').hide();" />
+                    <p:commandButton rendered="#{aBCDTaskBean.getTask().id != null}" value="Update" id="updateABCD" actionListener="#{aBCDTaskBean.update}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('dlg').hide()" />                                                   
                 </p:panelGrid>
             </h:form>
         </p:dialog> 
-
-        <p:dialog header="Dialog" widgetVar="dlg" dynamic="true" id="update_dialog" >
-            <h:form id ="dlgForm">
-                <p:growl id="message" showDetail="true" />
-                <p:panelGrid columns="2" id="updateGrid">
-                    Question: <p:inputText value="#{aBCDTaskBean.getTask().question}" maxlength="200"/><br></br>
-                    Task case 1: <p:inputText value="#{aBCDTaskBean.getTask().case1}" maxlength="80"/><br></br>
-                    Task case 2: <p:inputText value="#{aBCDTaskBean.getTask().case2}" maxlength="80"/><br></br>
-                    Task case 3: <p:inputText value="#{aBCDTaskBean.getTask().case3}" maxlength="80"/><br></br>
-                    Task case 4: <p:inputText value="#{aBCDTaskBean.getTask().case4}" maxlength="80"/><br></br>
-                    Task answer: <p:inputText value="#{aBCDTaskBean.getTask().answer}" maxlength="11"/><br></br>
-                    <p:commandButton value="Update" id="updateABCD" actionListener="#{aBCDTaskBean.update}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('dlg').hide()" />                                                   
-                </p:panelGrid>
-            </h:form>
-        </p:dialog>
 
     </h:body>
 </html>

@@ -13,11 +13,11 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <p:button outcome="admin_page" value="Back to admin menu" icon="ui-icon-star"></p:button><br/>
-
+        <br/>
         <h:form id="taskTable">
-            <p:commandButton value="Add new task" actionListener="#{dragDropTaskBean.clearTask()}" oncomplete="PF('save_dlg').show();" update=":save_drag"  /><br />
+            <p:commandButton value="Add new task" actionListener="#{dragDropTaskBean.clearTask()}" oncomplete="PF('dlg').show();" update=":drag"  /><br />
 
-            <p:dataTable var="task" value="#{dragDropTaskBean.getallrecords()}" id="showAllDrag" >
+            <p:dataTable var="task" value="#{dragDropTaskBean.getAllrecords()}" id="showAllDrag" >
                 <p:growl id="message" showDetail="true" />
                 <p:column headerText="Id">
                     <h:outputText value="#{task.id}" />
@@ -60,7 +60,7 @@ and open the template in the editor.
                 </p:column>
 
                 <p:column headerText="Update task ">
-                    <p:commandButton value="Update" id="updateDrag" actionListener="#{dragDropTaskBean.setTask(task)}" oncomplete="PF('dlg').show()" update=":update_drag" />
+                    <p:commandButton value="Update" id="updateDrag" actionListener="#{dragDropTaskBean.setTask(task)}" oncomplete="PF('dlg').show()" update=":drag" />
                 </p:column>
 
                 <p:column headerText="Delete task ">
@@ -71,7 +71,7 @@ and open the template in the editor.
         </h:form>    
 
 
-        <p:dialog header="DragDrop" widgetVar="save_dlg" dynamic="true" id="save_drag" >
+        <p:dialog header="DragDrop" widgetVar="dlg" dynamic="true" id="drag" >
             <h:form> 
                 <p:growl id="message" showDetail="true" />
                 <p:panelGrid columns="2">
@@ -84,30 +84,12 @@ and open the template in the editor.
                     Answer a: <p:inputText value="#{dragDropTaskBean.getTask().answerA}" maxlength="200"/>
                     Answer b: <p:inputText value="#{dragDropTaskBean.getTask().answerB}" maxlength="200"/>
                     Answer relations: <p:inputText value="#{dragDropTaskBean.getTask().answerRelations}" maxlength="80"/>
-                    <p:commandButton value="Save new task" id="saveDrag" actionListener="#{dragDropTaskBean.save(dragDropTaskBean.getTask())}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('save_dlg').hide();"  />
+                    <p:commandButton rendered="#{dragDropTaskBean.getTask().id == null}" value="Save new task" id="saveDrag" actionListener="#{dragDropTaskBean.save(dragDropTaskBean.getTask())}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('dlg').hide();"  />
+                    <p:commandButton rendered="#{dragDropTaskBean.getTask().id != null}" value="Update" id="updateDiagram" actionListener="#{dragDropTaskBean.update}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('dlg').hide()" />                                                   
+
                 </p:panelGrid>
             </h:form>
         </p:dialog> 
-
-
-
-        <p:dialog header="Dialog" widgetVar="dlg" dynamic="true" id="update_drag"  >
-            <h:form id ="dlgForm">
-                <p:growl id="message" showDetail="true" />
-                <p:panelGrid columns="2" id="updateGrid">
-                    Question: <p:inputText value="#{dragDropTaskBean.getTask().question}" maxlength="200"/>
-                    Task case 1: <p:inputText value="#{dragDropTaskBean.getTask().case1}" maxlength="200"/>
-                    Task case 2: <p:inputText value="#{dragDropTaskBean.getTask().case2}" maxlength="200"/>
-                    Task case 3: <p:inputText value="#{dragDropTaskBean.getTask().case3}" maxlength="200"/>
-                    Task case 4: <p:inputText value="#{dragDropTaskBean.getTask().case4}" maxlength="200"/>
-                    Task case 5: <p:inputText value="#{dragDropTaskBean.getTask().case5}" maxlength="200"/>
-                    Answer a: <p:inputText value="#{dragDropTaskBean.getTask().answerA}" maxlength="200"/>
-                    Answer b: <p:inputText value="#{dragDropTaskBean.getTask().answerB}" maxlength="200"/>
-                    Answer relations: <p:inputText value="#{dragDropTaskBean.getTask().answerRelations}" maxlength="80"/>
-                    <p:commandButton value="Update" id="updateDiagram" actionListener="#{dragDropTaskBean.update}" styleClass="ui-priority-primary" update="message :taskTable" oncomplete="PF('dlg').hide()" />                                                   
-                </p:panelGrid>
-            </h:form>
-        </p:dialog>
 
     </h:body>
 </html>

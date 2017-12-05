@@ -23,6 +23,7 @@ import pl.polsl.smolarski.pawel.dao.player.PlayerDao;
 import pl.polsl.smolarski.pawel.pojo.player.Player;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import pl.polsl.smolarski.pawel.utils.TaskType;
+import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
 /**
  *
@@ -37,39 +38,39 @@ public class QuizBean implements Serializable
     /**
      * Variable which contains user name
      */
-    private static String username;
+    private String username;
 
     /**
      * Variable which contains boolean of duration of game
      */
-    private static boolean isStarted;
+    private boolean isStarted;
 
     /**
      * Variable which contains list of all tasks
      */
-    private static List<? extends Taskable> tasks;
+    private List<? extends Taskable> tasks;
 
     /**
      * Variable which contains user points
      */
-    private static int points;
+    private int points;
 
     /**
      * Variable which contains present task of game
      */
-    private static Taskable presentTask;
+    private Taskable presentTask;
 
-    public static List<? extends Taskable> getTasks()
+    public List<? extends Taskable> getTasks()
     {
         return tasks;
     }
 
-    public static void setTasks(List<Taskable> tasks)
+    public void setTasks(List<Taskable> tasks)
     {
-        QuizBean.tasks = tasks;
+        this.tasks = tasks;
     }
 
-    public static int getPoints()
+    public int getPoints()
     {
         return points;
     }
@@ -79,9 +80,9 @@ public class QuizBean implements Serializable
         return points;
     }
 
-    public static void setPoints(int points)
+    public void setPoints(int points)
     {
-        QuizBean.points = points;
+        this.points = points;
     }
 
     public String getUsername()
@@ -89,14 +90,14 @@ public class QuizBean implements Serializable
         return username;
     }
 
-    public static boolean isStarted()
+    public boolean isStarted()
     {
         return isStarted;
     }
 
-    public static void setIsStarted(boolean isStarted)
+    public void setIsStarted(boolean isStarted)
     {
-        QuizBean.isStarted = isStarted;
+        this.isStarted = isStarted;
     }
 
     public void setUsername(String username)
@@ -111,7 +112,7 @@ public class QuizBean implements Serializable
     {
         if (username == null || username.isEmpty())
         {
-            SessionUtils.addMessage("Error!", "Choose your name");
+            addMessage("Error!", "Choose your name");
         }
         else
         {
@@ -142,7 +143,7 @@ public class QuizBean implements Serializable
     /**
      * Method in which game last
      */
-    public static void game()
+    public void game()
     {
         if (tasks == null || tasks.isEmpty())
         {
@@ -157,7 +158,7 @@ public class QuizBean implements Serializable
     /**
      * Method in which game is ending
      */
-    private static void redirectEndOfGame()
+    private void redirectEndOfGame()
     {
         tasks = null;
         isStarted = false;
@@ -174,7 +175,7 @@ public class QuizBean implements Serializable
     /**
      * Method to invoke next task
      */
-    private static void redirectNextTask()
+    private void redirectNextTask()
     {
 
         System.out.println("Gra trwa " + points);
@@ -183,14 +184,14 @@ public class QuizBean implements Serializable
         getView(presentTask.getType());
     }
 
-    public static Taskable getPresentTask()
+    public Taskable getPresentTask()
     {
         return presentTask;
     }
 
-    public static void setPresentTask(Taskable presentTask)
+    public void setPresentTask(Taskable presentTask)
     {
-        QuizBean.presentTask = presentTask;
+        this.presentTask = presentTask;
     }
 
     /**
@@ -198,14 +199,14 @@ public class QuizBean implements Serializable
      *
      * @return List of received tasks
      */
-    private static List<? extends Taskable> receiveTasks()
+    private List<? extends Taskable> receiveTasks()
     {
         List<Taskable> tasks = new ArrayList<>();
 
-        tasks.addAll(getRandomTasks(ABCDTaskBean.getallrecords()));
-        tasks.addAll(getRandomTasks(DiagramTaskBean.getallrecords()));
-        tasks.addAll(getRandomTasks(PickListTaskBean.getallrecords()));
-        tasks.addAll(getRandomTasks(DragDropTaskBean.getallrecords()));
+        tasks.addAll(getRandomTasks(ABCDTaskBean.getAllrecords()));
+        tasks.addAll(getRandomTasks(DiagramTaskBean.getAllrecords()));
+        tasks.addAll(getRandomTasks(PickListTaskBean.getAllrecords()));
+        tasks.addAll(getRandomTasks(DragDropTaskBean.getAllrecords()));
 
         Collections.shuffle(tasks, new Random(System.currentTimeMillis()));
         return tasks;

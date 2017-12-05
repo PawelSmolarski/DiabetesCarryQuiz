@@ -6,11 +6,14 @@
 package pl.polsl.smolarski.pawel.pojo.abcdtask;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 import pl.polsl.smolarski.pawel.utils.TaskType;
@@ -22,6 +25,7 @@ import pl.polsl.smolarski.pawel.utils.TaskType;
  * @version 1.0
  */
 @Entity
+@NamedQuery(name="FIND_ALL_ABCD", query="select t from ABCDTask t") 
 @Table(name = "abcd_task")
 public class ABCDTask implements Serializable, Taskable
 {
@@ -60,6 +64,39 @@ public class ABCDTask implements Serializable, Taskable
         this.answer = answer;
     }
 
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final ABCDTask other = (ABCDTask) obj;
+        if (!Objects.equals(this.id, other.id))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
     public String getQuestion()
     {
         return question;

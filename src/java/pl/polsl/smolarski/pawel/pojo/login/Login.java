@@ -6,6 +6,7 @@
 package pl.polsl.smolarski.pawel.pojo.login;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,39 @@ public class Login implements Serializable {
     @Column(name = "password")
     private String password;
 
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final Login other = (Login) obj;
+        if (!Objects.equals(this.id, other.id))
+        {
+            return false;
+        }
+        return true;
+    }
+
+
+    
     public Login(Integer id, String login, String password) {
         this.id = id;
         this.login = login;

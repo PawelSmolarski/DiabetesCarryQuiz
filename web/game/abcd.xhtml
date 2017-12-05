@@ -8,11 +8,11 @@
         <title>Task</title>
     </h:head>
     <h:body>
-        <h:form id="taskForm">
-            
-            <h:panelGrid id="taskPanel" columns="2" style="margin-bottom:10px" cellpadding="5">
-                <p:outputLabel for="answer" value="#{aBCDTaskBean.task.question}" />
-                <p:selectOneRadio id="answer" value="#{aBCDTaskBean.answer}">
+        <h:form id="taskForm" style="display:block; text-align:left">
+
+            <h:panelGrid id="taskPanel" columns="1" style="margin: 0 auto" cellpadding="5">
+                <h1>#{aBCDTaskBean.task.question}</h1>
+                <p:selectOneRadio id="answer" value="#{aBCDTaskBean.answer}" columns="1" layout="grid">
                     <f:convertNumber integerOnly="true" />
                     <f:selectItem itemLabel="#{aBCDTaskBean.task.case1}" itemValue="1" />
                     <f:selectItem itemLabel="#{aBCDTaskBean.task.case2}" itemValue="2" />
@@ -20,13 +20,12 @@
                     <f:selectItem itemLabel="#{aBCDTaskBean.task.case4}" itemValue="4"/>
                     <p:ajax listener="#{aBCDTaskBean.setAnswer(aBCDTaskBean.answer)}" />
                 </p:selectOneRadio>
-            </h:panelGrid>
+                            <p:growl id="message" showDetail="true" />
+            <p:commandButton value="Submit" action="#{aBCDTaskBean.validate}" update="message :taskForm"/>
+            </h:panelGrid><br/>
 
         </h:form> 
-        <h:form>
-            <p:growl id="message" showDetail="true" />
-            <p:commandButton value="Submit" action="#{aBCDTaskBean.validate}" update="message :taskForm"/>
-        </h:form>
+
     </h:body>
 </html>
 

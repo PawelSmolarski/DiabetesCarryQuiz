@@ -8,6 +8,8 @@ package pl.polsl.smolarski.pawel.pojo.login;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.bean.ManagedProperty;
+import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -19,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
-
 
 /**
  * Class which provides secure filtering
@@ -34,6 +35,21 @@ import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 public class Authorization implements Filter
 {
 
+    /**
+     * Variable of session bean to control game
+     */
+    private QuizBean quizBean = new QuizBean();
+
+    public QuizBean getQuizBean()
+    {
+        return quizBean;
+    }
+
+    public void setQuizBean(QuizBean quizBean)
+    {
+        this.quizBean = quizBean;
+    }
+
     public Authorization()
     {
     }
@@ -41,7 +57,7 @@ public class Authorization implements Filter
     @Override
     public void init(FilterConfig filterConfig) throws ServletException
     {
-
+        
     }
 
     @Override
@@ -58,12 +74,16 @@ public class Authorization implements Filter
 
             String reqURI = reqt.getRequestURI();
             
-            if ((ses != null && ses.getAttribute("player") != null) && reqURI.contentEquals("/") && QuizBean.getPresentTask() != null)
+            if(ses != null)
             {
-                resp.sendRedirect(QuizBean.getPresentTask().getType().getURL());
+                quizBean = (QuizBean) ses.getAttribute("quizBean");
             }
-            else 
-                if (reqURI.contains("/login.xhtml")
+            
+            if ((ses != null && ses.getAttribute("player") != null) && reqURI.contentEquals("/") && quizBean.getPresentTask() != null)
+            {
+                resp.sendRedirect(quizBean.getPresentTask().getType().getURL());
+            }
+            else if (reqURI.contains("/login.xhtml")
                     || (ses != null && ses.getAttribute("username") != null)
                     || reqURI.contains("/public/")
                     || reqURI.contains("javax.faces.resource")

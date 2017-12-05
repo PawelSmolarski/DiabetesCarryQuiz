@@ -13,9 +13,13 @@ and open the template in the editor.
         <title>Admin Page</title>
     </h:head>
     <h:body>
-        <p:button outcome="showABCD" value="ABCD task editor" icon="ui-icon-star"></p:button>
-        <p:button outcome="showDiagramTask" value="Diagram task editor" icon="ui-icon-star"></p:button>
-        <p:button outcome="showPickListTask" value="PickList task editor" icon="ui-icon-star"></p:button>
-        <p:button outcome="showDragDropTask" value="DragDrop task editor" icon="ui-icon-star"></p:button>
+        <br/><br/><br/><br/>
+        <h1 style="display:block; text-align:center">Choose which type of task you want to edit</h1><br/><br/>
+        <h:panelGrid columns="1" style="margin: 0 auto" >             
+            <p:button outcome="showABCD" value="ABCD task editor" icon="ui-icon-star"></p:button><br/>
+            <p:button outcome="showDiagramTask" value="Diagram task editor" icon="ui-icon-star"></p:button><br/>
+            <p:button outcome="showPickListTask" value="PickList task editor" icon="ui-icon-star"></p:button><br/>
+            <p:button outcome="showDragDropTask" value="DragDrop task editor" icon="ui-icon-star"></p:button><br/>
+        </h:panelGrid>
     </h:body>
 </html>

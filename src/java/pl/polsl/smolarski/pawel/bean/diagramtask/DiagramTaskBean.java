@@ -13,14 +13,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.HibernateException;
 import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.diagramtask.DiagramTaskDao;
 import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
-import org.primefaces.event.diagram.ConnectEvent;
-import org.primefaces.event.diagram.ConnectionChangeEvent;
-import org.primefaces.event.diagram.DisconnectEvent;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -31,8 +29,9 @@ import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.ArrowOverlay;
 import org.primefaces.model.diagram.Connection;
-import pl.polsl.smolarski.pawel.utils.SessionUtils;
-import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
+import pl.polsl.smolarski.pawel.bean.BeanTaskable;
+import pl.polsl.smolarski.pawel.utils.ModelUtils;
+import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
 /**
  * Bean class for Diagram task.
@@ -42,8 +41,24 @@ import static pl.polsl.smolarski.pawel.utils.SessionUtils.addMessage;
  */
 @ManagedBean
 @ViewScoped
-public class DiagramTaskBean implements Serializable
+public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
 {
+
+    /**
+     * Variable of session bean to control game
+     */
+    @ManagedProperty("#{quizBean}")
+    private QuizBean quizBean;
+
+    public QuizBean getQuizBean()
+    {
+        return quizBean;
+    }
+
+    public void setQuizBean(QuizBean quizBean)
+    {
+        this.quizBean = quizBean;
+    }
 
     /**
      * Diagram Model Variable
@@ -71,7 +86,7 @@ public class DiagramTaskBean implements Serializable
     @PostConstruct
     public void init()
     {
-        task = (DiagramTask) QuizBean.getPresentTask();
+        task = (DiagramTask) quizBean.getPresentTask();
 
         if (task != null)
         {
@@ -202,6 +217,7 @@ public class DiagramTaskBean implements Serializable
      *
      * @param task to save
      */
+    @Override
     public void save(DiagramTask task)
     {
         try
@@ -223,6 +239,7 @@ public class DiagramTaskBean implements Serializable
      *
      * @param task to delete
      */
+    @Override
     public void delete(DiagramTask task)
     {
         try
@@ -243,7 +260,7 @@ public class DiagramTaskBean implements Serializable
      *
      * @return List of tasks
      */
-    public static List<DiagramTask> getallrecords()
+    public static List<DiagramTask> getAllrecords()
     {
         List<DiagramTask> tasks = new ArrayList();
 
@@ -263,6 +280,7 @@ public class DiagramTaskBean implements Serializable
     /**
      * To update task
      */
+    @Override
     public void update()
     {
         try
@@ -291,6 +309,7 @@ public class DiagramTaskBean implements Serializable
     /**
      * Method to clear local variable task
      */
+    @Override
     public void clearTask()
     {
         this.task = new DiagramTask();
@@ -299,34 +318,35 @@ public class DiagramTaskBean implements Serializable
     /**
      * Method to validate user answer
      */
+    @Override
     public void validate()
     {
         List<Connection> connections = model.getConnections();
         List<String> connectionsRelation = new ArrayList<>();
 
-            for (Connection c : connections)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.append(c.getSource().getId());
-                sb.append("-");
-                sb.append(c.getTarget().getId());
-                connectionsRelation.add(sb.toString());
-            }
+        for (Connection c : connections)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.append(c.getSource().getId());
+            sb.append("-");
+            sb.append(c.getTarget().getId());
+            connectionsRelation.add(sb.toString());
+        }
 
-            List<String> answerRelations = Arrays.asList(task.getAnswerRelations().split(";"));
+        List<String> answerRelations = Arrays.asList(task.getAnswerRelations().split(";"));
 
-            if(connectionsRelation.isEmpty())
-            {
-                connectionsRelation.add("");
-            }
-            
-            if (SessionUtils.areEqualLists(connectionsRelation, answerRelations))
-            {
-                System.out.println("Diagram get points");
-                QuizBean.setPoints(QuizBean.getPoints() + 1);
-            }
+        if (connectionsRelation.isEmpty())
+        {
+            connectionsRelation.add("");
+        }
 
-            QuizBean.game();
+        if (ModelUtils.areEqualLists(connectionsRelation, answerRelations))
+        {
+            System.out.println("Diagram get points");
+            quizBean.setPoints(quizBean.getPoints() + 1);
+        }
+
+        quizBean.game();
 
     }
 

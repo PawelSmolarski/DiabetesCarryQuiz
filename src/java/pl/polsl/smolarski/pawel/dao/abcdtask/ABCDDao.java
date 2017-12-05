@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import pl.polsl.smolarski.pawel.dao.TaskRepository;
 import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import pl.polsl.smolarski.pawel.pojo.abcdtask.ABCDTask;
 
@@ -20,10 +21,9 @@ import pl.polsl.smolarski.pawel.pojo.abcdtask.ABCDTask;
  * @author psmolarski
  * @version 1.0
  */
-public class ABCDDao
+public class ABCDDao implements TaskRepository<ABCDTask>
 {
 
-    
     /**
      * Method to add task to table
      *
@@ -31,11 +31,10 @@ public class ABCDDao
      *
      * @throws HibernateException
      */
+    @Override
     public void addTask(ABCDTask task) throws HibernateException
     {
-
         addTaskTransaction(task);
-
     }
 
     private void addTaskTransaction(ABCDTask task)
@@ -45,6 +44,7 @@ public class ABCDDao
         trans = session.beginTransaction();
         session.save(task);
         trans.commit();
+        session.close();
     }
 
     /**
@@ -54,6 +54,7 @@ public class ABCDDao
      *
      * @throws HibernateException
      */
+    @Override
     public void deleteTask(int id) throws HibernateException
     {
 
@@ -69,6 +70,8 @@ public class ABCDDao
         ABCDTask task = (ABCDTask) session.load(ABCDTask.class, id);
         session.delete(task);
         trans.commit();
+        session.close();
+
     }
 
     /**
@@ -78,21 +81,19 @@ public class ABCDDao
      *
      * @throws HibernateException
      */
+    @Override
     public List<ABCDTask> retrieveTask() throws HibernateException
     {
-
         return retrieveTaskTransaction();
-
     }
 
     private List<ABCDTask> retrieveTaskTransaction()
     {
         Session session = SessionUtils.getSESSION_FACTORY().openSession();
-        session.beginTransaction();
-        Query query = session.createQuery("select t from ABCDTask t");
+        Query query = session.getNamedQuery("FIND_ALL_ABCD");
         List tasks = new ArrayList();
         tasks = query.list();
-        session.getTransaction().commit();
+        session.close();
         return tasks;
     }
 
@@ -103,11 +104,10 @@ public class ABCDDao
      *
      * @throws HibernateException
      */
+    @Override
     public void updateTask(ABCDTask task) throws HibernateException
     {
-
         updateTaskTransaction(task);
-
     }
 
     private void updateTaskTransaction(ABCDTask task)
@@ -117,6 +117,7 @@ public class ABCDDao
         trans = session.beginTransaction();
         session.update(task);
         trans.commit();
+        session.close();
     }
 
 }

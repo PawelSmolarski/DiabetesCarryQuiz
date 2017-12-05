@@ -13,21 +13,17 @@ and open the template in the editor.
         <title>Display All PickList</title>
     </h:head>
     <h:body>
-                    
-        <h:form id="taskForm">
+
+        <h:form id="taskForm" style="display:block; text-align:center" >
             <p:growl id="message" showDetail="true" />
 
-            <p:outputLabel value="#{pickListTaskBean.task.question}"/>
-            <p:pickList id="pickList" value="#{pickListTaskBean.tasks}" var="tasks" itemLabel="#{tasks}" itemValue="#{tasks}" >
+            <h1>#{pickListTaskBean.task.question}</h1>
+            <p:pickList id="pickList" value="#{pickListTaskBean.tasks}" var="tasks" style="margin: 0 auto" itemLabel="#{tasks}" itemValue="#{tasks}" >
                 <p:ajax event="transfer" listener="#{pickListTaskBean.onTransfer}" update="message" />
                 <p:ajax event="select" listener="#{pickListTaskBean.onSelect}" update="message" />
                 <p:ajax event="reorder" listener="#{pickListTaskBean.onReorder}" update="message" />
                 <p:ajax event="unselect" listener="#{pickListTaskBean.onUnselect}" update="message" />
-            </p:pickList>
-        </h:form>
-        
-        <h:form>
-            <p:growl id="message" showDetail="true" />
+            </p:pickList><br/>
             <p:commandButton value="Submit" action="#{pickListTaskBean.validate}" update="message :taskForm"/>
         </h:form>
     </h:body>
