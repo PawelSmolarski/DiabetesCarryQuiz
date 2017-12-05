@@ -34,26 +34,6 @@ public class PlayerBean implements Serializable
     private static final PlayerDao PLAYER_DAO = new PlayerDao();
 
     /**
-     * Method to save player in table
-     *
-     * @param player to save
-     */
-    public void save(Player player)
-    {
-        try
-        {
-            PLAYER_DAO.addPlayer(player);
-            addMessage("Success!", "Task added correctly.");
-        }
-        catch (HibernateException e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(PlayerDao.class.getName()).log(Level.SEVERE, null, e);
-        }
-
-    }
-
-    /**
      * Method to get all players
      *
      * @return List of all players
@@ -72,5 +52,25 @@ public class PlayerBean implements Serializable
         }
 
         return tasks;
+    }
+
+    /**
+     * Method to save player in table
+     *
+     * @param player to save
+     */
+    public void save(Player player)
+    {
+        try
+        {
+            PLAYER_DAO.addPlayer(player);
+            addMessage("Success!", "Task added correctly.");
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(PlayerDao.class.getName()).log(Level.SEVERE, null, e);
+        }
+
     }
 }

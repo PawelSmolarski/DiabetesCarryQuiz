@@ -7,7 +7,7 @@ package pl.polsl.smolarski.pawel.utils;
 
 /**
  * Interface to get type of specific task
- * 
+ *
  * @author psmolarski
  */
 public interface Taskable
@@ -15,7 +15,7 @@ public interface Taskable
 
     /**
      * Get type of specific task
-     * 
+     *
      * @return type of task
      */
     TaskType getType();

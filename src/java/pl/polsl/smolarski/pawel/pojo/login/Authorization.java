@@ -8,8 +8,6 @@ package pl.polsl.smolarski.pawel.pojo.login;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.bean.ManagedProperty;
-import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -40,24 +38,14 @@ public class Authorization implements Filter
      */
     private QuizBean quizBean = new QuizBean();
 
-    public QuizBean getQuizBean()
-    {
-        return quizBean;
-    }
-
-    public void setQuizBean(QuizBean quizBean)
-    {
-        this.quizBean = quizBean;
-    }
-
     public Authorization()
     {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException
+    public void destroy()
     {
-        
+
     }
 
     @Override
@@ -73,13 +61,13 @@ public class Authorization implements Filter
             HttpSession ses = reqt.getSession(false);
 
             String reqURI = reqt.getRequestURI();
-            
-            if(ses != null)
+
+            if (ses != null)
             {
                 quizBean = (QuizBean) ses.getAttribute("quizBean");
             }
-            
-            if ((ses != null && ses.getAttribute("player") != null) && reqURI.contentEquals("/") && quizBean.getPresentTask() != null)
+
+            if ((ses != null && ses.getAttribute("player") != null) && (reqURI.contentEquals("/") || reqURI.contains("/public/index.xhtml")) && quizBean.getPresentTask() != null)
             {
                 resp.sendRedirect(quizBean.getPresentTask().getType().getURL());
             }
@@ -106,8 +94,18 @@ public class Authorization implements Filter
         }
     }
 
+    public QuizBean getQuizBean()
+    {
+        return quizBean;
+    }
+
+    public void setQuizBean(QuizBean quizBean)
+    {
+        this.quizBean = quizBean;
+    }
+
     @Override
-    public void destroy()
+    public void init(FilterConfig filterConfig) throws ServletException
     {
 
     }

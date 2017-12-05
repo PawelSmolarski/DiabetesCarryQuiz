@@ -9,14 +9,15 @@ import java.util.List;
 
 /**
  * Repository for CRUD operation for tasks by Hibernate.
- * 
+ *
  * @author psmolarski
  * @version 1.0
  * @param <T> type of task
  */
 public interface TaskRepository<T>
 {
-     /**
+
+    /**
      * Method to add task to table
      *
      * @param task to add
@@ -24,17 +25,13 @@ public interface TaskRepository<T>
      */
     void addTask(T task);
 
-
-
     /**
      * Method to delete task to table
      *
      * @param id to delete
      *
      */
-     void deleteTask(int id);
-
-
+    void deleteTask(int id);
 
     /**
      * Method to get tasks from table
@@ -43,8 +40,6 @@ public interface TaskRepository<T>
      *
      */
     List<T> retrieveTask();
-
-
 
     /**
      * Method to update task

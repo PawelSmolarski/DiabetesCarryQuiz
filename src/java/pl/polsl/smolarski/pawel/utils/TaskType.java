@@ -7,7 +7,7 @@ package pl.polsl.smolarski.pawel.utils;
 
 /**
  * Enum class with types of tasks
- * 
+ *
  * @author psmolarski
  * @version 1.0
  */
@@ -18,7 +18,7 @@ public enum TaskType
     DIAGRAM("/game/diagram.xhtml"),
     PICK_LIST("/game/picklist.xhtml"),
     DRAG_DROP("/game/dragdrop.xhtml");
-    
+
     /**
      * URL variable to view of specific task
      */

@@ -15,17 +15,18 @@ import java.util.List;
  */
 public class ModelUtils
 {
-     /**
+
+    /**
      * Static method for checking if two list are equal
-     * 
+     *
      * @param one
      * @param two
-     * @return 
+     * @return
      */
     public static boolean areEqualLists(List<String> one, List<String> two)
     {
 
-        if ( one.size() != two.size())
+        if (one.size() != two.size())
         {
             return false;
         }

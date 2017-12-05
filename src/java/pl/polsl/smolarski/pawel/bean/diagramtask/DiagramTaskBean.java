@@ -16,9 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.HibernateException;
-import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
-import pl.polsl.smolarski.pawel.dao.diagramtask.DiagramTaskDao;
-import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
+import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -28,8 +26,10 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.ArrowOverlay;
-import org.primefaces.model.diagram.Connection;
 import pl.polsl.smolarski.pawel.bean.BeanTaskable;
+import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
+import pl.polsl.smolarski.pawel.dao.diagramtask.DiagramTaskDao;
+import pl.polsl.smolarski.pawel.pojo.diagramtask.DiagramTask;
 import pl.polsl.smolarski.pawel.utils.ModelUtils;
 import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
@@ -43,27 +43,44 @@ import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 @ViewScoped
 public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
 {
-
     /**
-     * Variable of session bean to control game
+     * Constant to use for dao
      */
-    @ManagedProperty("#{quizBean}")
-    private QuizBean quizBean;
-
-    public QuizBean getQuizBean()
+    private static final DiagramTaskDao TASK_DAO = new DiagramTaskDao();
+    
+    /**
+     * To get all tasks
+     *
+     * @return List of tasks
+     */
+    public static List<DiagramTask> getAllrecords()
     {
-        return quizBean;
+        List<DiagramTask> tasks = new ArrayList();
+        
+        try
+        {
+            tasks = TASK_DAO.retrieveTask();
+            
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return tasks;
     }
 
-    public void setQuizBean(QuizBean quizBean)
-    {
-        this.quizBean = quizBean;
-    }
 
     /**
      * Diagram Model Variable
      */
     private DefaultDiagramModel model;
+    
+    /**
+     * Variable of session bean to control game
+     */
+    @ManagedProperty("#{quizBean}")
+    private QuizBean quizBean;
 
     /**
      * Event of connection variable
@@ -76,22 +93,12 @@ public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
     private DiagramTask task = new DiagramTask();
 
     /**
-     * Constant to use for dao
+     * Method to clear local variable task
      */
-    private static final DiagramTaskDao TASK_DAO = new DiagramTaskDao();
-
-    /**
-     * Initialization method
-     */
-    @PostConstruct
-    public void init()
+    @Override
+    public void clearTask()
     {
-        task = (DiagramTask) quizBean.getPresentTask();
-
-        if (task != null)
-        {
-            createDiagramModel();
-        }
+        this.task = new DiagramTask();
     }
 
     /**
@@ -174,10 +181,6 @@ public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
         model.addElement(case_8);
     }
 
-    public DiagramModel getModel()
-    {
-        return model;
-    }
 
     /**
      * Method for creating dot end poind
@@ -212,27 +215,6 @@ public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
         return endPoint;
     }
 
-    /**
-     * Method which use DAO to save task
-     *
-     * @param task to save
-     */
-    @Override
-    public void save(DiagramTask task)
-    {
-        try
-        {
-            TASK_DAO.addTask(task);
-            addMessage("Success!", "Task added correctly.");
-
-        }
-        catch (HibernateException e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-
-    }
 
     /**
      * Method which use DAO to delete task
@@ -254,29 +236,65 @@ public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
             Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-
-    /**
-     * To get all tasks
-     *
-     * @return List of tasks
-     */
-    public static List<DiagramTask> getAllrecords()
+    public DiagramModel getModel()
     {
-        List<DiagramTask> tasks = new ArrayList();
+        return model;
+    }
+    public QuizBean getQuizBean()
+    {
+        return quizBean;
+    }
+    public void setQuizBean(QuizBean quizBean)
+    {
+        this.quizBean = quizBean;
+    }
 
+    public DiagramTask getTask()
+    {
+        return task;
+    }
+
+    public void setTask(DiagramTask task)
+    {
+        this.task = task;
+    }
+    
+    /**
+     * Initialization method
+     */
+    @PostConstruct
+    public void init()
+    {
+        task = (DiagramTask) quizBean.getPresentTask();
+        
+        if (task != null)
+        {
+            createDiagramModel();
+        }
+    }
+    
+    /**
+     * Method which use DAO to save task
+     *
+     * @param task to save
+     */
+    @Override
+    public void save(DiagramTask task)
+    {
         try
         {
-            tasks = TASK_DAO.retrieveTask();
-
+            TASK_DAO.addTask(task);
+            addMessage("Success!", "Task added correctly.");
+            
         }
         catch (HibernateException e)
         {
             addMessage("Error!", "Please try again.");
             Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
         }
-        return tasks;
-    }
 
+    }
+    
     /**
      * To update task
      */
@@ -294,25 +312,6 @@ public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
             addMessage("Error!", "Please try again.");
             Logger.getLogger(DiagramTaskBean.class.getName()).log(Level.SEVERE, null, e);
         }
-    }
-
-    public DiagramTask getTask()
-    {
-        return task;
-    }
-
-    public void setTask(DiagramTask task)
-    {
-        this.task = task;
-    }
-
-    /**
-     * Method to clear local variable task
-     */
-    @Override
-    public void clearTask()
-    {
-        this.task = new DiagramTask();
     }
 
     /**
@@ -347,7 +346,5 @@ public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
         }
 
         quizBean.game();
-
     }
-
 }

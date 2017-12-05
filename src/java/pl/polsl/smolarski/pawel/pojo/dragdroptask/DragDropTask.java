@@ -18,24 +18,23 @@ import pl.polsl.smolarski.pawel.utils.TaskType;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 
 /**
- * ORM entity class for Drag Drop Task 
+ * ORM entity class for Drag Drop Task
  *
  * @author psmolarski
  * @version 1.0
  */
 @Entity
-@NamedQuery(name="FIND_ALL_DRAG_DROP", query="select t from DragDropTask t") 
+@NamedQuery(name = "FIND_ALL_DRAG_DROP", query = "select t from DragDropTask t")
 @Table(name = "dragdrop_task")
 public class DragDropTask implements Serializable, Taskable
 {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
-    @Column(name = "question")
-    private String question;
+    @Column(name = "answer_a")
+    private String answerA;
+    @Column(name = "answer_b")
+    private String answerB;
+    @Column(name = "answer_relations")
+    private String answerRelations;
 
     @Column(name = "case_1")
     private String case1;
@@ -51,22 +50,29 @@ public class DragDropTask implements Serializable, Taskable
 
     @Column(name = "case_5")
     private String case5;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "question")
+    private String question;
 
-    @Column(name = "answer_a")
-    private String answerA;
-
-    @Column(name = "answer_b")
-    private String answerB;
-
-    @Column(name = "answer_relations")
-    private String answerRelations;
-
-    @Override
-    public int hashCode()
+    public DragDropTask(Integer id, String question, String case1, String case2, String case3, String case4, String case5, String answerA, String answerB, String answerRelations)
     {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.id);
-        return hash;
+        this.id = id;
+        this.question = question;
+        this.case1 = case1;
+        this.case2 = case2;
+        this.case3 = case3;
+        this.case4 = case4;
+        this.case5 = case5;
+        this.answerA = answerA;
+        this.answerB = answerB;
+        this.answerRelations = answerRelations;
+    }
+
+    public DragDropTask()
+    {
     }
 
     @Override
@@ -92,16 +98,34 @@ public class DragDropTask implements Serializable, Taskable
         return true;
     }
 
-    
-    
-    public Integer getId()
+    public String getAnswerA()
     {
-        return id;
+        return answerA;
     }
 
-    public void setId(Integer id)
+    public void setAnswerA(String answerA)
     {
-        this.id = id;
+        this.answerA = answerA;
+    }
+
+    public String getAnswerB()
+    {
+        return answerB;
+    }
+
+    public void setAnswerB(String answerB)
+    {
+        this.answerB = answerB;
+    }
+
+    public String getAnswerRelations()
+    {
+        return answerRelations;
+    }
+
+    public void setAnswerRelations(String answerRelations)
+    {
+        this.answerRelations = answerRelations;
     }
 
     public String getCase1()
@@ -154,34 +178,14 @@ public class DragDropTask implements Serializable, Taskable
         this.case5 = case5;
     }
 
-    public String getAnswerA()
+    public Integer getId()
     {
-        return answerA;
+        return id;
     }
 
-    public void setAnswerA(String answerA)
+    public void setId(Integer id)
     {
-        this.answerA = answerA;
-    }
-
-    public String getAnswerB()
-    {
-        return answerB;
-    }
-
-    public void setAnswerB(String answerB)
-    {
-        this.answerB = answerB;
-    }
-
-    public String getAnswerRelations()
-    {
-        return answerRelations;
-    }
-
-    public void setAnswerRelations(String answerRelations)
-    {
-        this.answerRelations = answerRelations;
+        this.id = id;
     }
 
     public String getQuestion()
@@ -194,24 +198,6 @@ public class DragDropTask implements Serializable, Taskable
         this.question = question;
     }
 
-    public DragDropTask(Integer id, String question, String case1, String case2, String case3, String case4, String case5, String answerA, String answerB, String answerRelations)
-    {
-        this.id = id;
-        this.question = question;
-        this.case1 = case1;
-        this.case2 = case2;
-        this.case3 = case3;
-        this.case4 = case4;
-        this.case5 = case5;
-        this.answerA = answerA;
-        this.answerB = answerB;
-        this.answerRelations = answerRelations;
-    }
-
-    public DragDropTask()
-    {
-    }
-
     /**
      * Method to get own type of task
      *
@@ -221,6 +207,14 @@ public class DragDropTask implements Serializable, Taskable
     public TaskType getType()
     {
         return TaskType.DRAG_DROP;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.id);
+        return hash;
     }
 
 }

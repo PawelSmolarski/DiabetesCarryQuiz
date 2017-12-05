@@ -38,35 +38,34 @@ public class DragDropTaskBean implements Serializable, BeanTaskable<DragDropTask
 {
 
     /**
-     * Variable of session bean to control game
-     */
-    @ManagedProperty("#{quizBean}")
-    private QuizBean quizBean;
-
-    public QuizBean getQuizBean()
-    {
-        return quizBean;
-    }
-
-    public void setQuizBean(QuizBean quizBean)
-    {
-        this.quizBean = quizBean;
-    }
-
-    /**
-     * Local task variable
-     */
-    private DragDropTask task = new DragDropTask();
-
-    /**
      * Constant variable for DAO
      */
     private static final DragDropDao TASK_DAO = new DragDropDao();
 
     /**
-     * List of object to drag
+     * Method to get all tasks
+     *
+     * @return List of tasks
      */
-    private List<SpecificCase> tasksToDrop;
+    public static List<DragDropTask> getAllrecords()
+    {
+        List<DragDropTask> tasks = new ArrayList();
+        try
+        {
+            tasks = TASK_DAO.retrieveTask();
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return tasks;
+    }
+
+    /**
+     * Map of answers
+     */
+    private Map<String, String> answerRelations;
 
     /**
      * List of object to drop
@@ -79,60 +78,28 @@ public class DragDropTaskBean implements Serializable, BeanTaskable<DragDropTask
     private List<SpecificCase> droppedAnswerB;
 
     /**
-     * Map of answers
+     * Variable of session bean to control game
      */
-    private Map<String, String> answerRelations;
+    @ManagedProperty("#{quizBean}")
+    private QuizBean quizBean;
 
     /**
-     * Initialization method
+     * Local task variable
      */
-    @PostConstruct
-    public void init()
-    {
-        task = (DragDropTask) quizBean.getPresentTask();
-        if (task != null)
-        {
-            presentTask();
-        }
-
-    }
+    private DragDropTask task = new DragDropTask();
 
     /**
-     * Method to return answer to draggable list
-     *
-     * @param task to return
+     * List of object to drag
      */
-    public void returnAnswerA(SpecificCase task)
-    {
-        tasksToDrop.add(task);
-        droppedAnswerA.remove(task);
-
-    }
+    private List<SpecificCase> tasksToDrop;
 
     /**
-     * Method to return answer to draggable list
-     *
-     * @param task to return
+     * To clear local task
      */
-    public void returnAnswerB(SpecificCase task)
+    @Override
+    public void clearTask()
     {
-
-        tasksToDrop.add(task);
-        droppedAnswerB.remove(task);
-
-    }
-
-    private void presentTask()
-    {
-        tasksToDrop = new ArrayList<>();
-        droppedAnswerA = new ArrayList<>();
-        droppedAnswerB = new ArrayList<>();
-        createAnswerMap();
-        tasksToDrop.add(new SpecificCase(task.getCase1(), answerRelations.get("1")));
-        tasksToDrop.add(new SpecificCase(task.getCase2(), answerRelations.get("2")));
-        tasksToDrop.add(new SpecificCase(task.getCase3(), answerRelations.get("3")));
-        tasksToDrop.add(new SpecificCase(task.getCase4(), answerRelations.get("4")));
-        tasksToDrop.add(new SpecificCase(task.getCase5(), answerRelations.get("5")));
+        this.task = new DragDropTask();
     }
 
     /**
@@ -146,54 +113,6 @@ public class DragDropTaskBean implements Serializable, BeanTaskable<DragDropTask
                 .splitAsStream(answers.trim())
                 .map(s -> s.split("-", 2))
                 .collect(Collectors.toMap(a -> a[0], a -> a[1]));
-    }
-
-    /**
-     * Method to move object after drop
-     *
-     * @param ddEvent of move
-     */
-    public void onTaskDropAnswerA(DragDropEvent ddEvent)
-    {
-        SpecificCase taskDrop = ((SpecificCase) ddEvent.getData());
-
-        droppedAnswerA.add(taskDrop);
-        tasksToDrop.remove(taskDrop);
-    }
-
-    /**
-     * Method to move object after drop
-     *
-     * @param ddEvent of move
-     */
-    public void onTaskDropAnswerB(DragDropEvent ddEvent)
-    {
-        SpecificCase taskDrop = ((SpecificCase) ddEvent.getData());
-        droppedAnswerB.add(taskDrop);
-        tasksToDrop.remove(taskDrop);
-
-    }
-
-    /**
-     * Method which use DAO to save task
-     *
-     * @param task to save
-     */
-    @Override
-    public void save(DragDropTask task)
-    {
-        try
-        {
-            TASK_DAO.addTask(task);
-            addMessage("Success!", "Task added correctly.");
-
-        }
-        catch (HibernateException e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-
     }
 
     /**
@@ -217,72 +136,14 @@ public class DragDropTaskBean implements Serializable, BeanTaskable<DragDropTask
 
     }
 
-    /**
-     * Method to get all tasks
-     *
-     * @return List of tasks
-     */
-    public static List<DragDropTask> getAllrecords()
+    public Map<String, String> getAnswerRelations()
     {
-        List<DragDropTask> tasks = new ArrayList();
-        try
-        {
-            tasks = TASK_DAO.retrieveTask();
-        }
-        catch (HibernateException e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return tasks;
+        return answerRelations;
     }
 
-    /**
-     * Update task
-     */
-    @Override
-    public void update()
+    public void setAnswerRelations(Map<String, String> answerRelations)
     {
-        try
-        {
-            TASK_DAO.updateTask(task);
-            addMessage("Success!", "Task updated correctly.");
-
-        }
-        catch (HibernateException e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-
-    public DragDropTask getTask()
-    {
-        return task;
-    }
-
-    public void setTask(DragDropTask task)
-    {
-        this.task = task;
-    }
-
-    /**
-     * To clear local task
-     */
-    @Override
-    public void clearTask()
-    {
-        this.task = new DragDropTask();
-    }
-
-    public List<SpecificCase> getTasksToDrop()
-    {
-        return tasksToDrop;
-    }
-
-    public void setTasksToDrop(List<SpecificCase> tasksToDrop)
-    {
-        this.tasksToDrop = tasksToDrop;
+        this.answerRelations = answerRelations;
     }
 
     public List<SpecificCase> getDroppedAnswerA()
@@ -305,28 +166,47 @@ public class DragDropTaskBean implements Serializable, BeanTaskable<DragDropTask
         this.droppedAnswerB = droppedAnswerB;
     }
 
-    public Map<String, String> getAnswerRelations()
+    public QuizBean getQuizBean()
     {
-        return answerRelations;
+        return quizBean;
     }
 
-    public void setAnswerRelations(Map<String, String> answerRelations)
+    public void setQuizBean(QuizBean quizBean)
     {
-        this.answerRelations = answerRelations;
+        this.quizBean = quizBean;
+    }
+
+    public DragDropTask getTask()
+    {
+        return task;
+    }
+
+    public void setTask(DragDropTask task)
+    {
+        this.task = task;
+    }
+
+    public List<SpecificCase> getTasksToDrop()
+    {
+        return tasksToDrop;
+    }
+
+    public void setTasksToDrop(List<SpecificCase> tasksToDrop)
+    {
+        this.tasksToDrop = tasksToDrop;
     }
 
     /**
-     * Validation method of user answer.
+     * Initialization method
      */
-    @Override
-    public void validate()
+    @PostConstruct
+    public void init()
     {
-        if (isCorrect() == true)
+        task = (DragDropTask) quizBean.getPresentTask();
+        if (task != null)
         {
-            System.out.println("points from drag drop");
-            quizBean.setPoints(quizBean.getPoints() + 1);
+            presentTask();
         }
-        quizBean.game();
 
     }
 
@@ -361,4 +241,124 @@ public class DragDropTaskBean implements Serializable, BeanTaskable<DragDropTask
 
         return true;
     }
+
+    /**
+     * Method to move object after drop
+     *
+     * @param ddEvent of move
+     */
+    public void onTaskDropAnswerA(DragDropEvent ddEvent)
+    {
+        SpecificCase taskDrop = ((SpecificCase) ddEvent.getData());
+
+        droppedAnswerA.add(taskDrop);
+        tasksToDrop.remove(taskDrop);
+    }
+
+    /**
+     * Method to move object after drop
+     *
+     * @param ddEvent of move
+     */
+    public void onTaskDropAnswerB(DragDropEvent ddEvent)
+    {
+        SpecificCase taskDrop = ((SpecificCase) ddEvent.getData());
+        droppedAnswerB.add(taskDrop);
+        tasksToDrop.remove(taskDrop);
+
+    }
+
+    private void presentTask()
+    {
+        tasksToDrop = new ArrayList<>();
+        droppedAnswerA = new ArrayList<>();
+        droppedAnswerB = new ArrayList<>();
+        createAnswerMap();
+        tasksToDrop.add(new SpecificCase(task.getCase1(), answerRelations.get("1")));
+        tasksToDrop.add(new SpecificCase(task.getCase2(), answerRelations.get("2")));
+        tasksToDrop.add(new SpecificCase(task.getCase3(), answerRelations.get("3")));
+        tasksToDrop.add(new SpecificCase(task.getCase4(), answerRelations.get("4")));
+        tasksToDrop.add(new SpecificCase(task.getCase5(), answerRelations.get("5")));
+    }
+
+    /**
+     * Method to return answer to draggable list
+     *
+     * @param task to return
+     */
+    public void returnAnswerA(SpecificCase task)
+    {
+        tasksToDrop.add(task);
+        droppedAnswerA.remove(task);
+    }
+
+    /**
+     * Method to return answer to draggable list
+     *
+     * @param task to return
+     */
+    public void returnAnswerB(SpecificCase task)
+    {
+
+        tasksToDrop.add(task);
+        droppedAnswerB.remove(task);
+
+    }
+
+    /**
+     * Method which use DAO to save task
+     *
+     * @param task to save
+     */
+    @Override
+    public void save(DragDropTask task)
+    {
+        try
+        {
+            TASK_DAO.addTask(task);
+            addMessage("Success!", "Task added correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+    }
+
+    /**
+     * Update task
+     */
+    @Override
+    public void update()
+    {
+        try
+        {
+            TASK_DAO.updateTask(task);
+            addMessage("Success!", "Task updated correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(DragDropTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    /**
+     * Validation method of user answer.
+     */
+    @Override
+    public void validate()
+    {
+        if (isCorrect() == true)
+        {
+            System.out.println("points from drag drop");
+            quizBean.setPoints(quizBean.getPoints() + 1);
+        }
+        quizBean.game();
+
+    }
+
 }

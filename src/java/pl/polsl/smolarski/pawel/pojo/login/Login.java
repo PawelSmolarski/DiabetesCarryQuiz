@@ -21,7 +21,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "users")
-public class Login implements Serializable {
+public class Login implements Serializable
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +35,15 @@ public class Login implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Override
-    public int hashCode()
+    public Login(Integer id, String login, String password)
     {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.id);
-        return hash;
+        this.id = id;
+        this.login = login;
+        this.password = password;
+    }
+
+    public Login()
+    {
     }
 
     @Override
@@ -65,39 +69,42 @@ public class Login implements Serializable {
         return true;
     }
 
-
-    
-    public Login(Integer id, String login, String password) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-    }
-
-    public Login() {
-    }
-
-    public Integer getId() {
+    public Integer getId()
+    {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Integer id)
+    {
         this.id = id;
     }
 
-    public String getLogin() {
+    public String getLogin()
+    {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(String login)
+    {
         this.login = login;
     }
 
-    public String getPassword() {
+    public String getPassword()
+    {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password)
+    {
         this.password = password;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id);
+        return hash;
     }
 
 }

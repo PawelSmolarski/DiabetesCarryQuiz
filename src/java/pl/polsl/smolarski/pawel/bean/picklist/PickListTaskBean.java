@@ -19,13 +19,13 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.HibernateException;
 import org.primefaces.event.SelectEvent;
-import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
-import pl.polsl.smolarski.pawel.dao.picklist.PickListDao;
-import pl.polsl.smolarski.pawel.pojo.picklisttask.PickListTask;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
 import pl.polsl.smolarski.pawel.bean.BeanTaskable;
+import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
+import pl.polsl.smolarski.pawel.dao.picklist.PickListDao;
+import pl.polsl.smolarski.pawel.pojo.picklisttask.PickListTask;
 import pl.polsl.smolarski.pawel.utils.ModelUtils;
 import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
@@ -41,144 +41,68 @@ public class PickListTaskBean implements Serializable, BeanTaskable<PickListTask
 {
 
     /**
-     * Variable of session bean to control game
-     */
-    @ManagedProperty("#{quizBean}")
-    private QuizBean quizBean;
-
-    public QuizBean getQuizBean()
-    {
-        return quizBean;
-    }
-
-    public void setQuizBean(QuizBean quizBean)
-    {
-        this.quizBean = quizBean;
-    }
-
-    /**
-     * Present task
-     */
-    private PickListTask task = new PickListTask();
-    
-    /**
      * Variable to use DAO
      */
     private static final PickListDao TASK_DAO = new PickListDao();
 
     /**
-     * List for keeping left and right side questions
-     */
-    private DualListModel<String> tasks;
-    
-    /**
-     * List for keeping left side tasks
-     */
-    private List<String> tasksSource;
-    
-    /**
-     * List for keeping right side tasks
-     */
-    private List<String> tasksTarget;
-    
-    /**
-     * Map with question and answers combination
-     */
-    private Map<String, String> questionCases;
-
-    @PostConstruct
-    public void init()
-    {
-
-        task = (PickListTask) quizBean.getPresentTask();
-
-        if (task != null)
-        {
-            tasksSource = new ArrayList<>();
-            tasksTarget = new ArrayList<>();
-
-            questionCases = new HashMap<>();
-            questionCases.put("1", task.getCase1());
-            questionCases.put("2", task.getCase2());
-            questionCases.put("3", task.getCase3());
-            questionCases.put("4", task.getCase4());
-            questionCases.put("", "");
-
-            for (String key : questionCases.keySet())
-            {
-                tasksSource.add(questionCases.get(key));
-            }
-
-            tasks = new DualListModel<>(tasksSource, tasksTarget);
-        }
-    }
-
-    /**
-     * Method on tranfer of answer
+     * Method to get all tasks
      *
-     * @param event of transfer
+     * @return List of tasks
      */
-    public void onTransfer(TransferEvent event)
+    public static List<PickListTask> getAllrecords()
     {
-
-    }
-
-    /**
-     * Method on select of answer
-     *
-     * @param event of transfer
-     */
-    public void onSelect(SelectEvent event)
-    {
-
-    }
-
-    /**
-     * Method on unselect of answer
-     *
-     * @param event of transfer
-     */
-    public void onUnselect(UnselectEvent event)
-    {
-    }
-
-    /**
-     * Method on reorder of answer
-     *
-     */
-    public void onReorder()
-    {
-    }
-
-    public DualListModel<String> getTasks()
-    {
-        return tasks;
-    }
-
-    public void setTasks(DualListModel<String> tasks)
-    {
-        this.tasks = tasks;
-    }
-
-    /**
-     * Method which use DAO to save task
-     *
-     * @param task to save
-     */
-    @Override
-    public void save(PickListTask task)
-    {
+        List<PickListTask> tasks = new ArrayList();
+        
         try
         {
-            TASK_DAO.addTask(task);
-            addMessage("Success!", "Task added correctly.");
-
+            tasks = TASK_DAO.retrieveTask();
         }
         catch (HibernateException e)
         {
             addMessage("Error!", "Please try again.");
             Logger.getLogger(PickListTaskBean.class.getName()).log(Level.SEVERE, null, e);
         }
+        return tasks;
+    }
+    /**
+     * Map with question and answers combination
+     */
+    private Map<String, String> questionCases;
+
+    /**
+     * Variable of session bean to control game
+     */
+    @ManagedProperty("#{quizBean}")
+    private QuizBean quizBean;
+
+    /**
+     * Present task
+     */
+    private PickListTask task = new PickListTask();
+
+    /**
+     * List for keeping left and right side questions
+     */
+    private DualListModel<String> tasks;
+
+    /**
+     * List for keeping left side tasks
+     */
+    private List<String> tasksSource;
+
+    /**
+     * List for keeping right side tasks
+     */
+    private List<String> tasksTarget;
+
+    /**
+     * Method to clear task
+     */
+    @Override
+    public void clearTask()
+    {
+        this.task = new PickListTask();
     }
 
     /**
@@ -201,25 +125,119 @@ public class PickListTaskBean implements Serializable, BeanTaskable<PickListTask
         }
     }
 
-    /**
-     * Method to get all tasks
-     *
-     * @return List of tasks
-     */
-    public static List<PickListTask> getAllrecords()
+    public QuizBean getQuizBean()
     {
-        List<PickListTask> tasks = new ArrayList();
+        return quizBean;
+    }
 
+    public void setQuizBean(QuizBean quizBean)
+    {
+        this.quizBean = quizBean;
+    }
+
+    public PickListTask getTask()
+    {
+        return task;
+    }
+
+    public void setTask(PickListTask task)
+    {
+        this.task = task;
+    }
+    
+    public DualListModel<String> getTasks()
+    {
+        return tasks;
+    }
+    
+    public void setTasks(DualListModel<String> tasks)
+    {
+        this.tasks = tasks;
+    }
+
+    @PostConstruct
+    public void init()
+    {
+        
+        task = (PickListTask) quizBean.getPresentTask();
+        
+        if (task != null)
+        {
+            tasksSource = new ArrayList<>();
+            tasksTarget = new ArrayList<>();
+            
+            questionCases = new HashMap<>();
+            questionCases.put("1", task.getCase1());
+            questionCases.put("2", task.getCase2());
+            questionCases.put("3", task.getCase3());
+            questionCases.put("4", task.getCase4());
+            questionCases.put("", "");
+            
+            for (String key : questionCases.keySet())
+            {
+                tasksSource.add(questionCases.get(key));
+            }
+            
+            tasks = new DualListModel<>(tasksSource, tasksTarget);
+        }
+    }
+
+    /**
+     * Method on reorder of answer
+     *
+     */
+    public void onReorder()
+    {
+    }
+
+    /**
+     * Method on select of answer
+     *
+     * @param event of transfer
+     */
+    public void onSelect(SelectEvent event)
+    {
+        
+    }
+
+    /**
+     * Method on tranfer of answer
+     *
+     * @param event of transfer
+     */
+    public void onTransfer(TransferEvent event)
+    {
+        
+    }
+
+    /**
+     * Method on unselect of answer
+     *
+     * @param event of transfer
+     */
+    public void onUnselect(UnselectEvent event)
+    {
+    }
+
+    /**
+     * Method which use DAO to save task
+     *
+     * @param task to save
+     */
+    @Override
+    public void save(PickListTask task)
+    {
         try
         {
-            tasks = TASK_DAO.retrieveTask();
+            TASK_DAO.addTask(task);
+            addMessage("Success!", "Task added correctly.");
+            
         }
         catch (HibernateException e)
         {
             addMessage("Error!", "Please try again.");
             Logger.getLogger(PickListTaskBean.class.getName()).log(Level.SEVERE, null, e);
         }
-        return tasks;
     }
 
     /**
@@ -232,7 +250,7 @@ public class PickListTaskBean implements Serializable, BeanTaskable<PickListTask
         {
             TASK_DAO.updateTask(task);
             addMessage("Success!", "Task updated correctly.");
-
+            
         }
         catch (HibernateException e)
         {
@@ -241,32 +259,13 @@ public class PickListTaskBean implements Serializable, BeanTaskable<PickListTask
         }
     }
 
-    public PickListTask getTask()
-    {
-        return task;
-    }
-
-    public void setTask(PickListTask task)
-    {
-        this.task = task;
-    }
-
-    /**
-     * Method to clear task
-     */
-    @Override
-    public void clearTask()
-    {
-        this.task = new PickListTask();
-    }
-
     /**
      * Method to validate user answer
      */
     @Override
     public void validate()
     {
-
+        
         List<String> tasksTarget = tasks.getTarget();
         if (tasksTarget.isEmpty())
         {
@@ -274,20 +273,20 @@ public class PickListTaskBean implements Serializable, BeanTaskable<PickListTask
         }
         List<String> answersKeys = new ArrayList<>();
         answersKeys = Arrays.asList(task.getAnswer().split(";"));
-
+        
         List<String> answers = new ArrayList<>();
-
+        
         for (String s : answersKeys)
         {
             answers.add(questionCases.get(s));
         }
-
+        
         if (ModelUtils.areEqualLists(answers, tasksTarget))
         {
             quizBean.setPoints(quizBean.getPoints() + 1);
             System.out.println("player get points pick list");
         }
-
+        
         quizBean.game();
     }
 }

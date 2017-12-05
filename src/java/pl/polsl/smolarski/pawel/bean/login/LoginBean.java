@@ -41,6 +41,19 @@ public class LoginBean implements Serializable
      */
     private String password;
 
+    /**
+     * Create session for user
+     *
+     * @return context of session
+     */
+    private ExternalContext createSession()
+    {
+        HttpSession session = SessionUtils.getSession();
+        session.setAttribute("username", login);
+        return FacesContext.getCurrentInstance().getExternalContext();
+
+    }
+
     public String getLogin()
     {
         return login;
@@ -90,18 +103,5 @@ public class LoginBean implements Serializable
             }
 
         }
-    }
-
-    /**
-     * Create session for user
-     *
-     * @return context of session
-     */
-    private ExternalContext createSession()
-    {
-        HttpSession session = SessionUtils.getSession();
-        session.setAttribute("username", login);
-        return FacesContext.getCurrentInstance().getExternalContext();
-
     }
 }

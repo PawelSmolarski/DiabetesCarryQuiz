@@ -18,24 +18,19 @@ import pl.polsl.smolarski.pawel.utils.TaskType;
 import pl.polsl.smolarski.pawel.utils.Taskable;
 
 /**
- * ORM entity class for PickListTask 
+ * ORM entity class for PickListTask
  *
  * @author psmolarski
  * @version 1.0
  */
 @Entity
-@NamedQuery(name="FIND_ALL_PICK_LIST", query="select t from PickListTask t") 
+@NamedQuery(name = "FIND_ALL_PICK_LIST", query = "select t from PickListTask t")
 @Table(name = "picklist_task")
 public class PickListTask implements Serializable, Taskable
 {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
-    @Column(name = "question")
-    private String question;
+    @Column(name = "answer")
+    private String answer;
 
     @Column(name = "case_1")
     private String case1;
@@ -48,16 +43,32 @@ public class PickListTask implements Serializable, Taskable
 
     @Column(name = "case_4")
     private String case4;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
-    @Column(name = "answer")
-    private String answer;
+    @Column(name = "question")
+    private String question;
 
-    @Override
-    public int hashCode()
+    public PickListTask(Integer id, String question, String case1, String case2, String case3, String case4, String answer)
     {
-        int hash = 5;
-        hash = 47 * hash + Objects.hashCode(this.id);
-        return hash;
+        this.id = id;
+        this.question = question;
+        this.case1 = case1;
+        this.case2 = case2;
+        this.case3 = case3;
+        this.case4 = case4;
+        this.answer = answer;
+    }
+
+    public PickListTask()
+    {
+    }
+
+    public PickListTask(Integer id)
+    {
+        this.id = id;
     }
 
     @Override
@@ -83,46 +94,14 @@ public class PickListTask implements Serializable, Taskable
         return true;
     }
 
-    
-    
-    public PickListTask(Integer id, String question, String case1, String case2, String case3, String case4, String answer)
+    public String getAnswer()
     {
-        this.id = id;
-        this.question = question;
-        this.case1 = case1;
-        this.case2 = case2;
-        this.case3 = case3;
-        this.case4 = case4;
+        return answer;
+    }
+
+    public void setAnswer(String answer)
+    {
         this.answer = answer;
-    }
-
-    public String getQuestion()
-    {
-        return question;
-    }
-
-    public void setQuestion(String question)
-    {
-        this.question = question;
-    }
-
-    public PickListTask()
-    {
-    }
-
-    public PickListTask(Integer id)
-    {
-        this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId(Integer id)
-    {
-        this.id = id;
     }
 
     public String getCase1()
@@ -165,14 +144,24 @@ public class PickListTask implements Serializable, Taskable
         this.case4 = case4;
     }
 
-    public String getAnswer()
+    public Integer getId()
     {
-        return answer;
+        return id;
     }
 
-    public void setAnswer(String answer)
+    public void setId(Integer id)
     {
-        this.answer = answer;
+        this.id = id;
+    }
+
+    public String getQuestion()
+    {
+        return question;
+    }
+
+    public void setQuestion(String question)
+    {
+        this.question = question;
     }
 
     /**
@@ -184,6 +173,14 @@ public class PickListTask implements Serializable, Taskable
     public TaskType getType()
     {
         return TaskType.PICK_LIST;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.id);
+        return hash;
     }
 
 }

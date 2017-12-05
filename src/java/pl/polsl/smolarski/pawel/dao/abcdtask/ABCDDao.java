@@ -12,8 +12,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import pl.polsl.smolarski.pawel.dao.TaskRepository;
-import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import pl.polsl.smolarski.pawel.pojo.abcdtask.ABCDTask;
+import pl.polsl.smolarski.pawel.utils.SessionUtils;
 
 /**
  * Class which provides CRUD methods for ABCDTask

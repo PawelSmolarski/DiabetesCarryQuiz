@@ -16,9 +16,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.hibernate.HibernateException;
 import pl.polsl.smolarski.pawel.bean.BeanTaskable;
+import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import pl.polsl.smolarski.pawel.dao.abcdtask.ABCDDao;
 import pl.polsl.smolarski.pawel.pojo.abcdtask.ABCDTask;
-import pl.polsl.smolarski.pawel.bean.quiz.QuizBean;
 import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 
 /**
@@ -31,11 +31,88 @@ import static pl.polsl.smolarski.pawel.utils.ViewUtils.addMessage;
 @ViewScoped
 public class ABCDTaskBean implements Serializable, BeanTaskable<ABCDTask>
 {
+
+    /**
+     * Static final variable to use dao
+     */
+    private static final ABCDDao TASK_DAO = new ABCDDao();
+
+    /**
+     * Method to receive all tasks
+     *
+     * @return List of get tasks
+     */
+    public static List<ABCDTask> getAllrecords()
+    {
+        List<ABCDTask> tasks = new ArrayList();
+        try
+        {
+            tasks = TASK_DAO.retrieveTask();
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(ABCDDao.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return tasks;
+    }
+
+    /**
+     * Variable of user choose
+     */
+    private int answer;
+    
     /**
      * Variable of session bean to control game
      */
     @ManagedProperty("#{quizBean}")
     private QuizBean quizBean;
+    
+    /**
+     * Local task variable
+     */
+    private ABCDTask task = new ABCDTask();
+
+    /**
+     * Clearing local task
+     */
+    @Override
+    public void clearTask()
+    {
+        this.task = new ABCDTask();
+    }
+
+    /**
+     * Method which use DAO to delete task
+     *
+     * @param task to delete
+     */
+    @Override
+    public void delete(ABCDTask task)
+    {
+        try
+        {
+            TASK_DAO.deleteTask(task.getId());
+            addMessage("Success!", "Task deleted correctly.");
+
+        }
+        catch (HibernateException e)
+        {
+            addMessage("Error!", "Please try again.");
+            Logger.getLogger(ABCDTaskBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+    }
+
+    public int getAnswer()
+    {
+        return answer;
+    }
+
+    public void setAnswer(int answer)
+    {
+        this.answer = answer;
+    }
 
     public QuizBean getQuizBean()
     {
@@ -47,20 +124,15 @@ public class ABCDTaskBean implements Serializable, BeanTaskable<ABCDTask>
         this.quizBean = quizBean;
     }
 
-    /**
-     * Local task variable
-     */
-    private ABCDTask task = new ABCDTask();
+    public ABCDTask getTask()
+    {
+        return task;
+    }
 
-    /**
-     * Static final variable to use dao
-     */
-    private static final ABCDDao TASK_DAO = new ABCDDao();
-
-    /**
-     * Variable of user choose
-     */
-    private int answer;
+    public void setTask(ABCDTask task)
+    {
+        this.task = task;
+    }
 
     /**
      * Init method
@@ -69,16 +141,6 @@ public class ABCDTaskBean implements Serializable, BeanTaskable<ABCDTask>
     public void init()
     {
         task = (ABCDTask) quizBean.getPresentTask();
-    }
-
-    public int getAnswer()
-    {
-        return answer;
-    }
-
-    public void setAnswer(int answer)
-    {
-        this.answer = answer;
     }
 
     /**
@@ -104,48 +166,6 @@ public class ABCDTaskBean implements Serializable, BeanTaskable<ABCDTask>
     }
 
     /**
-     * Method which use DAO to delete task
-     *
-     * @param task to delete
-     */
-    @Override
-    public void delete(ABCDTask task)
-    {
-        try
-        {
-            TASK_DAO.deleteTask(task.getId());
-            addMessage("Success!", "Task deleted correctly.");
-
-        }
-        catch (HibernateException e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(ABCDTaskBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-
-    }
-
-    /**
-     * Method to receive all tasks
-     *
-     * @return List of get tasks
-     */
-    public static List<ABCDTask> getAllrecords()
-    {
-        List<ABCDTask> tasks = new ArrayList();
-        try
-        {
-            tasks = TASK_DAO.retrieveTask();
-        }
-        catch (HibernateException e)
-        {
-            addMessage("Error!", "Please try again.");
-            Logger.getLogger(ABCDDao.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return tasks;
-    }
-
-    /**
      * Method to update present task
      */
     @Override
@@ -162,25 +182,6 @@ public class ABCDTaskBean implements Serializable, BeanTaskable<ABCDTask>
             addMessage("Error!", "Please try again.");
             Logger.getLogger(ABCDTaskBean.class.getName()).log(Level.SEVERE, null, e);
         }
-    }
-
-    public ABCDTask getTask()
-    {
-        return task;
-    }
-
-    public void setTask(ABCDTask task)
-    {
-        this.task = task;
-    }
-
-    /**
-     * Clearing local task
-     */
-    @Override
-    public void clearTask()
-    {
-        this.task = new ABCDTask();
     }
 
     /**

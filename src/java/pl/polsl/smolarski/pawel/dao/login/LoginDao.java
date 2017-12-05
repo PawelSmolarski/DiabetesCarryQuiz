@@ -10,9 +10,8 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import pl.polsl.smolarski.pawel.utils.SessionUtils;
 import pl.polsl.smolarski.pawel.pojo.login.Login;
+import pl.polsl.smolarski.pawel.utils.SessionUtils;
 
 /**
  * Class which provides validating methods for Login

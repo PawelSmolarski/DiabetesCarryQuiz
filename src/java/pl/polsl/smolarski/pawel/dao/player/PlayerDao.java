@@ -20,7 +20,7 @@ import pl.polsl.smolarski.pawel.utils.SessionUtils;
  * @author psmolarski
  * @version 1.0
  */
-public class PlayerDao 
+public class PlayerDao
 {
 
     /**

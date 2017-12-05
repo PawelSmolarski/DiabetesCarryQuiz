@@ -12,31 +12,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import pl.polsl.smolarski.pawel.utils.Taskable;
 import pl.polsl.smolarski.pawel.utils.TaskType;
+import pl.polsl.smolarski.pawel.utils.Taskable;
 
 /**
- * ORM entity class for ABCDTask 
+ * ORM entity class for ABCDTask
  *
  * @author psmolarski
  * @version 1.0
  */
 @Entity
-@NamedQuery(name="FIND_ALL_ABCD", query="select t from ABCDTask t") 
+@NamedQuery(name = "FIND_ALL_ABCD", query = "select t from ABCDTask t")
 @Table(name = "abcd_task")
 public class ABCDTask implements Serializable, Taskable
 {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
-    @Column(name = "question")
-    private String question;
+    @Column(name = "answer")
+    private Integer answer;
 
     @Column(name = "case_1")
     private String case1;
@@ -49,9 +43,12 @@ public class ABCDTask implements Serializable, Taskable
 
     @Column(name = "case_4")
     private String case4;
-
-    @Column(name = "answer")
-    private Integer answer;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "question")
+    private String question;
 
     public ABCDTask(Integer id, String question, String case1, String case2, String case3, String case4, Integer answer)
     {
@@ -64,12 +61,13 @@ public class ABCDTask implements Serializable, Taskable
         this.answer = answer;
     }
 
-    @Override
-    public int hashCode()
+    public ABCDTask()
     {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.id);
-        return hash;
+    }
+
+    public ABCDTask(Integer id)
+    {
+        this.id = id;
     }
 
     @Override
@@ -95,35 +93,14 @@ public class ABCDTask implements Serializable, Taskable
         return true;
     }
 
-    
-    
-    public String getQuestion()
+    public Integer getAnswer()
     {
-        return question;
+        return answer;
     }
 
-    public void setQuestion(String question)
+    public void setAnswer(Integer answer)
     {
-        this.question = question;
-    }
-
-    public ABCDTask()
-    {
-    }
-
-    public ABCDTask(Integer id)
-    {
-        this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId(Integer id)
-    {
-        this.id = id;
+        this.answer = answer;
     }
 
     public String getCase1()
@@ -166,25 +143,43 @@ public class ABCDTask implements Serializable, Taskable
         this.case4 = case4;
     }
 
-    public Integer getAnswer()
+    public Integer getId()
     {
-        return answer;
+        return id;
     }
 
-    public void setAnswer(Integer answer)
+    public void setId(Integer id)
     {
-        this.answer = answer;
+        this.id = id;
+    }
+
+    public String getQuestion()
+    {
+        return question;
+    }
+
+    public void setQuestion(String question)
+    {
+        this.question = question;
     }
 
     /**
      * Method to get own type of task
-     * 
-     * @return type of specific task 
+     *
+     * @return type of specific task
      */
     @Override
     public TaskType getType()
     {
         return TaskType.ABCD;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.id);
+        return hash;
     }
 
 }

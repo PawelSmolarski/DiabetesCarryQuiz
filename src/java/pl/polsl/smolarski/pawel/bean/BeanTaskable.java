@@ -5,20 +5,17 @@
  */
 package pl.polsl.smolarski.pawel.bean;
 
-import java.util.List;
-
 /**
  *
  * @author psmolarski
  */
 public interface BeanTaskable<T>
 {
-     /**
-     * Method which use DAO to save task
-     *
-     * @param task to save
+
+    /**
+     * Clearing local task
      */
-    void save(T task);
+    void clearTask();
 
     /**
      * Method which use DAO to delete task
@@ -27,17 +24,17 @@ public interface BeanTaskable<T>
      */
     void delete(T task);
 
+    /**
+     * Method which use DAO to save task
+     *
+     * @param task to save
+     */
+    void save(T task);
 
     /**
      * Method to update present task
      */
     void update();
-
-    
-    /**
-     * Clearing local task
-     */
-    void clearTask();
 
     /**
      * Method validation of user choose

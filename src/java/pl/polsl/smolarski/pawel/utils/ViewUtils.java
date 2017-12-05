@@ -14,7 +14,8 @@ import javax.faces.context.FacesContext;
  */
 public class ViewUtils
 {
-        /**
+
+    /**
      * Add FacesMessage to current instance
      *
      * @param summary Header of message
