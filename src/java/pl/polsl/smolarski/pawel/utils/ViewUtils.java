@@ -9,8 +9,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 /**
- *
+ *  Class with utils functions for view
+ * 
  * @author psmolarski
+ * @version 1.0
  */
 public class ViewUtils
 {

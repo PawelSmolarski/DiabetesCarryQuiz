@@ -14,10 +14,10 @@ package pl.polsl.smolarski.pawel.utils;
 public enum TaskType
 {
 
-    ABCD("/game/abcd.xhtml"),
-    DIAGRAM("/game/diagram.xhtml"),
-    PICK_LIST("/game/picklist.xhtml"),
-    DRAG_DROP("/game/dragdrop.xhtml");
+    ABCD("/game/abcd.xhtml?faces-redirect=true"),
+    DIAGRAM("/game/diagram.xhtml?faces-redirect=true"),
+    PICK_LIST("/game/picklist.xhtml?faces-redirect=true"),
+    DRAG_DROP("/game/dragdrop.xhtml?faces-redirect=true");
 
     /**
      * URL variable to view of specific task
