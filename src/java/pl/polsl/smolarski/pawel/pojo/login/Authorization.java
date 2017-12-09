@@ -88,7 +88,7 @@ public class Authorization implements Filter
                 resp.sendRedirect(reqt.getContextPath() + "/secure/login.xhtml");
             }
         }
-        catch (Exception e)
+        catch (IOException | ServletException | IllegalStateException e)
         {
             Logger.getLogger(Authorization.class.getName()).log(Level.SEVERE, null, e);
         }

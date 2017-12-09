@@ -103,5 +103,9 @@ public class LoginBean implements Serializable
             }
 
         }
+        else
+        {
+            addMessage("Error!", "Wrong login or password.");
+        }
     }
 }
