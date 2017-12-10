@@ -2,12 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Task</title>
     </h:head>
     <h:body style="background-image: url('../resources/images/background_image.jpg'); background-size: cover; ">
+
 
         <script type="text/javascript">
             function handleDrop(event, ui) {
@@ -17,22 +17,22 @@
             }
         </script>
 
-        <h:form id="taskForm">
+        <h:form id="taskForm" >
             <p:growl id="message" showDetail="true" />
 
-            <p:fieldset id="availableTaskField" legend="#{dragDropTaskBean.task.question}">
-                <p:dataGrid id="availableTasks" var="task" value="#{dragDropTaskBean.tasksToDrop}" columns="3">
-                    <p:panel id="pnl" header="" style="text-align:center">
-                        <h:panelGrid columns="1" style="width:100%">
+            <p:fieldset id="availableTaskField" legend="#{dragDropTaskBean.task.question}" style=" background-color:rgba(0,0,0,0.5);">
+                <p:dataGrid id="availableTasks" var="task" value="#{dragDropTaskBean.tasksToDrop}" columns="2">
+                    <p:panel id="pnl" header="" style="text-align:center;" >
+                        <h:panelGrid columns="1" style="width:100%;">
                             <h:outputText value="#{task.caseValue}" />
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:draggable for="pnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+                    <p:draggable for="pnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel" />
                 </p:dataGrid>
             </p:fieldset>
 
-            <p:fieldset id="selectedTasks" legend="#{dragDropTaskBean.task.answerA}" style="margin-top:20px">
+            <p:fieldset id="selectedTasks" legend="#{dragDropTaskBean.task.answerA}" style="margin-top:20px;  background-color:rgba(0,0,0,0.5);">
                 <p:outputPanel id="dropArea">
                     <h:outputText value="" rendered="#{empty dragDropTaskBean.droppedAnswerA}" style="font-size:24px;" />
                     <p:dataTable id="selectedTasksTable" var="task" value="#{dragDropTaskBean.droppedAnswerA}" rendered="#{not empty dragDropTaskBean.droppedAnswerA}">
@@ -53,7 +53,7 @@
             </p:droppable>
 
 
-            <p:fieldset id="selectedTasksB" legend="#{dragDropTaskBean.task.answerB}" style="margin-top:20px">
+            <p:fieldset id="selectedTasksB" legend="#{dragDropTaskBean.task.answerB}" style="margin-top:20px;  background-color:rgba(0,0,0,0.5);" >
                 <p:outputPanel id="dropAreaB">
                     <h:outputText value="" rendered="#{empty dragDropTaskBean.droppedAnswerB}" style="font-size:24px;" />
                     <p:dataTable id="selectedTasksTableB" var="task" value="#{dragDropTaskBean.droppedAnswerB}" rendered="#{not empty dragDropTaskBean.droppedAnswerB}">
