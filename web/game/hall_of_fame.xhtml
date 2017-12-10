@@ -14,7 +14,7 @@ and open the template in the editor.
     </h:head>
     <h:body style="background-image: url('../resources/images/background_image.jpg'); background-size: cover; ">
         <h:form>
-            <h2><h:outputText value="Your result is #{quizBean.nonStaticPoints}" /></h2>
+            <h2 style="text-align: center"><h:outputText value="Your result is #{quizBean.nonStaticPoints}" /></h2>
 
         <p:dataTable var="player" value="#{playerBean.getAllRecords()}" id="showAllPlayers" >
             <f:facet name="header">

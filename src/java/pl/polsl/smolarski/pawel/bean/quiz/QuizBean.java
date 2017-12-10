@@ -202,6 +202,7 @@ public class QuizBean implements Serializable
     {
         tasks = null;
         isStarted = false;
+        presentTask=null;
         Player player = new Player();
         player.setName(username);
         player.setPoints(points);

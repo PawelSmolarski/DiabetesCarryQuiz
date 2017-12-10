@@ -10,7 +10,7 @@
     <h:body style="background-image: url('../resources/images/background_image.jpg'); background-size: cover; ">
         <h:form id="taskForm" style="display:block; text-align:left;">
 
-            <h:panelGrid id="taskPanel" columns="1" style="margin: 0 auto" cellpadding="5">
+            <h:panelGrid id="taskPanel" columns="1" style="margin: 0 auto; " cellpadding="5">
                 <h1>#{aBCDTaskBean.task.question}</h1>
                 <p:selectOneRadio id="answer" value="#{aBCDTaskBean.answer}" columns="1" layout="grid">
                     <f:convertNumber integerOnly="true" />
