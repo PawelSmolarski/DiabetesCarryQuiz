@@ -341,7 +341,6 @@ public class DiagramTaskBean implements Serializable, BeanTaskable<DiagramTask>
 
         if (ModelUtils.areEqualLists(connectionsRelation, answerRelations))
         {
-            System.out.println("Diagram get points");
             quizBean.setPoints(quizBean.getPoints() + 1);
         }
 

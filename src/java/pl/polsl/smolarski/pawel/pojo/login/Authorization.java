@@ -71,6 +71,10 @@ public class Authorization implements Filter
             {
                 resp.sendRedirect(quizBean.getPresentTask().getType().getURL());
             }
+            else if (reqURI.contains("/game/") && (ses == null || ses.getAttribute("player") == null || quizBean.getPresentTask() == null))
+            {
+                resp.sendRedirect(reqt.getContextPath() + "/public/index.xhtml");
+            }
             else if (reqURI.contains("/login.xhtml")
                     || (ses != null && ses.getAttribute("username") != null)
                     || reqURI.contains("/public/")
@@ -78,10 +82,6 @@ public class Authorization implements Filter
                     || reqURI.contentEquals("/") || reqURI.contains("/game/"))
             {
                 chain.doFilter(request, response);
-            }
-            else if (reqURI.contains("/game/") && (ses == null || ses.getAttribute("player") == null))
-            {
-                resp.sendRedirect(reqt.getContextPath() + "/public/index.xhtml");
             }
             else
             {

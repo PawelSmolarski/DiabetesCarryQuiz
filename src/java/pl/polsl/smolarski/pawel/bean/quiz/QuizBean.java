@@ -218,8 +218,6 @@ public class QuizBean implements Serializable
      */
     private void redirectNextTask()
     {
-
-        System.out.println("Gra trwa " + points);
         presentTask = tasks.get(0);
         tasks.remove(0);
         getView(presentTask.getType());

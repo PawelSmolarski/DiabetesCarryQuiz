@@ -354,7 +354,6 @@ public class DragDropTaskBean implements Serializable, BeanTaskable<DragDropTask
     {
         if (isCorrect() == true)
         {
-            System.out.println("points from drag drop");
             quizBean.setPoints(quizBean.getPoints() + 1);
         }
         quizBean.game();

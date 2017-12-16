@@ -284,7 +284,6 @@ public class PickListTaskBean implements Serializable, BeanTaskable<PickListTask
         if (ModelUtils.areEqualLists(answers, tasksTarget))
         {
             quizBean.setPoints(quizBean.getPoints() + 1);
-            System.out.println("player get points pick list");
         }
         
         quizBean.game();
