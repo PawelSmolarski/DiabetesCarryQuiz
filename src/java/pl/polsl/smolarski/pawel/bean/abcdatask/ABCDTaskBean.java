@@ -90,6 +90,7 @@ public class ABCDTaskBean implements Serializable, BeanTaskable<ABCDTask>
     @Override
     public void delete(ABCDTask task)
     {
+        
         try
         {
             TASK_DAO.deleteTask(task.getId());
@@ -200,9 +201,8 @@ public class ABCDTaskBean implements Serializable, BeanTaskable<ABCDTask>
             {
                 quizBean.setPoints(quizBean.getPoints() + 1);
             }
-
+            
             quizBean.game();
-
         }
     }
 }

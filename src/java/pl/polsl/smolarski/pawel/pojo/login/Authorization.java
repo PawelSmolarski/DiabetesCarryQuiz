@@ -61,20 +61,26 @@ public class Authorization implements Filter
             HttpSession ses = reqt.getSession(false);
 
             String reqURI = reqt.getRequestURI();
-
+            
+            //Receiving quizBean if session exists
             if (ses != null)
             {
                 quizBean = (QuizBean) ses.getAttribute("quizBean");
             }
 
+            /*Check if game takes place and player session exists or user 
+              want to redirect into welcome page before game end */
             if ((ses != null && ses.getAttribute("player") != null) && (reqURI.contentEquals("/") || reqURI.contains("/public/index.xhtml")) && quizBean.getPresentTask() != null)
             {
                 resp.sendRedirect(quizBean.getPresentTask().getType().getURL());
             }
+            /* Check if user want to go into game resources but game not take place at the moment */
             else if (reqURI.contains("/game/") && (ses == null || ses.getAttribute("player") == null || quizBean.getPresentTask() == null))
             {
                 resp.sendRedirect(reqt.getContextPath() + "/public/index.xhtml");
             }
+            /* If user want to login or start game or redirect to public resources 
+               let redirection arrive */
             else if (reqURI.contains("/login.xhtml")
                     || (ses != null && ses.getAttribute("username") != null)
                     || reqURI.contains("/public/")
@@ -83,6 +89,7 @@ public class Authorization implements Filter
             {
                 chain.doFilter(request, response);
             }
+            /* In other case send to lign page */
             else
             {
                 resp.sendRedirect(reqt.getContextPath() + "/secure/login.xhtml");
